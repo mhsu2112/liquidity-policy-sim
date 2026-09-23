@@ -1,0 +1,18 @@
+# Secrets: never saved to history or GitHub
+.env
+
+# Python working files
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Generated outputs (rebuilt with `make results`); keep the folder itself
+outputs/*
+!outputs/.gitkeep
+
+# Jev audit log may contain long text; kept locally, summarized in reports
+signals/audit_log.jsonl
+
+# Mac clutter
+.DS_Store

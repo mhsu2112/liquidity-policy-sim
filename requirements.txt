@@ -1,0 +1,5 @@
+# Add-ons this project uses. Exact versions are pinned so that anyone
+# rebuilding the environment gets identical numbers from identical inputs.
+numpy==2.5.3     # fast arithmetic on arrays: one row per simulated run
+PyYAML==6.0.3    # reads the settings files in config/
+pytest==9.1.1    # runs the automated checks in tests/
