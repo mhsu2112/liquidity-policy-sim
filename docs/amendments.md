@@ -548,3 +548,48 @@ Format for each entry:
   the sum and excludes the one-time loss; same seed, same table (240 rows); every cost formula in
   `outputs/cost_worked_example.xlsx` (SVB-09 and GSIB-02 under B, B′ and C), worked by pycel, matches the code.
   `make costs`.
+
+## 2026-10-02 — Clarification 14: the M3 run plan, binding (session M1.9)
+- **What changed:** fixes exactly which runs M3 makes, which contract sections 4–5 describe only in outline. No value
+  or range in the contract changes. The plan lives in `config/run_plan.yaml`; `engine/run_plan.py` counts it;
+  `make benchmark` prints it and writes `outputs/run_plan.csv`. **Binding for M3:** it changes only through a later entry
+  here.
+  1. **Main grid:** 6 policies (A, B, B′, C, C′, E; Amendment 3) × 2 scenarios (S1, S2) × 40 banks × 35 stigma ×
+     supervision cells × 200 paired runs = **3,360,000**.
+  2. **Paired random numbers:** news noise and the information and testing draws depend only on (scenario, bank, run
+     number), never on the policy or the cell; opt-in draws are the policy table's (Clarification 11 item 4).
+  3. **Sensitivities**, one at a time at each non-default point, on the reduced grid: the **9 mid-range cells** of
+     `docs/hypotheses.md` (owner's choice) × 2 scenarios × 40 banks × 200 runs. **Exception:** C uptake 50% and 100% run
+     on all 35 cells, because H3 and H4(b) are scored there. Only the policies a setting can affect are rerun; the others
+     reuse their main-grid runs, which are identical by construction (same random numbers, and nothing they read
+     changes). Settings and points: leak probability 0, 50%; leak lag 0, 5 days; C ceiling 15%, 25%; C uptake 50%, 100%;
+     C HQLA released 0%, 50%; C stress trigger fires on day 1 (S1 only); collateral margins −5, +5 pp; depositor
+     coordination ×0.5, ×1.5 of the value frozen in M1.10 (owner's choice, fixed now, before tuning); routine-borrowing
+     strength s 0, 0.7; distress-hit size 0.10, 0.40 (Amendment 1); B full run, 100% of uninsured (B, B′, E; E mirrors
+     B's collateral); SVB-like with no LCR (C, C′ on the 10 SVB-like banks; Decision 1-2); starting collateral split, Fed
+     and Home Loan Bank shares each ±20 pp (Clarification 4); Home Loan Bank line 3%, 8% (Clarification 4); repo lines
+     ×0.5, ×1.5 (Clarification 7). **21,320,000 runs.**
+  4. **No new runs, by construction** (reported in M3 with the reason): C usage multiple 100 / 125 (draws are sized so
+     the usage limit never binds; only draw costs change); prepositioning cost rates ×0.5 / ×1.5 (cost only);
+     window-loan LCR outflow 0% / 100% (Amendment 4; reporting only, recomputed from recorded runs); B's ratio kept
+     private (the disclosure has no confidence effect in v1, Clarification 9: **no effect by construction**, owner's
+     choice).
+  5. **Feature-switch runs** (attribution, H2): the 16 switch combinations build 12 distinct setups, because the
+     five-day ratio always prepositions. Less the 4 already run as A, B, C and E, that leaves 8 extra × 2 scenarios ×
+     40 banks × 9 mid-range cells × 200 = **1,152,000**.
+  6. **Total: 25,832,000 runs.** Measured in `make benchmark` (policy A, 10,000 episodes at once, all 60 half-days):
+     124 µs per episode, so **54 minutes** projected, **1.3 hours** with a 1.5× margin for writing outputs and recording
+     LCR paths. That is under the owner's 8-hour limit, so no cuts. Peak memory was 660 MB for one 10,000-episode batch
+     with every half-day record kept. Early stopping cut the time to 0.53 s for that batch.
+  7. **Benchmark shock:** 0.40, the M1.4 "severe" demo shock, is a **placeholder** for S1, which is set in M1.10. Timing
+     covers all 60 half-days, so it doesn't depend on the shock.
+- **Why:** M3 needs a fixed, counted plan before any comparison runs, so that no run is added or dropped after results
+  are seen.
+- **Seen results before the change?** No stress or policy results exist. Only policy-A episodes ran (benchmark and
+  tests), with M1.10 placeholder behavior settings.
+- **Evidence:** `make benchmark` → `outputs/benchmark.txt` ("identical: yes"; a different seed changes all 10,000
+  episodes) and `outputs/run_plan.csv`. `tests/test_repeatability.py`: same seed, identical fingerprint of every output;
+  different seed, different results; three runs rerun alone match the same runs in a 400-row batch at every half-day;
+  every policy's setup receives the very same random arrays (setups only, no episode under another policy); no
+  random-number function takes a policy; run counts match a hand calculation (3,360,000 + 21,320,000 + 1,152,000 =
+  25,832,000).

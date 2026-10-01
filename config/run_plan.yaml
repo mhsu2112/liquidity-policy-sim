@@ -1,0 +1,66 @@
+# The M3 run plan (session M1.9). BINDING for M3 once recorded as Clarification 14.
+#
+# Sources: docs/contract.md sections 4-5, docs/hypotheses.md (which cells each hypothesis
+# needs), docs/amendments.md (Amendments 1, 3, 4; Clarifications 4, 7, 9, 13, 14).
+# Counts are computed from this file by engine/run_plan.py; nothing is typed twice.
+
+runs_per_cell: 200            # contract 4: paired runs; PRD performance target (200 per cell)
+policies: [A, B, B_prime, C, C_prime, E]   # Amendment 3 item 3: six policies compared in v1
+scenarios: [S1, S2]           # PRD: S1 fast idiosyncratic run, S2 false alarm (shock sizes set in M1.10)
+
+cells:                        # stigma x supervision cells
+  main:                       # contract 5: 7 x 5 = 35 cells
+    stigma: [0.0, 0.10, 0.20, 0.35, 0.50, 0.70, 0.90]
+    supervision: [strongly_penalizes, penalizes, neutral, encourages, strongly_encourages]
+  mid_range:                  # hypotheses.md "Mid-range cells"; Clarification 14: the reduced grid for sensitivities
+    stigma: [0.20, 0.35, 0.50]
+    supervision: [penalizes, neutral, encourages]
+
+# Paired random numbers (Clarification 14): news noise, information and testing draws depend only on
+# (scenario, bank, run number); opt-in draws are the policy table's. Every policy and every cell sees the same draws.
+
+# One at a time, around the defaults, at each non-default point. Only the policies a setting can
+# affect are rerun; the others reuse their main-grid runs (identical by construction).
+sensitivities:
+  - {name: leak_probability, points: [0.0, 0.50], policies: all, cells: mid_range, source: contract 5}
+  - {name: leak_lag_days, points: [0, 5], policies: all, cells: mid_range, source: contract 5}
+  - {name: c_ceiling, points: [0.15, 0.25], policies: [C, C_prime], cells: mid_range, source: contract 5}
+  - {name: c_uptake, points: [0.50, 1.00], policies: [C, C_prime], cells: main,
+     source: "contract 5; all 35 cells because H3 and H4(b) test them"}
+  - {name: c_hqla_released, points: [0.0, 0.50], policies: [C, C_prime], cells: mid_range, source: contract 5}
+  - {name: c_stress_trigger, points: [fires_day_1], policies: [C, C_prime], cells: mid_range, scenarios: [S1],
+     source: "contract 2d and 5: a switch in S1"}
+  - {name: collateral_margins_pp, points: [-5, 5], policies: all, cells: mid_range, source: "contract 5; Decision 2-1"}
+  - {name: depositor_coordination, points: [x0.5, x1.5], policies: all, cells: mid_range,
+     source: "contract 5 (low / high); Clarification 14: multiples of the value frozen in M1.10"}
+  - {name: routine_borrowing_strength_s, points: [0.0, 0.7], policies: all, cells: mid_range, source: "contract 3a, 5"}
+  - {name: distress_hit_size, points: [0.10, 0.40], policies: all, cells: mid_range, source: Amendment 1}
+  - {name: b_full_run, points: [uninsured_runoff_100pct], policies: [B, B_prime, E], cells: mid_range,
+     source: "Decision 2-2 sensitivity; E mirrors B's collateral"}
+  - {name: svb_like_no_lcr, points: [no_lcr], policies: [C, C_prime], cells: mid_range, banks: svb_like,
+     source: "Decision 1-2 sensitivity; only C and C' read LCR status"}
+  - {name: starting_collateral_split, points: [fed_minus_20pp, fed_plus_20pp, fhlb_minus_20pp, fhlb_plus_20pp],
+     policies: all, cells: mid_range, source: "Clarification 4 item 1"}
+  - {name: fhlb_line_share, points: [0.03, 0.08], policies: all, cells: mid_range, source: "Clarification 4 item 2"}
+  - {name: repo_line_multiple, points: [x0.5, x1.5], policies: all, cells: mid_range, source: "Clarification 7 item 1"}
+
+# Swept settings that cannot change any run; reported in M3 with this reason (Clarification 14).
+no_new_runs:
+  - {name: c_usage_multiple, points: [100, 125], reason: "usage draws are sized so the usage limit never binds (Clarification 11 item 7); only draw costs change (cost model)"}
+  - {name: prepositioning_cost_rates, points: [x0.5, x1.5], reason: "cost only (contract 5, 6)"}
+  - {name: dw_loan_lcr_outflow, points: [0.0, 1.0], reason: "reporting only (Amendment 4); recomputed from recorded runs"}
+  - {name: b_ratio_private, points: [private], reason: "the quarterly disclosure has no confidence effect in v1 (Clarification 9): no effect by construction"}
+
+feature_switches:             # PRD feature attribution; hypothesis H2
+  cells: mid_range            # Clarification 14: the coarser grid the PRD allows
+  # Combinations already run as named policies are not run again; the code counts the rest.
+
+timing:
+  margin: 1.5                 # Clarification 14: allowance for writing outputs and recording LCR paths
+  limit_hours: 8              # owner's threshold (session M1.9 brief)
+
+benchmark:                    # make benchmark: policy A only
+  seed: 20261003
+  other_seed: 20261004        # shows that a different seed changes results
+  runs_per_bank: 250          # 40 x 250 = 10,000 episodes at once
+  shock: 0.40                 # PLACEHOLDER for S1, labelled as such: the M1.4 "severe" demo shock. S1 is set in M1.10
