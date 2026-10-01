@@ -1,0 +1,48 @@
+# The funding waterfall (session M1.3): where a bank finds cash, how much, and how fast.
+#
+# Sources: docs/contract.md sections 2b (window margins) and 7 (lags), and
+# docs/amendments.md Clarifications 4 (collateral placement, Home Loan Bank) and
+# 5 (price impact, settlement, reserve floor, bridging). Shares are fractions.
+# Lags are counted in half-day steps: 0 = same half-day, 2 = next day.
+
+time:
+  steps_per_day: 2         # contract 7: two half-days per day
+  days: 30                 # contract 7: 30-day episode
+
+reserves:
+  floor_share_of_assets: 0.01   # Clarification 5: operating floor, 1% of total assets [ESTIMATE]
+
+securities:
+  # Clarification 5: linear fire-sale discount. Each extra $1bn sold loses this
+  # share of its value per $1bn already sold by the same bank in the episode.
+  # Greenwood, Landier & Thesmar (2015) and Duarte & Eisenbach (2021): 10 bp per $10bn.
+  # Tuned in M1.10 (contract 7: "fire-sale price impact").
+  price_impact_per_bn:
+    level1: 0.0001          # 10 bp per $10bn (GLT 2015)
+    level2a: 0.0003         # 30 bp per $10bn [ESTIMATE]: agency MBS less liquid than Treasuries
+  settlement_lag_steps:
+    level1: 2               # Clarification 5: Treasuries settle T+1
+    level2a: 4              # Clarification 5: agency MBS pools T+2 [ESTIMATE]
+
+collateral_placement:       # Clarification 4, rule 1: eligible loans under policy A
+  fed_prepositioned: 0.30
+  fhlb_pledged: 0.40
+  unpledged: 0.30
+
+fhlb:                       # Clarification 4, rule 2; contract 7
+  line_share_of_assets: 0.05    # pre-arranged line, available the same day
+  advance_rate: 0.75            # total advances at most 75% of loans pledged (line included; Clarification 5)
+  above_line_lag_steps: 2       # contract 7: next day above the line
+
+discount_window:
+  margins:                  # contract 2b (Decision 2-1)
+    level1: 0.96            # Treasuries >5 years; used for all Level 1 (Clarification 5)
+    level2a: 0.96           # agency MBS
+    resi: 0.80              # residential mortgages
+    cre: 0.72               # CRE loans
+    ci: 0.80                # C&I loans
+  lag_steps:                # contract 7
+    prepositioned_tested: 0     # same half-day if tested in the last 90 days
+    prepositioned_untested: 2   # 1 day
+    securities: 2               # 1 day for securities not prepositioned
+    unprepositioned_loans: 20   # "not available within 10 days"; usable from day 11 (Clarification 5)

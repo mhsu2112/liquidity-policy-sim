@@ -9,18 +9,26 @@ Two views of each bank's balance sheet must always add up:
 import numpy as np
 
 ASSET_LINES = ["reserves", "level1_securities", "level2a_securities",
-               "resi_loans", "cre_loans", "ci_loans", "other_assets"]
-LIABILITY_LINES = ["insured_deposits", "uninsured_deposits", "stwf"]
+               "resi_loans", "cre_loans", "ci_loans", "other_assets",
+               "sale_proceeds_due"]  # from M1.3: securities sold, cash not yet settled
+LIABILITY_LINES = ["insured_deposits", "uninsured_deposits", "stwf",
+                   "fhlb_advances", "dw_loans",  # from M1.3: borrowing
+                   "unpaid_outflows"]            # from M1.3: owed to depositors, not yet paid
 
 ONE_DOLLAR_BN = 1e-9  # tolerance: $1, written in $ billions
 
 
+def _line(banks, k):
+    # Lines added in M1.3 don't exist before the first funding step; they count as zero.
+    return banks.get(f"{k}_bn", 0.0)
+
+
 def total_assets(banks):
-    return sum(banks[f"{k}_bn"] for k in ASSET_LINES)
+    return sum(_line(banks, k) for k in ASSET_LINES)
 
 
 def total_liabilities(banks):
-    return sum(banks[f"{k}_bn"] for k in LIABILITY_LINES)
+    return sum(_line(banks, k) for k in LIABILITY_LINES)
 
 
 def mtm_equity(banks):

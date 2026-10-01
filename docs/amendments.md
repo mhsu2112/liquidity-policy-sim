@@ -70,3 +70,35 @@ Format for each entry:
   the timing rule.
 - **Seen results before the change?** No. Agreed by the owner before any funding calculation ran.
 - **Evidence:** to be added in session M1.3 (tests of capacity and timing).
+
+## 2026-10-01 — Clarification 5: the funding waterfall (session M1.3)
+- **What changed:** implementation rules for the funding waterfall that the contract and Clarification 4 leave unstated.
+  No value or range in the contract changes. Settings live in `config/funding.yaml`.
+  1. **Fire-sale price impact.** Linear and cumulative within an episode: each extra dollar a bank sells loses
+     λ × (market value that bank has already sold). Level 1 λ = 10 bp per $10bn (Greenwood, Landier & Thesmar 2015;
+     Duarte & Eisenbach 2021); Level 2A λ = 30 bp per $10bn [ESTIMATE], agency MBS being less liquid than Treasuries.
+     The price does not recover within the episode. These are starting values; contract section 7 lists fire-sale price
+     impact among the parameters tuned in M1.10. The discount does not revalue securities the bank still holds.
+  2. **Realized losses.** A sale realizes the unrealized loss on the amount sold (pro rata, Clarification 3) plus the
+     fire-sale discount; both reduce equity.
+  3. **Settlement.** Level 1 sales settle T+1 (Treasury regular-way settlement); Level 2A sales settle T+2 [ESTIMATE].
+     Proceeds sit in a "sale proceeds due" asset until settled.
+  4. **Bridging (speed tiers).** A payment due now is met first from sources that pay the same half-day; slower sources
+     cover only what is left, and those payments are reported as late. Within each speed tier the order is reserves,
+     securities sales, Home Loan Bank, discount window. As a result, when next-day sources are still short the window
+     lends against Level 2A securities (next day) before they are sold (T+2).
+  5. **Reserve operating floor:** 1% of total assets at the start of the episode [ESTIMATE].
+  6. **Home Loan Bank capacity** (reading of Clarification 4): total advances are at most 75% of loans pledged to the
+     Home Loan Bank; the pre-arranged line (5% of assets) is the same-day part of that total, not an addition to it.
+     Loans pledged to the Home Loan Bank are not available at the discount window.
+  7. **Treasury margin at the window:** 96% (the >5-year bucket in contract section 2b) for all Level 1 securities,
+     as the banks have no maturity split. Agency MBS: 96%.
+  8. **Loans not prepositioned** become usable at the window from day 11 (contract section 7: "not available within 10
+     days"). Each collateral pool holds resi, CRE and C&I loans in the bank's own loan mix.
+  9. **Unpaid outflows.** An outflow not yet paid stays on the balance sheet as a liability ("unpaid outflows") until
+     cash arrives; the part no source can cover is reported every step as the shortfall and retried the next step.
+- **Why:** the waterfall needs a price-impact rule, settlement timing and several accounting choices the contract does
+  not state. Items 1, 3, 4, 5, 6, 7 and 8 were chosen by the owner in session M1.3; 2 and 9 follow from them.
+- **Seen results before the change?** No. Agreed before any funding calculation ran.
+- **Evidence:** `tests/test_funding.py` (order, limits, lags, hand-worked sale, balance, shortfall); also completes the
+  evidence for Clarification 4.

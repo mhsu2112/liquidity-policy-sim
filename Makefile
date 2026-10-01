@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr
+.PHONY: setup test banks lcr demo-waterfall
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -31,3 +31,7 @@ banks: $(VENV)/.installed
 ## make lcr: each bank's LCR and its parts, plus the worked-examples spreadsheet
 lcr: $(VENV)/.installed
 	$(PY) -m engine.write_lcr
+
+## make demo-waterfall: plain-English account of two banks meeting a $10bn then $40bn outflow
+demo-waterfall: $(VENV)/.installed
+	$(PY) -m engine.demo_waterfall
