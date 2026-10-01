@@ -3,12 +3,13 @@
 When a bank must pay out cash in a half-day step, it looks for that cash in a
 fixed order. Sources are grouped by how fast their cash arrives (Clarification 5,
 "bridging"): everything that pays today is used first, then next-day sources,
-and so on. Within each speed tier the order is reserves, securities sales,
-Home Loan Bank, discount window.
+and so on. Within each speed tier the order is reserves, securities (repo or
+sale), Home Loan Bank, discount window.
 
     Tier   Cash arrives          Sources, in order
-    1      same half-day         reserves above floor; Home Loan Bank line;
-                                 window on prepositioned loans, if tested
+    1      same half-day         reserves above floor; repo of Level 1, then
+                                 Level 2A (Clarification 6); Home Loan Bank
+                                 line; window on prepositioned loans, if tested
     2      next day              sell Level 1; Home Loan Bank above the line;
                                  window on untested prepositioned loans,
                                  then on Level 1 and Level 2A securities
@@ -38,6 +39,8 @@ SECURITY_CLASSES = ("level1", "level2a")
 # within a lag, gives the speed tiers above.
 SOURCES = [
     ("reserves", "reserves above the floor"),
+    ("repo_level1", "repo of Level 1 securities"),
+    ("repo_level2a", "repo of Level 2A securities"),
     ("sale_level1", "Level 1 securities sale"),
     ("fhlb_line", "Home Loan Bank line"),
     ("fhlb_above_line", "Home Loan Bank above the line"),
@@ -49,7 +52,7 @@ SOURCES = [
     ("dw_unpledged", "discount window, loans not prepositioned"),
 ]
 LABELS = dict(SOURCES)
-BORROWING_LINE = {"fhlb_line": "fhlb_advances_bn", "fhlb_above_line": "fhlb_advances_bn",
+BORROWING_LINE = {"repo_level1": "repo_bn", "repo_level2a": "repo_bn", "fhlb_line": "fhlb_advances_bn", "fhlb_above_line": "fhlb_advances_bn",
                   "dw_tested": "dw_loans_bn", "dw_untested": "dw_loans_bn", "dw_level1": "dw_loans_bn",
                   "dw_level2a": "dw_loans_bn", "dw_unpledged": "dw_loans_bn"}
 
@@ -61,7 +64,8 @@ def load_funding_settings(path=FUNDING_SETTINGS_PATH):
 
 def _lags(s):
     sec, fhlb, dw = s["securities"]["settlement_lag_steps"], s["fhlb"], s["discount_window"]["lag_steps"]
-    return {"reserves": 0, "fhlb_line": 0, "dw_tested": dw["prepositioned_tested"],
+    repo = s["repo"]["lag_steps"]
+    return {"reserves": 0, "repo_level1": repo, "repo_level2a": repo, "fhlb_line": 0, "dw_tested": dw["prepositioned_tested"],
             "sale_level1": sec["level1"], "fhlb_above_line": fhlb["above_line_lag_steps"],
             "dw_untested": dw["prepositioned_untested"], "dw_level1": dw["securities"],
             "dw_level2a": dw["securities"], "sale_level2a": sec["level2a"],
@@ -89,7 +93,7 @@ def start_state(banks, s=None, tested=None):
     st["tested"] = np.zeros(n, bool) if tested is None else np.asarray(tested, bool)
 
     # New balance-sheet lines, all zero to start.
-    for line in ("fhlb_advances_bn", "dw_loans_bn", "sale_proceeds_due_bn", "unpaid_outflows_bn"):
+    for line in ("repo_bn", "fhlb_advances_bn", "dw_loans_bn", "sale_proceeds_due_bn", "unpaid_outflows_bn"):
         st[line] = np.zeros(n)
 
     # The reserve floor is fixed in dollars at the start, so it doesn't shrink as the bank does.
@@ -100,6 +104,7 @@ def start_state(banks, s=None, tested=None):
     for c in SECURITY_CLASSES:
         st[f"sold_mv_{c}_bn"] = np.zeros(n)     # market value sold so far (drives price impact)
         st[f"dw_pledged_mv_{c}_bn"] = np.zeros(n)  # market value pledged at the window
+        st[f"repo_pledged_mv_{c}_bn"] = np.zeros(n)  # market value encumbered by repo (Clarification 6)
 
     # Collateral pools (Clarification 4): eligible loans split between the Fed,
     # the Home Loan Bank and nowhere, each pool holding the bank's own loan mix.
@@ -125,8 +130,9 @@ def start_state(banks, s=None, tested=None):
 # ---------------------------------------------------------------- securities
 
 def _saleable_mv(st, c):
-    """Market value of securities in class c not yet sold or pledged."""
-    return st[f"{c}_securities_bn"] * (1 - st["loss_rate"]) - st[f"dw_pledged_mv_{c}_bn"]
+    """Market value of securities in class c not yet sold, repo'd or pledged at the window."""
+    return (st[f"{c}_securities_bn"] * (1 - st["loss_rate"])
+            - st[f"dw_pledged_mv_{c}_bn"] - st[f"repo_pledged_mv_{c}_bn"])
 
 
 def _impact(st, c):
@@ -175,6 +181,9 @@ def _capacity(st, name):
         return np.maximum(st["reserves_bn"] - st["reserve_floor_bn"], 0)
     if name.startswith("sale_"):
         return _sale_capacity(st, name[5:])
+    if name.startswith("repo_"):
+        c = name[5:]
+        return np.maximum(_saleable_mv(st, c), 0) * (1 - st["settings"]["repo"]["haircuts"][c])
     if name == "fhlb_line":
         return np.minimum(st["fhlb_line_left_bn"], st["fhlb_total_left_bn"])
     if name == "fhlb_above_line":
@@ -203,6 +212,12 @@ def _use(st, name, cash, t):
 
     if name == "reserves":
         st["reserves_bn"] -= cash
+    elif name.startswith("repo_"):
+        # Repo: the securities stay on the books, encumbered, so no loss is realized.
+        # A 100% haircut means repo raises nothing, so nothing is encumbered.
+        c = name[5:]
+        keep = 1 - st["settings"]["repo"]["haircuts"][c]
+        st[f"repo_pledged_mv_{c}_bn"] += cash / keep if keep > 0 else 0.0
     elif name in ("fhlb_line", "fhlb_above_line"):
         st["fhlb_total_left_bn"] -= cash
         if name == "fhlb_line":

@@ -59,8 +59,10 @@ def test_sources_used_in_order(scenario):
 
 
 def test_order_within_tiers_follows_brief():
-    # Within each speed tier: reserves, then securities, then Home Loan Bank, then window.
-    rank = lambda k: (0 if k == "reserves" else 1 if k.startswith("sale") else 2 if k.startswith("fhlb") else 3)  # noqa: E731
+    # Within each speed tier: reserves, then securities (repo or sale; Clarification 6),
+    # then Home Loan Bank, then window.
+    rank = lambda k: (0 if k == "reserves" else 1 if k.startswith(("sale", "repo")) else  # noqa: E731
+                      2 if k.startswith("fhlb") else 3)
     st = start_state(BANKS, SETTINGS)
     by_lag = {}
     for k in st["order"]:
@@ -114,6 +116,7 @@ def test_each_source_arrives_exactly_its_lag_later():
 # Contract section 7 and Clarification 5, in half-day steps, typed in from the
 # documents rather than read from the settings file, so a settings typo is caught.
 CONTRACT_LAGS = {"reserves": 0, "fhlb_line": 0, "dw_tested": 0,          # same half-day
+                 "repo_level1": 0, "repo_level2a": 0,                     # same half-day (Clarification 6)
                  "sale_level1": 2, "fhlb_above_line": 2, "dw_untested": 2,  # next day
                  "dw_level1": 2, "dw_level2a": 2,
                  "sale_level2a": 4,                                       # T+2
@@ -169,6 +172,7 @@ def hand_bank():
 def test_sale_losses_reduce_equity_by_hand():
     s = copy.deepcopy(SETTINGS)
     s["securities"]["price_impact_per_bn"]["level1"] = 0.001  # 1 bp per $1bn, for round numbers
+    s["repo"]["haircuts"]["level1"] = 1.0  # repo switched off: this test is about sale arithmetic
     bank = hand_bank()
     # To raise 48.75 the bank sells 50 at market value: 50 - 0.001 x 50^2 / 2 = 48.75.
     # Book value sold: 50 / 0.9 = 55.56, so the realized loss is 5.56 already on the books
@@ -191,7 +195,8 @@ def test_realized_losses_match_equity_change():
     st, recs = run(outflows=everything_leaves(BANKS))
     np.testing.assert_allclose(BANKS["equity_bn"] - st["equity_bn"], sum(r["realized_loss"] for r in recs),
                                atol=ONE_DOLLAR_BN)
-    assert (sum(r["realized_loss"] for r in recs) > 0).all()
+    # (While repo always rolls, repo takes every security before any sale, so this
+    # scenario realizes no loss; test_sale_losses_reduce_equity_by_hand covers sales.)
 
 
 # ---------------------------------------------------------------- balance
@@ -208,15 +213,14 @@ def test_shortfall_equals_the_excess():
     start = start_state(BANKS, SETTINGS)
     r = recs[0]
     # Every source used to its limit, worked out independently:
-    m = SETTINGS["discount_window"]["margins"]
-    lam = SETTINGS["securities"]["price_impact_per_bn"]["level1"]
+    h = SETTINGS["repo"]["haircuts"]
     l1_mv = BANKS["level1_securities_bn"] * (1 - start["loss_rate"])
     l2a_mv = BANKS["level2a_securities_bn"] * (1 - start["loss_rate"])
     everything = (BANKS["reserves_bn"] - start["reserve_floor_bn"]
-                  + l1_mv - lam * l1_mv**2 / 2           # Level 1 sold in full
+                  + (1 - h["level1"]) * l1_mv            # all Level 1 repo'd (same day)
+                  + (1 - h["level2a"]) * l2a_mv          # all Level 2A repo'd (same day)
                   + start["fhlb_total_left_bn"]
                   + start["dw_prepositioned_left_bn"]
-                  + m["level2a"] * l2a_mv                # Level 2A pledged at the window (next day)
                   + start["dw_unpledged_left_bn"])
     np.testing.assert_allclose(r["shortfall"], r["outflow"] - everything, atol=TOL)
     assert (r["shortfall"] > 0).all()  # all deposits leaving exceeds every bank's sources
@@ -251,3 +255,62 @@ def test_all_banks_together_equal_one_at_a_time():
             assert alone[k][0] == together[k][i], (BANKS["bank_id"][i], k)
         for t in range(8):
             assert recs1[t]["shortfall"][0] == recs[t]["shortfall"][i]
+
+
+# ---------------------------------------------------------------- repo (session M1.3b, Clarification 6)
+
+def test_repo_after_reserves_before_fhlb_line():
+    st = start_state(BANKS, SETTINGS)
+    order = st["order"]
+    assert order.index("reserves") < order.index("repo_level1") < order.index("repo_level2a") \
+        < order.index("fhlb_line") < order.index("dw_tested")
+    # And in the numbers: repo gives cash only once reserves above the floor are used up,
+    # and the line only once repo is used up.
+    _, recs = run(outflows=thirty_pct(BANKS), steps=1)
+    r = recs[0]
+    repo_used = (r["used_repo_level1"] + r["used_repo_level2a"]) > TOL
+    assert repo_used.any()
+    assert (r["capacity_reserves"][repo_used] - r["used_reserves"][repo_used] < TOL).all()
+    line_used = r["used_fhlb_line"] > TOL
+    for k in ("repo_level1", "repo_level2a"):
+        assert (r[f"capacity_{k}"][line_used] - r[f"used_{k}"][line_used] < TOL).all()
+
+
+def repo_bank():
+    """Hand bank with 100 of Level 1 and 100 of Level 2A, no unrealized loss, reserves at the floor."""
+    b = hand_bank()
+    b.update({k: np.array([v]) for k, v in {
+        "level1_securities_bn": 100.0, "level2a_securities_bn": 100.0, "securities_bn": 200.0,
+        "unrealized_loss_bn": 0.0, "other_assets_bn": 0.0, "total_assets_bn": 203.0,
+        "reserves_bn": 2.03, "equity_bn": 23.03}.items()})
+    return b
+
+
+def test_repo_haircuts_applied():
+    st, recs = run(repo_bank(), [{"uninsured_deposits_bn": 150.0}], steps=1)
+    r = recs[0]
+    # 100 of Level 1 raises 98; 100 of Level 2A raises 95 (Clarification 6).
+    assert r["capacity_repo_level1"][0] == pytest.approx(98)
+    assert r["used_repo_level1"][0] == pytest.approx(98)
+    assert r["used_repo_level2a"][0] == pytest.approx(150 - 98)
+    assert st["repo_pledged_mv_level1_bn"][0] == pytest.approx(100)
+    assert st["repo_pledged_mv_level2a_bn"][0] == pytest.approx((150 - 98) / 0.95)
+    assert st["repo_bn"][0] == pytest.approx(150)
+    assert r["paid_now"][0] == pytest.approx(150)  # all the same half-day
+
+
+def test_repo_realizes_no_loss():
+    st0 = start_state(BANKS, SETTINGS)
+    st, recs = run(outflows=thirty_pct(BANKS), steps=4)
+    assert (sum(r["used_repo_level1"] for r in recs) > 0).all()  # every bank used repo
+    for k in ("equity_bn", "unrealized_loss_bn", "level1_securities_bn", "level2a_securities_bn"):
+        np.testing.assert_array_equal(st[k], st0[k])
+    assert all((r["realized_loss"] == 0).all() for r in recs)
+
+
+def test_repo_securities_cannot_be_used_twice():
+    st, _ = run(outflows=everything_leaves(BANKS), steps=4)
+    for c in ("level1", "level2a"):
+        mv = BANKS[f"{c}_securities_bn"] * (1 - st["loss_rate"])
+        used = st[f"repo_pledged_mv_{c}_bn"] + st[f"dw_pledged_mv_{c}_bn"] + st[f"sold_mv_{c}_bn"]
+        assert (used <= mv + TOL).all()

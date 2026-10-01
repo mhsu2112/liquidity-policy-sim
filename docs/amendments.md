@@ -118,4 +118,11 @@ Format for each entry:
   them. Without this source the model understates how quickly liquid assets become cash, which affects every policy.
 - **Seen results before the change?** No stress or policy results exist. The M1.3 demo (a mechanical test of two fixed
   outflows) showed Level 1 securities paying only the next day, which prompted this.
-- **Evidence:** to be added in session M1.3b.
+- **Evidence:** session M1.3b. `tests/test_funding.py`: repo comes after reserves and before the Home Loan Bank line
+  (`test_repo_after_reserves_before_fhlb_line`); 2% / 5% haircuts (`test_repo_haircuts_applied`); no loss realized
+  (`test_repo_realizes_no_loss`); a security is repo'd, pledged or sold only once; balance sheets balance after every step.
+  `tests/test_lcr.py`: repo-encumbered securities leave HQLA. `make demo-waterfall`: SVB-01 now meets both the $10bn and
+  $40bn outflows the same half-day (reserves $6.3bn; repo $13.7bn Level 1 and $30.0bn Level 2A; Home Loan Bank line
+  $31m), with no late payment and no realized loss; before M1.3b, $37.8bn of the $40bn was paid a day late. Known gaps,
+  left for M1.7 by the owner: securities pledged at the discount window still count as HQLA, and repo adds no LCR
+  outflow (12 CFR 249.32(j)).

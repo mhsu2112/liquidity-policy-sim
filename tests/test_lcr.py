@@ -146,3 +146,30 @@ def test_workbook_matches_code(workbook):
                 assert got == pytest.approx(LCR[key][i], rel=1e-12, abs=ONE_DOLLAR_BN), (ws.title, key)
                 checked += 1
         assert checked >= 14, ws.title  # every step, ending in the LCR, was compared
+
+
+def test_repo_encumbered_securities_leave_hqla():
+    # Clarification 6: securities repo'd stop counting as HQLA. Hand bank as above
+    # (reserves 10, Level 1 20, Level 2A 40, no loss), with 5 of Level 1 and
+    # 10 of Level 2A (market value) encumbered by repo.
+    bank = hand_bank()
+    bank["repo_pledged_mv_level1_bn"] = np.array([5.0])
+    bank["repo_pledged_mv_level2a_bn"] = np.array([10.0])
+    r = compute_lcr(bank, SETTINGS)
+    # Level 1 = 10 + (20 - 5) = 25. Level 2A = (40 - 10) x 0.85 = 25.5, capped at 25 x 2/3 = 16.67.
+    assert r["level1_hqla_bn"][0] == pytest.approx(25)
+    assert r["level2a_after_haircut_bn"][0] == pytest.approx(25.5)
+    assert r["level2a_counted_bn"][0] == pytest.approx(25 * 2 / 3)
+    assert r["hqla_bn"][0] == pytest.approx(25 + 25 * 2 / 3)
+
+
+def test_repo_in_waterfall_lowers_hqla():
+    from engine.funding import start_state, step
+    st = start_state(BANKS)
+    before = compute_lcr(st, SETTINGS)
+    step(st, {"uninsured_deposits_bn": 0.3 * BANKS["total_assets_bn"]})
+    after = compute_lcr(st, SETTINGS)
+    enc1, enc2a = st["repo_pledged_mv_level1_bn"], st["repo_pledged_mv_level2a_bn"]
+    np.testing.assert_allclose(after["level1_securities_mv_bn"], before["level1_securities_mv_bn"] - enc1)
+    np.testing.assert_allclose(after["level2a_securities_mv_bn"], before["level2a_securities_mv_bn"] - enc2a)
+    assert (enc1 > 0).all()

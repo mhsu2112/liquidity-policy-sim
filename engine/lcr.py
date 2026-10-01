@@ -34,6 +34,12 @@ def compute_lcr(banks, s=None):
     level1_mv = banks["level1_securities_bn"] * (1 - loss_rate)
     level2a_mv = banks["level2a_securities_bn"] * (1 - loss_rate)
 
+    # 1b. Securities encumbered by repo stop counting as HQLA (Clarification 6).
+    #     Zero for a bank that has not repo'd anything. Securities pledged at the
+    #     window are not removed here; that is part of M1.7.
+    level1_mv = level1_mv - banks.get("repo_pledged_mv_level1_bn", 0.0)
+    level2a_mv = level2a_mv - banks.get("repo_pledged_mv_level2a_bn", 0.0)
+
     # 2. Level 1 HQLA: reserves at the Fed plus Level 1 securities, no haircut.
     level1_hqla = (banks["reserves_bn"] + level1_mv) * (1 - h["level1_haircut"])
 

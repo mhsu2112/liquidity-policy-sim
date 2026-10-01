@@ -25,7 +25,8 @@ def when(t):
 
 
 def money(x):
-    return f"${x:,.1f}bn"
+    # Small amounts in millions, so nothing real is rounded away to "$0.0bn".
+    return f"${x * 1000:,.0f}m" if 0 < abs(x) < 0.1 else f"${x:,.1f}bn"
 
 
 def describe(st, rec, i):
@@ -68,7 +69,8 @@ def main():
         for b, i in rows.items():
             log[b].append(describe(st, rec, i))
 
-    print("Funding waterfall demo (session M1.3): status quo, no borrowing decision, no stigma.")
+    print("Funding waterfall demo (sessions M1.3, M1.3b): status quo, repo always rolls, "
+          "no borrowing decision, no stigma.")
     print("All 40 banks were run together; every balance sheet balanced after every half-day.\n")
     for b, i in rows.items():
         res, eq = start[b]

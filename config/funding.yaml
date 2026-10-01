@@ -29,6 +29,13 @@ collateral_placement:       # Clarification 4, rule 1: eligible loans under poli
   fhlb_pledged: 0.40
   unpledged: 0.30
 
+repo:                       # Clarification 6: same-day private repo of liquid securities
+  haircuts:
+    level1: 0.02            # Clarification 6, item 1: Level 1 haircut 2% [ESTIMATE]
+    level2a: 0.05           # Clarification 6, item 1: agency MBS haircut 5% [ESTIMATE]
+  lag_steps: 0              # Clarification 6, items 1-2: cash the same half-day
+  rolls: always             # Clarification 6, item 3: repo always rolls until M1.4 adds the confidence rule
+
 fhlb:                       # Clarification 4, rule 2; contract 7
   line_share_of_assets: 0.05    # pre-arranged line, available the same day
   advance_rate: 0.75            # total advances at most 75% of loans pledged (line included; Clarification 5)

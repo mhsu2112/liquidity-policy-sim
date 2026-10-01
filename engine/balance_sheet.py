@@ -12,6 +12,7 @@ ASSET_LINES = ["reserves", "level1_securities", "level2a_securities",
                "resi_loans", "cre_loans", "ci_loans", "other_assets",
                "sale_proceeds_due"]  # from M1.3: securities sold, cash not yet settled
 LIABILITY_LINES = ["insured_deposits", "uninsured_deposits", "stwf",
+                   "repo",                       # from M1.3b: same-day repo (Clarification 6)
                    "fhlb_advances", "dw_loans",  # from M1.3: borrowing
                    "unpaid_outflows"]            # from M1.3: owed to depositors, not yet paid
 
