@@ -1,8 +1,10 @@
 """Wholesale and repo lenders: roll or refuse each morning (session M1.4).
 
 Rules from docs/amendments.md Clarification 8. Each lender judges the bank's
-chance of survival; until M1.5 adds information routes, that judgment is the
-same confidence the depositors see. Lenders' cut-offs are spread evenly around
+chance of survival using the same confidence the depositors see: from M1.5
+both read the same public news through the information routes (Clarification 9).
+Lenders see inference signs a half-day before depositors, but in M1.5 those
+signs carry no confidence effect of their own, so the number stays shared. Lenders' cut-offs are spread evenly around
 the roll threshold, so the share refusing rises from 0 to 100% as confidence
 falls through that band. Refusals must be repaid that day through the funding
 waterfall. The Home Loan Bank and discount window are not affected.

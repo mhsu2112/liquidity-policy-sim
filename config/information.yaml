@@ -1,0 +1,59 @@
+# Information routes, market stigma and the supervisor's dial (session M1.5).
+#
+# Sources: docs/contract.md sections 3 (routes), 3a (routine-borrowing effect) and
+# 5 (swept grids); docs/amendments.md Clarification 9 (every value marked there).
+# Times are in half-day steps: step 0 = day 1 morning, step 1 = day 1 afternoon.
+# Day 1 is a Monday (Clarification 9, item 1).
+
+routine_borrowing:                # contract 3a: routine draws per bank per quarter, by policy
+  rate_by_policy:
+    A: 0.1                        # voluntary tests only
+    C_prime: 0.1                  # C' makes no usage draws, so the same as A (contract 2d)
+    B: 1.0                        # quarterly tests
+    E: 1.0                        # quarterly tests
+  c_usage_draws_per_quarter: 2.5  # C: uptake x 2.5 (five draws per six months)
+  strength_s:
+    default: 0.3                  # Clarification 9, item 2: middle of the contract 5 grid (no default given)
+    grid: [0.0, 0.3, 0.7]         # contract 3a and 5
+
+market_stigma:
+  grid: [0.0, 0.10, 0.20, 0.35, 0.50, 0.70, 0.90]   # contract 5: chance a known draw is read as distress
+  distress_news_shock: 0.25       # Clarification 9, item 2: a distress reading lands like news of this size [ESTIMATE]
+
+routes:
+  weekly_aggregate:               # contract 3: Fed weekly report (H.4.1), no bank named
+    first_release_day: 4          # Clarification 9, item 1: Thursday, after the close
+    every_days: 7
+    covers_through_day_offset: -1 # covers borrowing through Wednesday (the day before release)
+    acts_on_offset_steps: 1       # released after the close, so observers act the next morning (Friday am)
+    banks_in_system: 40           # Clarification 9, item 1: the model's 40-bank population stands in for the system
+    weeks_per_quarter: 13         # converts r (per quarter) into other borrowers per week
+
+  announcement:                   # contract 3: bank announcement, mandatory if material
+    materiality_share_of_assets: 0.05   # Clarification 9, item 1: 5% of total assets (SEC SAB 99 rule of thumb) [ESTIMATE]
+    filing_lag_days: 4            # Form 8-K General Instruction B.1: within four business days
+
+  leak:                           # contract 3: leak of named borrowing
+    probability: 0.20             # contract 3 default; swept 0, 20%, 50% (contract 5)
+    lag_days: 1                   # contract 3 default; swept 0, 1, 5 days (contract 5)
+
+  inference:                      # contract 3: same or next half-day (mechanics)
+    lenders_lag_steps: 0          # Clarification 9, item 1: lenders are in the market and see it the same half-day
+    depositors_lag_steps: 1       # depositors learn through the press the next half-day
+
+  ratio_disclosure:               # contract 3 and Decision 3-1: quarterly public disclosure
+    day: 15                       # Clarification 9, item 1: falls mid-episode; reports the prior quarter
+    # Who discloses: every bank with an LCR requirement (12 CFR 249.90 applies to every company subject to
+    # 249.1), i.e. SVB-like, Category III and GSIB; diversified regionals have no LCR (contract 1c).
+
+  supervisory:                    # Clarification 9, item 1: the Fed lends and large banks report daily (FR 2052a)
+    lag_steps: 0
+
+supervisor:                       # Clarification 9, item 3. In units of the bank's loss if it fails.
+  levels:                         # contract 5: five points, penalizes to encourages [ESTIMATE / owner's call]
+    strongly_penalizes: 0.30
+    penalizes: 0.15
+    neutral: 0.05                 # board and management reluctance remain without a supervisory signal
+    encourages: 0.02
+    strongly_encourages: 0.00
+  default_level: neutral

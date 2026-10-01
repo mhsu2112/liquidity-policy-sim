@@ -1,0 +1,17 @@
+# Demonstration for `make demo-info` (session M1.5). Policy A only.
+# Not a stress scenario from contract section 5 and not used for any comparison.
+seed: 20261001          # news noise and the information random numbers (Clarification 9)
+days: 16                # long enough to reach the quarterly disclosure on day 15
+bank: SVB-01
+shock: 0.0              # no news shock: the only news is the draw. With the M1.10 placeholders even a 0.02
+                        # shock drains SVB-01 and the waterfall reaches the window on its own, hiding the forced draw
+forced_draw:
+  day: 2                # morning of day 2
+  amount_bn: 6.0        # above SVB-01's 5% materiality threshold ($5.9bn); within its $8.1bn prepositioned capacity
+market_stigma: 0.50     # a contract section 5 grid point, held the same in both runs
+strength_s: 0.3         # Clarification 9 default
+routine_rates:          # the two runs Mike asked for (contract 3a scale)
+  low: 0.1              # no routine borrowing beyond voluntary tests (policy A's rate)
+  high: 2.5             # high routine borrowing (C's rate at full uptake), applied here under A
+batch_runs: 10000       # SVB-01 repeated with fresh information random numbers
+batch_seed: 20261002    # seed for those fresh numbers

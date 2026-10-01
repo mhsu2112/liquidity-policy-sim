@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -39,3 +39,7 @@ demo-waterfall: $(VENV)/.installed
 ## make demo-run: SVB-01 under a mild and a severe news shock, half-day by half-day (policy A)
 demo-run: $(VENV)/.installed
 	$(PY) -m engine.demo_run
+
+## make demo-info: who learns of a forced SVB-01 draw, through which route, and when (policy A; r = 0.1 vs 2.5)
+demo-info: $(VENV)/.installed
+	$(PY) -m engine.demo_info

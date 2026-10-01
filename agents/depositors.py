@@ -10,9 +10,15 @@ bank's starting book equity gone on a mark-to-market basis, R the share of
 starting uninsured deposits withdrawn over the last day, and c the
 coordination strength. Unrealized losses matter only once news draws attention
 to them, as with SVB, whose losses were public for months before the run.
+
+From session M1.5, S also includes the news from a known discount window draw
+read as distress (Clarification 9, item 2; engine/information.py). It is zero
+until a route reveals a draw and the market reads it as distress.
 """
 
 import numpy as np
+
+from engine.information import distress_news
 
 
 def start_depositors(st, banks, agents):
@@ -26,7 +32,9 @@ def start_depositors(st, banks, agents):
 
 def confidence(st, t, agents, behavior):
     c = agents["confidence"]
-    news = st["shock"] * 0.5 ** (t / c["shock_half_life_steps"]) * np.maximum(1 + st["noise"][:, t], 0)
+    half_life = c["shock_half_life_steps"]
+    shock_now = st["shock"] * 0.5 ** (t / half_life) + distress_news(st, t, half_life)
+    news = shock_now * np.maximum(1 + st["noise"][:, t], 0)
     mtm_equity = st["equity_bn"] - st["unrealized_loss_bn"]
     g = np.clip(1 - mtm_equity / st["book_equity_start_bn"], 0, 1)
     w = c["coordination_window_steps"]

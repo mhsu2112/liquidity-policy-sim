@@ -239,6 +239,20 @@ def _use(st, name, cash, t):
     if name.startswith("sale_"):
         return _sell(st, name[5:], cash, t, lag)
 
+    _reduce_source(st, name, cash)
+    if lag == 0:
+        if name != "reserves":  # borrowed today: the loan and the cash arrive together
+            st[BORROWING_LINE[name]] += cash
+            if name.startswith("repo_"):
+                st[f"repo_out_{name.rsplit('_', 1)[1]}_bn"] += cash
+        st["unpaid_outflows_bn"] -= cash
+    else:
+        st["incoming"][name][:, t + lag] += cash
+    return np.zeros_like(cash)
+
+
+def _reduce_source(st, name, cash):
+    """Reduce what is left of a non-sale source after `cash` is taken from it."""
     if name == "reserves":
         st["reserves_bn"] -= cash
     elif name.startswith("repo_"):
@@ -261,15 +275,35 @@ def _use(st, name, cash, t):
     elif name == "dw_unpledged":
         st["dw_unpledged_left_bn"] -= cash
 
-    if lag == 0:
-        if name != "reserves":  # borrowed today: the loan and the cash arrive together
-            st[BORROWING_LINE[name]] += cash
-            if name.startswith("repo_"):
-                st[f"repo_out_{name.rsplit('_', 1)[1]}_bn"] += cash
-        st["unpaid_outflows_bn"] -= cash
-    else:
-        st["incoming"][name][:, t + lag] += cash
-    return np.zeros_like(cash)
+
+# Window sources a forced draw may use, fastest first. Loans not prepositioned
+# are left out: they take more than 10 days (contract section 7).
+FORCED_DW_SOURCES = ("dw_tested", "dw_untested", "dw_level1", "dw_level2a")
+
+
+def force_dw_draw(st, amount_bn):
+    """Borrow `amount_bn` from the discount window now, whatever the bank needs.
+
+    A stand-in used only by `make demo-info` and tests (session M1.5): the bank's
+    real borrow-or-not decision comes in M1.6. The draw uses the window's fastest
+    collateral first. Cash arriving today goes to reserves with the loan booked at
+    once; slower cash is scheduled and booked on arrival, like any other source.
+    Returns the amount taken from each source.
+    """
+    t = st["t"]
+    want = np.broadcast_to(np.asarray(amount_bn, float), (len(st["bank_id"]),)).copy()
+    taken = {}
+    for name in FORCED_DW_SOURCES:
+        cash = np.minimum(want, _capacity(st, name))
+        _reduce_source(st, name, cash)
+        if st["lags"][name] == 0:
+            st["dw_loans_bn"] += cash
+            st["reserves_bn"] += cash
+        else:
+            st["incoming"][name][:, t + st["lags"][name]] += cash
+        taken[name] = cash
+        want = want - cash
+    return taken
 
 
 # ---------------------------------------------------------------- one half-day

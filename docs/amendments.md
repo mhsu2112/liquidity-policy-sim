@@ -187,3 +187,59 @@ Format for each entry:
 - **Evidence:** `tests/test_agents.py` (bigger shock drains faster; fast before slow; insured ratio; refusal band;
   refusals repaid with collateral released; repo lines; same seed, same result; balance; rows together equal rows
   alone). `make demo-run` shows SVB-01 under the mild and severe demo shocks.
+
+## 2026-10-01 — Clarification 9: information routes, the stigma link and the supervisor's dial (session M1.5)
+- **What changed:** implementation rules for contract sections 3 and 3a that the contract leaves unstated. No value or
+  range in the contract changes. Settings live in `config/information.yaml`; code in `engine/information.py` and
+  `agents/supervisor.py`. Observers learn anything only through a route; each route is an event at a stated half-day.
+  1. **Information routes** (day 1 is a Monday; times in half-days).
+     - *Fed weekly aggregate (H.4.1):* released Thursday after the close (days 4, 11, 18, 25), covering borrowing through
+       Wednesday; observers act on it Friday morning. How strongly it points at the bank = 1 ÷ (1 + other borrowers that
+       week), with other borrowers = r × 40 ÷ 13 (r from contract 3a; the model's 40 banks stand in for the system; 13
+       weeks a quarter) [ESTIMATE]. r = 0.1 → 76%; 1.0 → 25%; 2.5 → 12%. No bank is named.
+     - *Bank announcement:* mandatory once total discount window borrowing reaches 5% of starting total assets
+       [ESTIMATE; the common rule-of-thumb materiality level, SEC Staff Accounting Bulletin 99], filed at the legal
+       deadline of four business days (Form 8-K General Instruction B.1; Item 2.03, creation of a direct financial
+       obligation). Earlier, voluntary announcements are a bank decision (M1.6).
+     - *Leak:* contract 3 defaults (20% chance within the episode, 1-day lag). One random number per run, drawn up front;
+       at most one leak, timed from the bank's first draw.
+     - *Inference:* securities sold or funding refused; wholesale lenders learn the same half-day, depositors the next
+       (contract 3: "same or next half-day"). It reveals distress signs, not borrowing. In M1.5 it is recorded and
+       delivered but has no confidence effect of its own: sales already act through equity losses and refusals already
+       come from low confidence.
+     - *Quarterly ratio disclosure:* day 15 of the episode, for every bank with an LCR requirement (12 CFR 249.90 applies
+       to every company subject to 249.1: SVB-like, Category III, GSIB). It reports the prior quarter, so it carries
+       start-of-episode values and never reveals an in-episode draw. Under B it adds the five-day ratio, under C and C′
+       the LCR including credit (filled in M1.7). No confidence effect in M1.5.
+     - *Supervisory channel* (added; not in contract section 3): the supervisor learns of a draw the same half-day. The
+       Fed is the lender, and large banks report discount window borrowing daily on FR 2052a.
+     - The Fed's named disclosure (about two years later) falls outside the episode and is not modeled (contract 3).
+  2. **How a known draw affects confidence** (identical for every policy; no function takes a policy name).
+     Effective stigma σ_eff = σ × e^(−s × r) (contract 3a). One random number U per run, drawn up front and shared by
+     every policy. A route that reveals the draw is read as distress if U < σ_eff × how revealing the route is (1 for the
+     announcement and the leak; the weekly fraction above). The first distress reading adds a news shock of 0.25
+     [ESTIMATE] to the confidence formula of Clarification 8, which fades with the same 2-day half-life and is
+     amplified by mark-to-market losses in the same way. It happens once per episode; later routes revealing the same
+     fact add nothing. Depositors and lenders read the same public news, so they share one confidence number. The size
+     0.25 is fixed, not tuned (contract 7 allows only five tuned settings). Default s = 0.3, the middle of the contract 5
+     grid, which gives no default.
+  3. **Supervisor's five-level dial.** Supervisory and internal cost of borrowing, in units of the bank's loss if it
+     fails [ESTIMATE / owner's call; no hard data]: strongly penalizes 0.30, penalizes 0.15, neutral 0.05 (board and
+     management reluctance remain), encourages 0.02, strongly encourages 0. Effective cost = level cost × e^(−s × r),
+     with the same s as market stigma (contract 3a). No negative costs. In M1.5 the supervisor sets this cost and learns
+     of draws; it takes no action inside the episode. The cost is used by the borrowing decision in M1.6.
+  4. **Routine borrowing rates** (contract 3a, copied into config): A and C′ 0.1; B and E 1.0; C uptake × 2.5.
+  5. **Forced draw for demonstrations.** `engine/funding.py::force_dw_draw` lets the demo and tests make the bank
+     borrow (fastest window collateral first). It holds no decision logic and is replaced by M1.6's rule.
+- **Why:** M1.5 needs explicit routes, a link from a known draw to confidence, and numbers for the supervisor's dial,
+  none of which the contract specifies beyond section 3's table and section 3a's formula. Items 1–3 were proposed in
+  session M1.5 and approved by the owner before any code ran.
+- **Seen results before the change?** No stress or policy results exist. Agreed before any run. One consequence was
+  seen in the demo and is reported, not changed: under the M1.10 placeholder settings a single distress reading
+  (news of 0.25) on an otherwise calm SVB-like bank drains about 99% of its uninsured deposits within 16 days.
+- **Evidence:** `tests/test_information.py` (no information without a route; knowledge changes only with an event; leak
+  probability over 100,000 runs and exact lags of 0, 1 and 5 days; weekly report less revealing as r rises, and its
+  timing; announcement only above the threshold, four days later; contract 3a formulas for stigma and supervisory
+  cost; no function in the link takes a policy; equal r gives equal readings across policies (static); one distress
+  reading at most; inference timing; disclosure day and banks; same seed, same result; rows together equal rows alone).
+  `make demo-info` shows SVB-01 at r = 0.1 and r = 2.5.
