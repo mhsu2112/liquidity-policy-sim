@@ -61,7 +61,8 @@ def test_higher_costs_never_borrow_sooner(shock):
     assert (np.diff(first, axis=1) <= 0).all()          # less supervisory cost: never later
     # The check is not empty: banks do borrow. Since Amendment 2 (session M1.6b) no bank borrows under the
     # small shock (confidence stays above the tolerance level), so the guard applies only where borrowing happens.
-    if shock >= 0.15:
+    # Since params-frozen (M1.10) that is only the 0.40 shock (owner approved).
+    if shock >= 0.40:
         assert (first < NEVER).any()
 
 

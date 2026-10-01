@@ -1,0 +1,32 @@
+# SVB validation bank (session M1.10). Used ONLY for tuning and validation, never in the 40-bank sample.
+#
+# Source: docs/amendments.md Clarification 15 item 3, from SVB Financial Group's Q4 2022 earnings release
+# (SEC, https://www.sec.gov/Archives/edgar/data/719739/000071973923000009/q422earningsrelease_991.htm),
+# balance sheet at December 31, 2022 ($ billions), checked against the release in session M1.10.
+# How each line maps to the model: Clarification 15 Evidence (owner's choices in session M1.10).
+
+bank_id: SVB-VAL
+archetype: svb_like             # Clarification 15: other settings follow the SVB-like archetype
+
+total_assets_bn: 211.793        # release: total assets
+reserves_bn: 13.803             # release: cash and cash equivalents (owner's choice: reserves = reported cash)
+afs_securities_bn: 26.069       # release: AFS at fair value (its ~$2.5bn loss is already in equity)
+htm_securities_bn: 91.321       # release: HTM at amortized cost
+htm_unrealized_loss_bn: 15.2    # Clarification 15 (CPA Journal): HTM unrealized loss; the only loss counted (owner's choice)
+loans_bn: 74.250                # release: gross loans (Clarification 15: $74.3bn)
+# other assets = total - reserves - securities - loans (premises, goodwill, intangibles, leases, accrued interest, other)
+
+deposits_bn: 173.109            # release: total deposits
+uninsured_share_of_deposits: 0.94   # Clarification 15 (Fed review): 94% uninsured
+fhlb_advances_bn: 13.565        # release: short-term borrowings, held as Home Loan Bank advances already drawn (owner's choice)
+equity_bn: 16.004               # release: total SVBFG stockholders' equity
+# other liabilities = total - deposits - short-term borrowings - equity (long-term debt $5.4bn, other liabilities
+# $3.0bn, noncontrolling interests and the rest): stable, no 30-day outflow (owner's choice)
+
+# Where the SVB-like archetype gives a range (contract 1b), the midpoint is used (Clarification 15 Evidence).
+level1_share_of_securities: 0.40     # 1b range 30-50%
+eligible_share_of_loans: 0.70        # 1b range 60-80%
+loan_mix: {resi: 0.30, cre: 0.20, ci: 0.50}   # 1b, fixed
+lcr_category: IV                     # 1c, Decision 1-2
+lcr_calibration: 0.70                # 1c, Decision 1-2
+tested: false                        # Clarification 15: SVB "did not test its capacity to borrow at the discount window in 2022"

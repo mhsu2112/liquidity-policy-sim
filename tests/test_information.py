@@ -227,7 +227,8 @@ def test_distress_reading_once_and_only_when_read():
 
 def test_inference_timing():
     # A shocked bank sells securities and is refused funding: lenders see it the same half-day, depositors the next.
-    st, recs = run(shock=0.4, draw_at=None, randoms=ones(1))
+    # Shock 0.6: since params-frozen (M1.10) SVB-01 first sells at this size (owner approved; was 0.4).
+    st, recs = run(shock=0.6, draw_at=None, randoms=ones(1))
     for kind in ("sale", "refusal"):
         lend = {ev["t"] for ev in events(st, f"inference_{kind}") if ev["observer"] == "lenders"}
         dep = {ev["t"] for ev in events(st, f"inference_{kind}") if ev["observer"] == "depositors"}

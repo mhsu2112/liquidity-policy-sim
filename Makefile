@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -59,3 +59,8 @@ costs: $(VENV)/.installed
 ## make benchmark: time 10,000 policy-A episodes, check same seed = same result, and count the M3 run plan
 benchmark: $(VENV)/.installed
 	$(PY) -m engine.benchmark
+
+## make tune: tune the five behavioral settings on the SVB validation bank (policy A, S1 only), and write the report
+tune: $(VENV)/.installed
+	$(PY) -m validation.tune
+	$(PY) -m validation.tuning_report

@@ -1,0 +1,42 @@
+# How M1.10 tunes the five behavioral settings (Clarification 15; method approved in the M1.10 plan).
+# Fixed before the first tuning run. Policy A, SVB validation bank, S1 only.
+
+seed: 20261010              # the random draws, the same for every setting
+runs_per_setting: 200
+half_days: 4                # days 1-2
+s1_shock: 0.50              # Clarification 15 item 1
+tuning_cell:                # Clarification 15 item 2 (leak 20% / 1 day: config/information.yaml defaults)
+  stigma: 0.35
+  supervision: neutral
+  strength_s: 0.3
+  distress_hit: 0.25
+
+targets:                    # Clarification 15 item 4 (Fed review; FDIC)
+  day1_outflow_bn: 42       # ~$42bn on day 1 (9 March 2023)
+  day2_cumulative_bn: 140   # requests on day 2 bring cumulative outflows to ~$140bn
+  # and the bank fails by the end of day 2 (scored as the share of runs failing by then)
+
+stage1_grid:                # a, theta, coordination c, roll threshold, slow lag (half-days), fire-sale impact multiple
+  a: [0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0]
+  theta: [0.5, 0.6, 0.7, 0.8, 0.9, 0.95, 1.0]
+  c: [0.0, 0.5, 1.0, 2.0, 3.0, 5.0]
+  roll: [0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+  lag: [1, 2, 3, 4, 6, 8]
+  impact: [0.5, 1.0, 2.0, 4.0]   # x the Clarification 5 starting values (Level 2A stays 3x Level 1)
+start_impact_per_bn:        # Clarification 5 starting values: price fall per $1bn sold (10 bp and 30 bp per $10bn)
+  level1: 0.0001
+  level2a: 0.0003
+stage2_points: 5            # stage 2: 5 points between the best value's coarse-grid neighbours (lag: best +/- 1)
+
+identified_min_score_range: 0.01   # below this across its whole grid, a setting is "not identified"
+near_fit:                   # "almost as well"
+  outflow_rel: 0.10         # both outflow targets within +/-10%
+  min_fail_share: 0.90      # and at least 90% of runs fail by the end of day 2
+
+pre_tuning:                 # values kept for any setting the SVB pattern does not identify (Clarifications 5, 8; Amendment 2)
+  a: 1.0
+  theta: 0.9
+  c: 1.0
+  roll: 0.6
+  lag: 4
+  impact: 1.0

@@ -14,7 +14,9 @@ ASSET_LINES = ["reserves", "level1_securities", "level2a_securities",
 LIABILITY_LINES = ["insured_deposits", "uninsured_deposits", "stwf",
                    "repo",                       # from M1.3b: same-day repo (Clarification 6)
                    "fhlb_advances", "dw_loans",  # from M1.3: borrowing
-                   "unpaid_outflows"]            # from M1.3: owed to depositors, not yet paid
+                   "unpaid_outflows",            # from M1.3: owed to depositors, not yet paid
+                   "other_liabilities"]          # from M1.10: long-term debt and other stable liabilities
+                                                 # (SVB validation bank; zero for the 40 banks)
 
 ONE_DOLLAR_BN = 1e-9  # tolerance: $1, written in $ billions
 

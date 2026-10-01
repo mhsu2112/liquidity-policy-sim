@@ -1,6 +1,6 @@
 # Fixed behavioral structure for depositors and wholesale lenders (session M1.4).
 # Source: docs/amendments.md Clarification 8. These are NOT tuned; the five
-# tuned settings live in config/behavior.yaml. Shares are fractions.
+# tuned settings live in config/params_frozen.yaml (frozen in M1.10). Shares are fractions.
 
 depositors:
   fast_share_of_uninsured:          # Clarification 8, item 1 [ESTIMATE], anchored to contract 1a

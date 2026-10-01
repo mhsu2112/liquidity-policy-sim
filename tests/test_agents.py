@@ -22,7 +22,7 @@ from engine.information import no_information_randoms
 
 BANKS = generate_banks()
 AGENTS = load_yaml("agents.yaml")
-BEHAVIOR = load_yaml("behavior.yaml")
+BEHAVIOR = load_yaml("params_frozen.yaml")   # renamed at params-frozen (M1.10); owner approved
 SCEN = load_yaml("scenarios/demo.yaml")
 STEPS = 2 * SCEN["days"]
 MILD, SEVERE = SCEN["shocks"]["mild"], SCEN["shocks"]["severe"]
@@ -63,7 +63,10 @@ def test_bigger_shock_faster_outflows(mild, severe):
     out_mild = cumulative(mild[1], "fast_out") + cumulative(mild[1], "slow_out")
     out_severe = cumulative(severe[1], "fast_out") + cumulative(severe[1], "slow_out")
     assert (out_severe >= out_mild - TOL).all()       # never behind, at any half-day, for any bank
-    assert (out_severe[3] > out_mild[3]).all()        # ahead by the end of day 2
+    # Ahead by the end of day 2 wherever the bigger shock moves depositors at all. Since params-frozen (M1.10),
+    # a bank whose confidence stays above the tolerance level does not move (owner approved this guard change).
+    moved = out_severe[3] > 0
+    assert moved.any() and (out_severe[3][moved] > out_mild[3][moved]).all()
 
 
 def test_no_shock_no_run():
@@ -76,7 +79,9 @@ def test_fast_depositors_leave_before_slow(severe):
     lag = BEHAVIOR["slow_depositor_lag_steps"]["value"]
     for t in range(lag):
         assert (recs[t]["slow_out"] == 0).all()        # slow depositors cannot move before the lag
-    assert (recs[0]["fast_share"] > recs[0]["slow_share"]).all()
+    # Wherever depositors withdraw at all (since params-frozen, M1.10; owner approved this guard change).
+    moved = recs[0]["fast_share"] > 0
+    assert moved.any() and (recs[0]["fast_share"][moved] > recs[0]["slow_share"][moved]).all()
     # After the lag, slow depositors respond to confidence `lag` half-days earlier.
     for t in range(lag, STEPS):
         np.testing.assert_allclose(recs[t]["slow_share"], leave_share(recs[t - lag]["confidence"], BEHAVIOR))

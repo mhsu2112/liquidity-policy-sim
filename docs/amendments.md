@@ -593,3 +593,77 @@ Format for each entry:
   every policy's setup receives the very same random arrays (setups only, no episode under another policy); no
   random-number function takes a policy; run counts match a hand calculation (3,360,000 + 21,320,000 + 1,152,000 =
   25,832,000).
+
+## 2026-10-02 — Clarification 15: tuning set-up, fixed before any tuning run (before session M1.10)
+- **What changed:** the inputs and targets for M1.10, fixed in advance. No value or range in the contract changes.
+  1. **Scenario shocks.** S1 (fast run) news shock = 0.50; S2 (false alarm) news shock = 0.15, on a bank with no added
+     losses. These are nominal scales; tuning adjusts how depositors respond, not the shock.
+  2. **Tuning cell.** Tuning uses policy A at the middle of the main grid: market stigma 0.35, supervisory treatment
+     "neutral", routine-borrowing strength s = 0.3, distress hit 0.25, leak 20% / 1 day, all other settings at
+     contract defaults.
+  3. **SVB validation bank,** built from SVB Financial Group's December 31, 2022 balance sheet
+     ([Q4 2022 earnings release](https://www.sec.gov/Archives/edgar/data/719739/000071973923000009/q422earningsrelease_991.htm)):
+     total assets $211.8bn; AFS securities $26.1bn; HTM securities $91.3bn amortized cost with $15.2bn unrealized loss
+     ([CPA Journal](https://www.cpajournal.com/2024/04/08/bank-failures-highlight-the-shortcomings-of-held-to-maturity-htm-accounting/));
+     loans $74.3bn; deposits $173.1bn, 94% uninsured
+     ([Fed review](https://www.federalreserve.gov/publications/2023-April-SVB-Evolution-of-Silicon-Valley-Bank.htm));
+     short-term borrowings $13.6bn; long-term debt $5.4bn; equity $16.0bn. Cash and other assets are the residual
+     ($20.1bn). AFS unrealized loss about $2.5bn [ESTIMATE]. Discount window collateral untested (the Fed review: SVB
+     "did not test its capacity to borrow at the discount window in 2022"). Other settings follow the SVB-like archetype
+     and Clarifications 1–14. This bank is used only for tuning and validation, not in the 40-bank sample.
+  4. **Targets (the 2023 pattern).** Under S1: about $42bn of deposits leave on day 1 (about 24% of deposits); requests
+     on day 2 bring cumulative outflows to about $140bn; the bank fails by the end of day 2. Sources: the Fed review
+     (">$40 billion" on March 9; "over $100 billion" expected March 10) and the FDIC ("$42 billion" withdrawn March 9).
+  5. **What may be tuned:** only the five contract section 7 settings (depositor sensitivity including the tolerance
+     level θ, coordination strength, slow-depositor lag, wholesale roll threshold, fire-sale price impact). Nothing else.
+     S2 survival and the Signature- and First Republic-like checks are not tuning targets; they are tested in M1.11.
+  6. **Disclosures (v1 limit, owner's decision).** Scheduled ratio disclosures (B's five-day ratio, the LCR including
+     C's credit) do not move depositors or lenders in v1. Most runs resolve before the day-15 disclosure. The write-up
+     will state that C's reported LCR neither reassures nor misleads observers in v1, and that keeping B's ratio private
+     has no effect by construction.
+- **Why:** fixing the targets, the tuning cell and the validation bank before tuning prevents them from being chosen
+  to fit.
+- **Seen results before the change?** No tuning and no policy results exist.
+- **Evidence:** session M1.10. `make tune` → `outputs/tuning_report.html`, `outputs/tuning_grid.csv`.
+  1. **SVB validation bank** (`config/validation/svb.yaml`, `validation/svb_bank.py`; owner's choices in M1.10,
+     figures checked against the cited SEC release):
+     - reserves = reported cash and cash equivalents ($13.8bn); the rest of the residual ($6.3bn) is other assets;
+     - securities $117.4bn book (AFS at fair value + HTM at cost), with unrealized loss = the HTM loss only ($15.2bn),
+       because the AFS loss is already in equity. Mark-to-market equity is $0.8bn;
+     - short-term borrowings ($13.6bn) are held as Home Loan Bank advances already drawn, so there is no runnable
+       wholesale funding; Home Loan Bank capacity left = 75% of pledged loans − advances, floored at 0;
+     - long-term debt, other liabilities and the rest ($9.1bn) go in a new stable `other_liabilities` line, with no
+       30-day outflow (zero for the 40 banks);
+     - the SVB-like archetype's range midpoints for the Level 1 share (40%) and eligible loans (70%);
+     - collateral untested.
+  2. **Method** (`config/validation/tuning.yaml`, approved before any run):
+     - 200 runs per setting with the same random draws for all, days 1–2;
+     - fit score = ((D1 − 42)/42)² + ((C2 − 140)/140)² + (1 − share failing by day 2)²;
+     - a coarse grid of 60,480 settings, then 9,375 finer around the best;
+     - a setting moving the score by less than 0.01 across its whole grid is "not identified" and keeps its
+       pre-tuning value.
+  3. **Frozen:** a = 0.35, θ = 0.6, coordination 2.0, slow lag 2 half-days (tuned); wholesale roll threshold 0.6 and
+     fire-sale impact 10 / 30 bp per $10bn (not identified; pre-tuning values).
+  4. **Fit:** day 1 $48.9bn (target $42bn, +17%); cumulative through day 2 $88.0bn (target $140bn, −37%); 100% of runs
+     fail by the end of day 2 (target met). Score 0.165. **No** setting has both outflow targets within ±10% with at
+     least 90% failing (0 of 69,855).
+  5. **What did not fit:** the model's run slows down after the first morning ($26, $23, $22, $18bn per half-day),
+     whereas 2023's accelerated. SVB's mark-to-market loss (95% of book equity) nearly doubles the S1 news under the
+     Clarification 8 confidence rule, so confidence is near zero from the first half-day and coordination has no room
+     to accelerate the run; across the whole grid, cumulative day-2 outflows are at most 2.06× day 1's, against 3.33×
+     in 2023. Owner's decision: freeze the best fit and report this as a model limit, without changing the rule
+     after seeing it.
+  6. **Not looked at:** S2, the 40-bank sample and every policy other than A. `make benchmark`'s shock
+     (Clarification 14 item 7) now uses S1's 0.50 instead of the 0.40 placeholder; the benchmark was not rerun here.
+  7. **Frozen file** `config/params_frozen.yaml` replaces `config/behavior.yaml`; the engine reads only it.
+     params_frozen fingerprint: `05f9e763efc16772` (`tests/test_frozen.py` fails if the file changes without a later
+     amendment recording a new fingerprint). One test changed with the owner's approval: `tests/test_agents.py`
+     reads the renamed file (no assertion changed).
+  8. **Four test guards changed with the owner's approval (Rule 4)**, because the old demo shocks no longer set every
+     bank running under the frozen values (θ = 0.6 tolerates bigger drops than the 0.9 placeholder); every mechanical
+     assertion is unchanged:
+     - `test_bigger_shock_faster_outflows`: "strictly ahead by day 2" now applies to banks the 0.40 shock moves (39 of
+       40; the 0.15 shock moves none), and at least one must move;
+     - `test_fast_depositors_leave_before_slow`: likewise, only for banks that withdraw at all;
+     - `test_higher_costs_never_borrow_sooner`: the "some bank borrows" guard applies at 0.40 only, as in M1.6b;
+     - `test_inference_timing`: shock 0.4 → 0.6, the smallest of 0.4 / 0.5 / 0.6 at which SVB-01 sells securities.

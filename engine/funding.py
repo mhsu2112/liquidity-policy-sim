@@ -74,12 +74,12 @@ DW_COLLATERAL = {"dw_tested": "loans", "dw_untested": "loans", "dw_unpledged": "
                  "dw_tested_level2a": "level2a", "dw_level2a": "level2a"}
 
 
-BEHAVIOR_SETTINGS_PATH = Path(__file__).resolve().parent.parent / "config" / "behavior.yaml"
+BEHAVIOR_SETTINGS_PATH = Path(__file__).resolve().parent.parent / "config" / "params_frozen.yaml"  # frozen in M1.10
 
 
 def load_funding_settings(path=FUNDING_SETTINGS_PATH, behavior_path=BEHAVIOR_SETTINGS_PATH):
     """Funding settings, plus the fire-sale price impact, which lives in
-    config/behavior.yaml because it is one of the five settings tuned in M1.10."""
+    config/params_frozen.yaml because it is one of the five settings frozen in M1.10."""
     with open(path) as f:
         s = yaml.safe_load(f)
     with open(behavior_path) as f:
@@ -123,9 +123,11 @@ def start_state(banks, s=None, tested=None, placement=None):
     st["order"] = waterfall_order(s)
     st["tested"] = np.zeros(n, bool) if tested is None else np.asarray(tested, bool)
 
-    # New balance-sheet lines, all zero to start.
-    for line in ("repo_bn", "fhlb_advances_bn", "dw_loans_bn", "sale_proceeds_due_bn", "unpaid_outflows_bn"):
+    # New balance-sheet lines, all zero to start. Home Loan Bank advances may already be drawn
+    # (the SVB validation bank, Clarification 15); zero for the 40 banks.
+    for line in ("repo_bn", "dw_loans_bn", "sale_proceeds_due_bn", "unpaid_outflows_bn"):
         st[line] = np.zeros(n)
+    st["fhlb_advances_bn"] = np.asarray(banks.get("fhlb_advances_bn", np.zeros(n)), float).copy()
 
     # The reserve floor is fixed in dollars at the start, so it doesn't shrink as the bank does.
     st["reserve_floor_bn"] = s["reserves"]["floor_share_of_assets"] * banks["total_assets_bn"]
@@ -155,7 +157,9 @@ def start_state(banks, s=None, tested=None, placement=None):
     st["fhlb_pledged_loans_bn"] = total(place, "fhlb_{}_bn").copy()
     for c in SECURITY_CLASSES:   # market value at the Fed not yet borrowed against
         st[f"dw_prepos_mv_{c}_bn"] = place[f"fed_{c}_mv_bn"].copy()
-    st["fhlb_total_left_bn"] = s["fhlb"]["advance_rate"] * st["fhlb_pledged_loans_bn"]
+    # Capacity left: 75% of pledged loans less any advances already drawn (Clarification 15), never below zero.
+    st["fhlb_total_left_bn"] = np.maximum(s["fhlb"]["advance_rate"] * st["fhlb_pledged_loans_bn"]
+                                          - st["fhlb_advances_bn"], 0.0)
     st["fhlb_line_left_bn"] = np.minimum(s["fhlb"]["line_share_of_assets"] * banks["total_assets_bn"],
                                          st["fhlb_total_left_bn"])
 

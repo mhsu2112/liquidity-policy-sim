@@ -63,4 +63,4 @@ benchmark:                    # make benchmark: policy A only
   seed: 20261003
   other_seed: 20261004        # shows that a different seed changes results
   runs_per_bank: 250          # 40 x 250 = 10,000 episodes at once
-  shock: 0.40                 # PLACEHOLDER for S1, labelled as such: the M1.4 "severe" demo shock. S1 is set in M1.10
+  shock: 0.50                 # S1 news shock (Clarification 15 item 1)

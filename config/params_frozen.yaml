@@ -1,0 +1,27 @@
+# The five behavioral settings that contract section 7 lists as tuned in M1.10:
+# depositor sensitivity (with its tolerance level theta, Amendment 2), coordination strength,
+# slow-depositor lag, wholesale roll threshold and fire-sale price impact. Nothing else was tuned.
+#
+# FROZEN at params-frozen (session M1.10, 2026-10-02). Tuned on the SVB validation bank under
+# policy A, scenario S1, at the tuning cell of Clarification 15 (method and fit: Clarification 15
+# Evidence; outputs/tuning_report.html). Rule 3: these values change only through an entry in
+# docs/amendments.md, and only to fix a mechanical error proven by a new test.
+# tests/test_frozen.py fails if any value here changes without a matching fingerprint there.
+# How each one is used: docs/amendments.md Clarification 8.
+
+depositor_sensitivity:
+  value: 0.35     # FROZEN at params-frozen. a: share leaving per half-day = 1 - exp(-a x max(0, theta - confidence)). Tuned
+  tolerance_theta:  # Amendment 2: part of depositor sensitivity, tuned with a
+    value: 0.6    # FROZEN at params-frozen. Above this confidence, nobody withdraws. Tuned
+coordination_strength:
+  value: 2.0      # FROZEN at params-frozen. Confidence lost per unit share of uninsured deposits withdrawn over the last day. Tuned
+slow_depositor_lag_steps:
+  value: 2        # FROZEN at params-frozen. Half-days before slow depositors react (2 = 1 day). Tuned
+wholesale_roll_threshold:
+  value: 0.6      # FROZEN at params-frozen. Middle of lenders' confidence cut-offs (spread +/-0.10). NOT IDENTIFIED by
+                  # the SVB pattern (no runnable wholesale funding in the SVB build): kept at its pre-tuning value (Clarification 8)
+fire_sale_price_impact_per_bn:   # NOT IDENTIFIED by the SVB pattern: kept at the Clarification 5 starting values
+  level1:
+    value: 0.0001 # FROZEN at params-frozen. 10 bp per $10bn sold (Greenwood, Landier & Thesmar 2015; Duarte & Eisenbach 2021)
+  level2a:
+    value: 0.0003 # FROZEN at params-frozen. 30 bp per $10bn sold [ESTIMATE], agency MBS less liquid than Treasuries

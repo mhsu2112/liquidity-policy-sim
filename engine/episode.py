@@ -97,7 +97,7 @@ def start_episode(banks, shock, noise, funding=None, agents=None, behavior=None,
     funding = funding or load_funding_settings()
     info = info or load_information_settings()
     agents = agents or load_yaml("agents.yaml")
-    behavior = behavior or load_yaml("behavior.yaml")
+    behavior = behavior or load_yaml("params_frozen.yaml")   # frozen in M1.10
     decision = decision or load_yaml("decision.yaml")
     if setup is None:   # the status quo, built by the one setup builder (Clarification 12 item 3)
         test_u = info_randoms.get("test_u", np.ones(n))   # a `tested` override needs no test_u

@@ -5,7 +5,7 @@ own decision comes in M1.6). Two runs with the same random numbers and the same
 market stigma, differing only in the routine borrowing rate r: 0.1 and 2.5.
 Each run is paired with a control in which every route is switched off, so the
 draw happens but nobody learns of it; the gap in confidence is the effect of
-the information. Behavioral settings are M1.10 PLACEHOLDERS.
+the information. Behavioral settings are FROZEN at params-frozen (M1.10).
 """
 
 import numpy as np
@@ -83,7 +83,7 @@ def main():
 
     a = banks["total_assets_bn"][i]
     unins = banks["uninsured_deposits_bn"][i]
-    print("Information routes demo (session M1.5): policy A only; behavioral settings are PLACEHOLDERS (M1.10).")
+    print("Information routes demo (session M1.5): policy A only; behavioral settings FROZEN at params-frozen (M1.10).")
     print(f"{scen['bank']}: total assets ${a:.1f}bn. No news shock: the bank is calm, so the only news is the draw.")
     print(f"A ${scen['forced_draw']['amount_bn']:.1f}bn discount window draw is FORCED on day "
           f"{scen['forced_draw']['day']} morning (untested prepositioned loans: cash arrives a day later).")

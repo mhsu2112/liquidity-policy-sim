@@ -1,6 +1,6 @@
 # Demonstration for `make demo-episode` (session M1.6). Policy A only.
 # Not a stress scenario from contract section 5 and not used for any comparison.
-# Behavioral settings are M1.10 PLACEHOLDERS, so everything shown is mechanics, not results.
+# Behavioral settings are FROZEN at params-frozen (M1.10); this is still mechanics, not results.
 seed: 20261001            # news noise and the information and testing random numbers
 days: 30                  # contract 7: a full episode
 bank: SVB-01

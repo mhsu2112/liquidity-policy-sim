@@ -8,7 +8,7 @@ how the episode ended.
 Part 2: a short table of how the outcome moves across three market stigma
 levels and two supervisory settings, all rows in one batch with the same
 random numbers. DIV-01 is added for contrast: a slower run, where the rule
-can bind. Behavioral settings are M1.10 PLACEHOLDERS, so this shows
+can bind. Behavioral settings are FROZEN at params-frozen (M1.10); this shows
 mechanics, not results.
 """
 
@@ -23,7 +23,7 @@ from engine.outcomes import episode_outcomes
 from engine.write_banks import ROOT, stamps, write_csv
 
 OUT = ROOT / "outputs" / "demo_episode.csv"
-SETTINGS = [CONFIG / f for f in ("decision.yaml", "information.yaml", "funding.yaml", "agents.yaml", "behavior.yaml",
+SETTINGS = [CONFIG / f for f in ("decision.yaml", "information.yaml", "funding.yaml", "agents.yaml", "params_frozen.yaml",
                                  "scenarios/demo_episode.yaml", "banks/archetypes.yaml")]
 
 
@@ -76,7 +76,7 @@ def main():
     banks = generate_banks()
     steps = 2 * scen["days"]
 
-    print("Episode demo (session M1.6): policy A only. Behavioral settings are PLACEHOLDERS (set in M1.10):")
+    print("Episode demo (session M1.6): policy A only. Behavioral settings FROZEN at params-frozen (M1.10):")
     print("this shows the machinery working, not how any bank or policy would fare.")
     print("Disclosure: the project's sponsor publicly advocated a version of Option B (see README).\n")
 

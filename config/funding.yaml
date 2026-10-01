@@ -14,7 +14,7 @@ reserves:
 
 securities:
   # Fire-sale price impact (Clarification 5) is one of the five settings tuned in
-  # M1.10, so it lives in config/behavior.yaml and is read from there.
+  # M1.10, so it lives in config/params_frozen.yaml and is read from there.
   settlement_lag_steps:
     level1: 2               # Clarification 5: Treasuries settle T+1
     level2a: 4              # Clarification 5: agency MBS pools T+2 [ESTIMATE]

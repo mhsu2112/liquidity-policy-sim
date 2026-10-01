@@ -2,7 +2,7 @@
 
 All 40 banks are run twice in one batch, once under a mild news shock and once
 under a severe one, with the same random draws. SVB-01's two episodes are printed
-half-day by half-day. Policy A only; behavioral settings are M1.10 PLACEHOLDERS,
+half-day by half-day. Policy A only; behavioral settings are FROZEN at params-frozen (M1.10),
 so the numbers show the mechanics working, not a calibrated result.
 """
 
@@ -48,7 +48,7 @@ def main():
              "fhlb_line": "FHLB", "fhlb_above_line": "FHLB+1d", "dw_tested": "DW", "dw_untested": "DW+1d",
              "dw_level1": "DW-L1", "dw_level2a": "DW-L2A", "dw_unpledged": "DW-loans"}
 
-    print("Run demo (session M1.4): policy A only; behavioral settings are PLACEHOLDERS (set in M1.10).")
+    print("Run demo (session M1.4): policy A only; behavioral settings FROZEN at params-frozen (M1.10).")
     print(f"All {n} banks x {len(names)} shocks ran together in one batch; every balance sheet balanced every half-day.")
     print("Amounts in $bn. 'Late' = set in motion now, cash arrives later. Depositors still owed = paid late or shortfall.\n")
     for k, name in enumerate(names):

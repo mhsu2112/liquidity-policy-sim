@@ -2,8 +2,8 @@
 
 10,000 episodes at once (the 40 banks x 250 runs), spread over all 35 stigma x
 supervision cells so every part of the engine is used. Policy A only (project
-Rule 2): no other policy is run. The shock is a PLACEHOLDER for S1 (M1.10 sets
-the real one); timing runs all 60 half-days, so it does not depend on the shock.
+Rule 2): no other policy is run. The shock is S1's (0.50, Clarification 15); timing runs all
+60 half-days, so it does not depend on the shock.
 
 Prints the time, "identical: yes" after the same seed twice (every output,
 compared through a fingerprint of every number), that a different seed changes
@@ -94,7 +94,7 @@ def main():
     say = lambda s="": (print(s), lines.append(s))   # noqa: E731
 
     say(f"Benchmark, policy A only: {n:,} episodes at once ({n // 40} per bank), all {steps} half-days.")
-    say(f"Shock {bm['shock']} is a PLACEHOLDER for S1 (set in M1.10). Behavior settings are M1.10 placeholders.")
+    say(f"Shock {bm['shock']} = S1 (Clarification 15). Behavior settings FROZEN at params-frozen (M1.10).")
     st, recs, out1, t1 = run_batch(rows, stigma, supervision, bm["shock"], bm["seed"], steps, agents)
     first = fingerprint([st, recs, out1]).hexdigest()
     del st, recs
