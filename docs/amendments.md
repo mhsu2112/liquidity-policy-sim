@@ -126,3 +126,16 @@ Format for each entry:
   $31m), with no late payment and no realized loss; before M1.3b, $37.8bn of the $40bn was paid a day late. Known gaps,
   left for M1.7 by the owner: securities pledged at the discount window still count as HQLA, and repo adds no LCR
   outflow (12 CFR 249.32(j)).
+
+## 2026-10-01 — Clarification 7: same-day repo is limited to pre-arranged lines (before session M1.4)
+- **What changed:** a limit on the repo source added in Clarification 6. No value or range in the contract changes.
+  1. **Same-day repo lines by bank type** [ESTIMATE]: Category IV banks (SVB-like and diversified regional) 3% of total
+     assets; Category III regional 10%; GSIB / large bank 20%. Each swept at 50%, 100% and 150% of its default.
+  2. **Beyond the line,** further repo can be arranged for the next day, up to the bank's unencumbered Level 1 and agency
+     MBS after haircuts.
+  3. **Rolling** follows the confidence rule for wholesale lenders built in session M1.4 (Clarification 6, item 3).
+- **Why:** the M1.3b demo showed an SVB-like bank raising $40bn by repo in one afternoon. Regional banks rely on
+  pre-arranged counterparties for same-day repo, and SVB could not raise funds on that scale the same day in March 2023.
+- **Seen results before the change?** Only the M1.3b mechanical demo (two fixed outflows for two banks). No stress
+  scenario, behavior or policy result exists.
+- **Evidence:** to be added in session M1.4.
