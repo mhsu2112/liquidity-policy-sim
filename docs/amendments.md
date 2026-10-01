@@ -54,3 +54,19 @@ Format for each entry:
 - **Seen results before the change?** No. Agreed before any LCR was computed.
 - **Evidence:** `tests/test_lcr.py` (hand-calculated example, 40% cap, calibration, pro-rata loss) and
   `outputs/lcr_worked_examples.xlsx`.
+
+## 2026-10-01 — Clarification 4: where collateral sits under the status quo, and Home Loan Bank lending (before session M1.3)
+- **What changed:** two implementation rules the contract left unstated. No value or range in the contract changes.
+  1. **Collateral placement under policy A.** Each bank's eligible loans start 30% prepositioned at the Fed, 40% pledged to
+     the Home Loan Bank, and 30% unpledged. The Fed and Home Loan Bank shares are each swept ±20 percentage points, with
+     the unpledged share adjusting so the three add to 100%. Fed-prepositioned collateral starts untested; banks test
+     voluntarily at the status-quo routine borrowing rate in contract section 3a.
+  2. **Home Loan Bank lending.** The bank can borrow up to a pre-arranged line of 5% of total assets on the same day
+     (swept 3%, 5%, 8%). Beyond the line, it can borrow on the next day up to 75% of the value of loans pledged to the Home
+     Loan Bank [ESTIMATE]. This applies contract section 7 ("same day up to pre-arranged line; next day above it").
+  3. **Policies that require prepositioning** (B, E, and C for banks that opt in) take the extra collateral from unpledged
+     loans first, then from loans pledged to the Home Loan Bank, which reduces Home Loan Bank capacity one for one.
+- **Why:** the waterfall needs a starting position for collateral and a Home Loan Bank rule, and the contract gives only
+  the timing rule.
+- **Seen results before the change?** No. Agreed by the owner before any funding calculation ran.
+- **Evidence:** to be added in session M1.3 (tests of capacity and timing).
