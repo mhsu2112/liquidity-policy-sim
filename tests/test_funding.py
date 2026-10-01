@@ -117,6 +117,7 @@ def test_each_source_arrives_exactly_its_lag_later():
 # documents rather than read from the settings file, so a settings typo is caught.
 CONTRACT_LAGS = {"reserves": 0, "fhlb_line": 0, "dw_tested": 0,          # same half-day
                  "repo_level1": 0, "repo_level2a": 0,                     # same half-day (Clarification 6)
+                 "repo_next_level1": 2, "repo_next_level2a": 2,           # next day, beyond the line (Clarification 7)
                  "sale_level1": 2, "fhlb_above_line": 2, "dw_untested": 2,  # next day
                  "dw_level1": 2, "dw_level2a": 2,
                  "sale_level2a": 4,                                       # T+2
@@ -161,7 +162,8 @@ def hand_bank():
     Liabilities: uninsured 150, insured 20, wholesale 10; equity 20.
     """
     a = lambda x: np.array([float(x)])  # noqa: E731
-    return {"bank_id": np.array(["HAND-01"]), "total_assets_bn": a(200), "reserves_bn": a(2),
+    return {"bank_id": np.array(["HAND-01"]), "archetype": np.array(["gsib"]),  # type sets the repo line
+            "total_assets_bn": a(200), "reserves_bn": a(2),
             "level1_securities_bn": a(100), "level2a_securities_bn": a(0), "securities_bn": a(100),
             "unrealized_loss_bn": a(10), "loans_bn": a(1), "resi_loans_bn": a(1), "cre_loans_bn": a(0),
             "ci_loans_bn": a(0), "eligible_loans_bn": a(0), "other_assets_bn": a(97),
@@ -287,16 +289,20 @@ def repo_bank():
 
 
 def test_repo_haircuts_applied():
-    st, recs = run(repo_bank(), [{"uninsured_deposits_bn": 150.0}], steps=1)
+    st, recs = run(repo_bank(), [{"uninsured_deposits_bn": 150.0}], steps=3)
     r = recs[0]
-    # 100 of Level 1 raises 98; 100 of Level 2A raises 95 (Clarification 6).
-    assert r["capacity_repo_level1"][0] == pytest.approx(98)
-    assert r["used_repo_level1"][0] == pytest.approx(98)
-    assert r["used_repo_level2a"][0] == pytest.approx(150 - 98)
+    # Same day, repo is capped at the GSIB line: 20% x 203 = 40.6 (Clarification 7).
+    line = 0.20 * 203
+    assert r["used_repo_level1"][0] == pytest.approx(line)
+    assert r["paid_now"][0] == pytest.approx(line)
+    # The rest comes next day. In total 100 of Level 1 raises 98, and
+    # Level 2A covers what is left at a 5% haircut (Clarification 6).
+    assert r["used_repo_level1"][0] + r["used_repo_next_level1"][0] == pytest.approx(98)
+    assert r["used_repo_next_level2a"][0] == pytest.approx(150 - 98)
     assert st["repo_pledged_mv_level1_bn"][0] == pytest.approx(100)
     assert st["repo_pledged_mv_level2a_bn"][0] == pytest.approx((150 - 98) / 0.95)
-    assert st["repo_bn"][0] == pytest.approx(150)
-    assert r["paid_now"][0] == pytest.approx(150)  # all the same half-day
+    assert recs[2]["arrived_repo_next_level1"][0] == pytest.approx(98 - line)
+    assert st["repo_bn"][0] == pytest.approx(150)  # all booked once the next-day cash arrived
 
 
 def test_repo_realizes_no_loss():

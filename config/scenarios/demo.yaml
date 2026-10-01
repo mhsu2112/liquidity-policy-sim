@@ -1,0 +1,7 @@
+# Demonstration shocks for `make demo-run` (session M1.4). Policy A only.
+# Not a stress scenario from contract section 5 and not used for any comparison.
+seed: 20261001        # random draws for the news noise (Clarification 8)
+days: 10              # length of the demo
+shocks:               # news shock on the morning of day 1, in confidence units (Clarification 8)
+  mild: 0.15
+  severe: 0.40

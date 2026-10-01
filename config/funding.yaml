@@ -13,13 +13,8 @@ reserves:
   floor_share_of_assets: 0.01   # Clarification 5: operating floor, 1% of total assets [ESTIMATE]
 
 securities:
-  # Clarification 5: linear fire-sale discount. Each extra $1bn sold loses this
-  # share of its value per $1bn already sold by the same bank in the episode.
-  # Greenwood, Landier & Thesmar (2015) and Duarte & Eisenbach (2021): 10 bp per $10bn.
-  # Tuned in M1.10 (contract 7: "fire-sale price impact").
-  price_impact_per_bn:
-    level1: 0.0001          # 10 bp per $10bn (GLT 2015)
-    level2a: 0.0003         # 30 bp per $10bn [ESTIMATE]: agency MBS less liquid than Treasuries
+  # Fire-sale price impact (Clarification 5) is one of the five settings tuned in
+  # M1.10, so it lives in config/behavior.yaml and is read from there.
   settlement_lag_steps:
     level1: 2               # Clarification 5: Treasuries settle T+1
     level2a: 4              # Clarification 5: agency MBS pools T+2 [ESTIMATE]
@@ -34,7 +29,14 @@ repo:                       # Clarification 6: same-day private repo of liquid s
     level1: 0.02            # Clarification 6, item 1: Level 1 haircut 2% [ESTIMATE]
     level2a: 0.05           # Clarification 6, item 1: agency MBS haircut 5% [ESTIMATE]
   lag_steps: 0              # Clarification 6, items 1-2: cash the same half-day
-  rolls: always             # Clarification 6, item 3: repo always rolls until M1.4 adds the confidence rule
+  same_day_line_share_of_assets:   # Clarification 7, item 1 [ESTIMATE]; swept 50/100/150% later
+    svb_like: 0.03                 # Category IV: 3% of total assets
+    diversified_regional: 0.03     # Category IV: 3%
+    regional_cat3: 0.10            # Category III: 10%
+    gsib: 0.20                     # GSIB / large bank: 20%
+  beyond_line_lag_steps: 2  # Clarification 7, item 2: further repo the next day
+  # Rolling: overnight, decided each morning by the wholesale confidence rule
+  # (Clarification 6 item 3, Clarification 8; agents/lenders.py).
 
 fhlb:                       # Clarification 4, rule 2; contract 7
   line_share_of_assets: 0.05    # pre-arranged line, available the same day

@@ -138,4 +138,52 @@ Format for each entry:
   pre-arranged counterparties for same-day repo, and SVB could not raise funds on that scale the same day in March 2023.
 - **Seen results before the change?** Only the M1.3b mechanical demo (two fixed outflows for two banks). No stress
   scenario, behavior or policy result exists.
-- **Evidence:** to be added in session M1.4.
+- **Evidence:** session M1.4. Lines live in `config/funding.yaml`; next-day repo beyond the line comes before sales in
+  the next-day tier (Clarification 6 item 2). `tests/test_agents.py::test_repo_lines_respected` (same-day repo never
+  above the line; none from refusing lenders; next-day repo arrives exactly one day later) and
+  `tests/test_funding.py::test_repo_haircuts_applied` (GSIB hand bank: 40.6 the same day, the rest next day, haircuts
+  unchanged). `make demo-waterfall`: SVB-01 now raises $3.5bn by same-day repo (its 3% line) instead of $43.7bn, so
+  $34.3bn of the $40bn afternoon outflow is paid a day late by next-day repo, against none late after M1.3b.
+
+## 2026-10-01 — Clarification 8: depositors and wholesale lenders (session M1.4)
+- **What changed:** the behavior rules for depositors and lenders, which the contract and PRD describe only in outline
+  (PRD agent table; contract section 7 names the five tuned settings). No value or range in the contract changes.
+  Fixed values are in `config/agents.yaml`; the five tuned settings are in `config/behavior.yaml` as placeholders.
+  1. **Fast share of uninsured deposits** [ESTIMATE, anchored to contract 1a]: SVB-like 90% (SVB lost or had queued
+     ~86% of uninsured deposits within two days); diversified regional and Category III regional 40% (First Republic
+     pace: ~1/3 of uninsured on its worst day, $96bn over two weeks); GSIB 15% (largely operational corporate deposits;
+     Cipriani, Eisenbach & Kovner 2024, NY Fed Staff Report 1104). The rest of uninsured deposits are slow.
+  2. **Confidence and withdrawals.** Each half-day, C = 1 − S × (1 + ε) × (1 + g) − c × R, held between 0 and 1.
+     S is the news shock, halving every 2 days [ESTIMATE]; ε is random noise with standard deviation 10% [ESTIMATE],
+     seeded, drawn up front and identical across policies, so a shock lands somewhat harder or softer from run to run
+     and a bank with no shock sees no noise; g is the share of starting book equity gone on a mark-to-market basis;
+     R is the share of starting uninsured deposits withdrawn over the last day; c is coordination strength (tuned).
+     Unrealized losses matter only through news, as with SVB, whose losses were public for months before the run.
+     Fast depositors leave at 1 − e^(−a(1−C)) of their remaining balance each half-day (a = depositor sensitivity,
+     tuned); slow depositors use the same function of confidence L half-days earlier (L = slow-depositor lag, tuned);
+     insured depositors leave at 5% of the fast rate [ESTIMATE]. Tipping comes from the coordination feedback
+     (Goldstein & Pauzner 2005), not a hard threshold. The noise was first proposed as ±0.02 added to confidence; the
+     owner changed it to scale with the news before anything ran, because additive noise drained a calm bank.
+  3. **Wholesale and repo lenders.** Each morning lenders judge the bank's chance of survival; until M1.5 adds
+     information routes, that judgment is the confidence C. Cut-offs are spread evenly within ±0.10 [ESTIMATE] of the
+     roll threshold (tuned), so the share refusing rises from 0 to 100% as C falls through the band. Repo is overnight:
+     the refused share of the whole repo book is repaid that day and its securities stop being encumbered. Unsecured
+     short-term wholesale funding matures evenly, 1/30 of its starting balance a day [ESTIMATE]; the refused share of
+     what matures is repaid. Refusing lenders also stop new repo (same-day and next-day) in the same proportion; the
+     used part of the same-day line is not restored by repayment. Next-day repo already agreed still arrives and faces
+     the decision from the following morning. The Home Loan Bank and the discount window are not affected (PRD:
+     "lends first, as in 2023").
+  4. **The five tuned settings are placeholders** chosen in session M1.4 before any run and not adjusted after:
+     depositor sensitivity 1.0; coordination strength 1.0; slow-depositor lag 4 half-days; wholesale roll threshold
+     0.6; fire-sale price impact 10 / 30 bp per $10bn (Clarification 5 starting values, moved to `config/behavior.yaml`).
+     They are set only in M1.10.
+- **Why:** M1.4 needs explicit behavior rules; these follow the PRD's agent table and the contract's list of tuned
+  settings. Items 1, 2 and 3 were chosen by the owner in session M1.4.
+- **Seen results before the change?** No stress or policy results exist. Items 1–4 were agreed before any run, except
+  the noise form in item 2, changed before any run as stated. One consequence was seen in the M1.4 demo and kept by
+  the owner: because insured depositors leave at 5% of the fast rate every half-day that confidence stays low, they
+  lose about 13% (mild demo shock) to 18% (severe) of their balance over 10 days at the median bank (up to 20%) under
+  the placeholder settings. Reported, not changed.
+- **Evidence:** `tests/test_agents.py` (bigger shock drains faster; fast before slow; insured ratio; refusal band;
+  refusals repaid with collateral released; repo lines; same seed, same result; balance; rows together equal rows
+  alone). `make demo-run` shows SVB-01 under the mild and severe demo shocks.
