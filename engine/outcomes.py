@@ -18,12 +18,16 @@ every row moves together).
                         episode). Home Loan Bank advances are shown separately and
                         not counted as official support (Clarification 10)
     effective_stigma    market stigma x e^(-s x r) (contract 3a)
+    non_compliant       B / B' only: the bank started below its five-day ratio, with
+                        the gap shown (Amendment 3 item 2)
+    c_credit_left_bn    Option C's credit at the end, after every window draw (contract 2d)
 """
 
 import numpy as np
 
 from engine.episode import END_NAMES
 from engine.information import NEVER
+from engine.lcr_credit import credit_after_draws
 
 
 def _step_or_nan(steps, end_step):
@@ -55,4 +59,8 @@ def episode_outcomes(st):
         "effective_stigma": st["stigma_eff"],
         "effective_supervisory_cost": st["sup_cost_eff"],
         "collateral_tested": st["tested"],
+        "non_compliant": st["non_compliant"],
+        "five_day_gap_bn": st["five_day_gap_bn"],
+        "c_credit_start_bn": st["credit_start_bn"],
+        "c_credit_left_bn": credit_after_draws(st["credit_start_bn"], st["dw_agreed_bn"]),   # draws up to the end
     }

@@ -1,4 +1,4 @@
-"""Checks on the policy switches and the five named policies (session M1.7).
+"""Checks on the policy switches and the six named policies (sessions M1.7, M1.7b).
 
 Mechanics only: the rules match the contract (sections 2a, 2c, 2d, 3a) and
 Clarification 11, the ratios match hand calculations, balance sheets balance and
@@ -29,7 +29,7 @@ INFO = load_information_settings()
 MARGINS = FS["discount_window"]["margins"]
 BANKS = generate_banks()
 RANDOMS = draw_policy_randoms(CFG["seed"], len(BANKS["bank_id"]))
-POLICIES = ["A", "B", "C", "C_prime", "E"]
+POLICIES = ["A", "B", "B_prime", "C", "C_prime", "E"]
 TOL = 1e-9  # $1, in $ billions
 
 
@@ -80,6 +80,9 @@ def test_named_policies_match_contract_2a():
         sw = CFG["policies"][name]["switches"]
         assert (sw["prepositioning_mandate"], sw["testing_mandate"],
                 sw["five_day_ratio"], sw["lcr_credit"]) == expected
+    # B' is B's switches, counting loans only, C&I first (Amendment 3).
+    assert CFG["policies"]["B_prime"]["switches"] == CFG["policies"]["B"]["switches"]
+    assert CFG["policies"]["B_prime"]["overrides"]["five_day_counts"] == "loans_only"
     # C' is C's switches with no usage multiple (contract 2d).
     assert CFG["policies"]["C_prime"]["switches"] == CFG["policies"]["C"]["switches"]
     assert CFG["policies"]["C_prime"]["overrides"] == {"usage_multiple": None}
@@ -299,7 +302,7 @@ def test_random_numbers_required():
 def test_same_seed_same_table():
     t1, t2 = build_table(), build_table()
     assert all(np.array_equal(t1[k], t2[k]) for k in t1)
-    assert len(t1["policy"]) == 200
+    assert len(t1["policy"]) == 240   # 40 banks x 6 policies (Amendment 3 item 3)
 
 
 def test_five_day_ratio_reported_the_same_way_for_every_policy():
@@ -309,3 +312,58 @@ def test_five_day_ratio_reported_the_same_way_for_every_policy():
                / (0.40 * BANKS["uninsured_deposits_bn"] + BANKS["stwf_bn"]))
     assert np.allclose(a["five_day_ratio"], by_hand)
     assert np.allclose(five_day_ratio(a["banks"], a["placement"], CFG, MARGINS), by_hand)
+
+
+# ---------------------------------------------------------------- B' and non-compliance (Amendment 3)
+
+def test_b_prime_counts_loans_only():
+    # Put every security at the Fed: B''s ratio does not move; B''s ratio would.
+    s = SETUPS["B_prime"]
+    place = {k: (v.copy() if isinstance(v, np.ndarray) else v) for k, v in s["placement"].items()}
+    for c in SECURITY_CLASSES:
+        place[f"fed_{c}_mv_bn"] = securities_mv(s["banks"], c)
+        assert np.all(s["placement"][f"fed_{c}_mv_bn"] == 0)   # B' moves no securities
+    assert np.allclose(five_day_ratio(s["banks"], place, CFG, MARGINS, "loans_only"), s["five_day_ratio"])
+    assert np.all(five_day_ratio(s["banks"], place, CFG, MARGINS, "all") > s["five_day_ratio"])
+
+
+def test_b_prime_ratio_passes_or_flags():
+    s = SETUPS["B_prime"]
+    ok = ~s["non_compliant"]
+    assert np.all(s["five_day_ratio"][ok] >= 1 - TOL)
+    assert np.all(s["tested"]) and np.all(s["routine_rate"] == 1.0) and np.all(s["test_draws_per_year"] == 4)
+
+
+def test_b_prime_moves_ci_first_then_unpledged_before_fhlb():
+    p = SETUPS["B_prime"]["placement"]
+    moved = lambda t, src: p[f"fed_{t}_from_{src}_bn"] > TOL   # noqa: E731
+    # Residential or CRE moves only once every C&I loan (unpledged and Home Loan Bank) is at the Fed.
+    later = moved("resi", "unpledged") | moved("cre", "unpledged") | moved("resi", "fhlb") | moved("cre", "fhlb")
+    assert np.allclose(p["unpledged_ci_bn"][later], 0, atol=1e-9) and np.allclose(p["fhlb_ci_bn"][later], 0, atol=1e-9)
+    # Within a type, Home Loan Bank loans move only once unpledged ones are gone.
+    for t in ("ci", "resi", "cre"):
+        assert np.allclose(p[f"unpledged_{t}_bn"][moved(t, "fhlb")], 0, atol=1e-9)
+    # Residential and CRE move together, pro rata to holdings.
+    both = moved("resi", "unpledged")
+    a = SETUPS["A"]["placement"]
+    assert np.allclose(p["fed_resi_from_unpledged_bn"][both] / a["unpledged_resi_bn"][both],
+                       p["fed_cre_from_unpledged_bn"][both] / a["unpledged_cre_bn"][both])
+
+
+@pytest.mark.parametrize("name", ["B", "B_prime"])
+def test_non_compliant_banks_flagged_with_exact_gap(name):
+    # Full-run sensitivity: banks short after turning every loan into reserves run non-compliant (Amendment 3).
+    s = setup(name, with_settings(five_day_ratio={"runoff_uninsured": 1.0}))
+    nc = s["non_compliant"]
+    assert nc.any()
+    assert np.array_equal(nc, s["five_day_unmet_bn"] > 0)
+    assert np.allclose(fed_loans(s["placement"])[nc], 0, atol=1e-9)
+    outflows = BANKS["uninsured_deposits_bn"] + BANKS["stwf_bn"]
+    assert np.allclose(s["five_day_ratio"][nc], 1 - s["five_day_unmet_bn"][nc] / outflows[nc])
+    assert np.all(s["five_day_ratio"][~nc] >= 1 - TOL)
+    check_balances(s["banks"])
+
+
+def test_no_bank_non_compliant_under_registered_b():
+    # Amendment 3 item 2 states this as a fact about the registered settings; checked, not assumed.
+    assert not SETUPS["B"]["non_compliant"].any()

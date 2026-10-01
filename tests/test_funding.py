@@ -121,7 +121,9 @@ CONTRACT_LAGS = {"reserves": 0, "fhlb_line": 0, "dw_tested": 0,          # same 
                  "sale_level1": 2, "fhlb_above_line": 2, "dw_untested": 2,  # next day
                  "dw_level1": 2, "dw_level2a": 2,
                  "sale_level2a": 4,                                       # T+2
-                 "dw_unpledged": 20}                                      # from day 11
+                 "dw_unpledged": 20,                                      # from day 11
+                 # M1.7b (Clarification 12; owner approved adding these): prepositioned and tested securities
+                 "dw_tested_level1": 0, "dw_tested_level2a": 0}           # same half-day (contract 7)
 
 
 def test_lags_match_contract():

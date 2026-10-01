@@ -10,6 +10,7 @@ routine_borrowing:                # contract 3a: routine draws per bank per quar
     A: 0.1                        # voluntary tests only
     C_prime: 0.1                  # C' makes no usage draws, so the same as A (contract 2d)
     B: 1.0                        # quarterly tests
+    B_prime: 1.0                  # Amendment 3 item 1: quarterly tests, as B
     E: 1.0                        # quarterly tests
   c_usage_draws_per_quarter: 2.5  # C: uptake x 2.5 (five draws per six months)
   strength_s:

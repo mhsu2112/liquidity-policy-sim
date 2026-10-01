@@ -1,7 +1,7 @@
-# The four policy switches and the five named policies (session M1.7).
+# The four policy switches and the six named policies (sessions M1.7, M1.7b).
 #
 # Sources: docs/contract.md sections 2a (switches), 2c (Option B), 2d (Option C), 3a
-# (routine borrowing) and 5 (swept grids); docs/amendments.md Clarifications 4, 5 and 11.
+# (routine borrowing) and 5 (swept grids); docs/amendments.md Clarifications 4, 5, 11, 12 and Amendment 3.
 # Collateral margins, the reserve floor and where collateral sits under A live in
 # config/funding.yaml and are read from there, not copied here.
 # Shares are fractions (0.40 = 40%). Money in $ billions.
@@ -15,6 +15,13 @@ policies:
     switches: {prepositioning_mandate: false, testing_mandate: false, five_day_ratio: false, lcr_credit: false}
   B:
     switches: {prepositioning_mandate: true, testing_mandate: true, five_day_ratio: true, lcr_credit: false}
+  B_prime:                      # Amendment 3 item 1: B's ratio, counting loans at the Fed only
+    switches: {prepositioning_mandate: true, testing_mandate: true, five_day_ratio: true, lcr_credit: false}
+    overrides:
+      five_day_counts: loans_only # Amendment 3: securities already count as liquid assets, so not again
+      # Amendment 3 and Clarification 12 item 1: cheapest loans first by contract 6 rates (C&I 15bp; residential
+      # and CRE 20bp, together pro rata), each type unpledged first, then Home Loan Bank (Clarification 4).
+      prepositioning_order: [unpledged_ci, fhlb_ci, unpledged_resi_cre, fhlb_resi_cre]
   C:
     switches: {prepositioning_mandate: false, testing_mandate: false, five_day_ratio: false, lcr_credit: true}
   C_prime:
@@ -27,6 +34,7 @@ five_day_ratio:                 # contract 2c
   runoff_uninsured: 0.40        # Decision 2-2: 40% of uninsured deposits over five days (sensitivity: 1.00)
   runoff_stwf: 1.00             # Decision 2-2: 100% of short-term wholesale funding
   minimum: 1.00                 # contract 2c: ratio >= 100%
+  counts: all                   # contract 2c: every collateral at the Fed counts (B' overrides: loans only)
 
 prepositioning:                 # contract 2c: least that passes, cheapest collateral first
   # Clarification 11 item 3. Cheapest first by contract 6 costs: securities (2bp) before loans (15-20bp).

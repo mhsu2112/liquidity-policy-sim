@@ -1,8 +1,11 @@
-"""Where each bank's collateral sits, and what it is worth at the window (session M1.7).
+"""Where each bank's collateral sits, and what it is worth at the window (sessions M1.7, M1.7b).
 
 Starting point is the status quo (Clarification 4): eligible loans 30% at the Fed,
 40% pledged to the Home Loan Bank, 30% unpledged; no securities at the Fed.
-Policies then move collateral to the Fed in a stated order (Clarification 11).
+Policies then move collateral to the Fed in a stated order (Clarifications 11, 12).
+
+Loans are tracked by type (residential, CRE, C&I) in each place, because B'
+moves C&I first (Amendment 3). B, E and C move loans at the bank's own mix.
 
 Two values matter for every pool:
 - face value: the loans or securities themselves (securities at market value);
@@ -13,7 +16,9 @@ All banks at once: every quantity is an array with one entry per bank.
 
 import numpy as np
 
-from engine.funding import LOAN_TYPES, SECURITY_CLASSES
+LOAN_TYPES = ("resi", "cre", "ci")
+SECURITY_CLASSES = ("level1", "level2a")
+LOAN_SOURCES = ("unpledged", "fhlb")   # where extra loans for the Fed come from (Clarification 4)
 
 
 def lendable_per_loan(banks, margins):
@@ -28,32 +33,49 @@ def securities_mv(banks, c):
 
 
 def start_placement(banks, fs):
-    """Collateral placement under the status quo (Clarification 4), in face value ($bn)."""
-    place = fs["collateral_placement"]
+    """Collateral placement under the status quo (Clarification 4), in face value ($bn).
+
+    Each pool holds the bank's own loan mix (Clarification 5 item 8).
+    """
+    place, margins = fs["collateral_placement"], fs["discount_window"]["margins"]
     eligible = banks["eligible_loans_bn"]
     zero = np.zeros_like(eligible)
-    return {
-        "lendable_per_loan": lendable_per_loan(banks, fs["discount_window"]["margins"]),
-        "fed_loans_baseline_bn": place["fed_prepositioned"] * eligible,  # already at the Fed under A
-        "fed_loans_from_unpledged_bn": zero.copy(),
-        "fed_loans_from_fhlb_bn": zero.copy(),
-        "fed_loans_converted_bn": zero.copy(),   # B only: prepositioned loans turned into reserves
-        "unpledged_loans_bn": place["unpledged"] * eligible,
-        "fhlb_loans_bn": place["fhlb_pledged"] * eligible,
-        "fed_level1_mv_bn": zero.copy(),
-        "fed_level2a_mv_bn": zero.copy(),
-    }
+    p = {"lendable_per_loan": lendable_per_loan(banks, margins),
+         "loan_margins": {t: margins[t] for t in LOAN_TYPES},
+         "fed_level1_mv_bn": zero.copy(), "fed_level2a_mv_bn": zero.copy()}
+    for t in LOAN_TYPES:
+        eligible_t = eligible * banks[f"{t}_loans_bn"] / banks["loans_bn"]
+        p[f"fed_{t}_baseline_bn"] = place["fed_prepositioned"] * eligible_t   # already at the Fed under A
+        p[f"unpledged_{t}_bn"] = place["unpledged"] * eligible_t
+        p[f"fhlb_{t}_bn"] = place["fhlb_pledged"] * eligible_t
+        for k in ("from_unpledged", "from_fhlb", "converted"):   # converted: B / B' only, turned into reserves
+            p[f"fed_{t}_{k}_bn"] = zero.copy()
+    return p
+
+
+def total(place, pattern):
+    """Sum a per-type line over the three loan types, e.g. total(p, "unpledged_{}_bn")."""
+    return sum(place[pattern.format(t)] for t in LOAN_TYPES)
+
+
+def fed_loans_of_type(place, t):
+    return (place[f"fed_{t}_baseline_bn"] + place[f"fed_{t}_from_unpledged_bn"]
+            + place[f"fed_{t}_from_fhlb_bn"] - place[f"fed_{t}_converted_bn"])
 
 
 def fed_loans(place):
     """All eligible loans now at the Fed (face value)."""
-    return (place["fed_loans_baseline_bn"] + place["fed_loans_from_unpledged_bn"]
-            + place["fed_loans_from_fhlb_bn"] - place["fed_loans_converted_bn"])
+    return sum(fed_loans_of_type(place, t) for t in LOAN_TYPES)
 
 
 def loan_capacity(place):
     """Lendable value of loans at the Fed: the only collateral that can earn C's credit (contract 2d)."""
-    return fed_loans(place) * place["lendable_per_loan"]
+    return sum(fed_loans_of_type(place, t) * place["loan_margins"][t] for t in LOAN_TYPES)
+
+
+def unpledged_capacity(place):
+    """Lendable value of eligible loans pledged nowhere (usable at the window only from day 11)."""
+    return sum(place[f"unpledged_{t}_bn"] * place["loan_margins"][t] for t in LOAN_TYPES)
 
 
 def securities_capacity(place, margins):
@@ -65,15 +87,23 @@ def prepositioned_capacity(place, margins):
     return loan_capacity(place) + securities_capacity(place, margins)
 
 
+def loan_pool(pool):
+    """A loan pool name -> (source, loan types). "unpledged_loans" is every type at the bank's
+    mix; "fhlb_ci" is C&I only; "unpledged_resi_cre" is residential and CRE together."""
+    source, rest = pool.split("_", 1)
+    return source, (LOAN_TYPES if rest == "loans" else tuple(rest.split("_")))
+
+
 def pool_caps(banks, place, margins, order):
     """Lendable value each pool could still add, one column per pool, in the order given."""
-    caps = {
-        "level2a": (securities_mv(banks, "level2a") - place["fed_level2a_mv_bn"]) * margins["level2a"],
-        "level1": (securities_mv(banks, "level1") - place["fed_level1_mv_bn"]) * margins["level1"],
-        "unpledged_loans": place["unpledged_loans_bn"] * place["lendable_per_loan"],
-        "fhlb_loans": place["fhlb_loans_bn"] * place["lendable_per_loan"],
-    }
-    return np.column_stack([caps[k] for k in order])
+    cols = []
+    for pool in order:
+        if pool in SECURITY_CLASSES:
+            cols.append((securities_mv(banks, pool) - place[f"fed_{pool}_mv_bn"]) * margins[pool])
+        else:
+            source, types = loan_pool(pool)
+            cols.append(sum(place[f"{source}_{t}_bn"] * place["loan_margins"][t] for t in types))
+    return np.column_stack(cols)
 
 
 def fill_in_order(need, caps):
@@ -89,17 +119,24 @@ def fill_in_order(need, caps):
 
 
 def move_to_fed(banks, place, taken, margins, order):
-    """Move the taken lendable value to the Fed, pool by pool; returns a new placement."""
-    p = {k: v.copy() for k, v in place.items()}
+    """Move the taken lendable value to the Fed, pool by pool; returns a new placement.
+
+    From a loan pool holding several types, the same share of each type's holding moves
+    (pro rata to holdings), so a pool at the bank's mix stays at the bank's mix.
+    """
+    p = {k: (v.copy() if isinstance(v, np.ndarray) else v) for k, v in place.items()}
+    caps = pool_caps(banks, place, margins, order)
     for j, pool in enumerate(order):
         lendable = taken[:, j]
         if pool in SECURITY_CLASSES:
             p[f"fed_{pool}_mv_bn"] += lendable / margins[pool]
-        else:
-            face = lendable / p["lendable_per_loan"]
-            source = "unpledged" if pool == "unpledged_loans" else "fhlb"
-            p[f"{source}_loans_bn"] -= face   # Home Loan Bank capacity falls one for one (Clarification 4)
-            p[f"fed_loans_from_{source}_bn"] += face
+            continue
+        source, types = loan_pool(pool)
+        share = np.divide(lendable, caps[:, j], out=np.zeros_like(lendable), where=caps[:, j] > 0)
+        for t in types:
+            face = share * place[f"{source}_{t}_bn"]
+            p[f"{source}_{t}_bn"] -= face   # Home Loan Bank capacity falls one for one (Clarification 4)
+            p[f"fed_{t}_from_{source}_bn"] += face
     return p
 
 

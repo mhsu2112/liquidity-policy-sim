@@ -55,17 +55,6 @@ def load_information_settings(path=INFO_SETTINGS_PATH):
 
 # ---------------------------------------------------------------- static rules (no episode needed)
 
-def routine_rate(policy, cfg, uptake=None):
-    """Contract 3a: routine draws per bank per quarter under a policy.
-
-    This is the ONLY place a policy name enters the information rules.
-    """
-    rb = cfg["routine_borrowing"]
-    if policy == "C":
-        return uptake * rb["c_usage_draws_per_quarter"]
-    return rb["rate_by_policy"][policy]
-
-
 def effective_stigma(sigma, s, r):
     """Contract 3a: effective stigma = market stigma x e^(-s x r)."""
     return np.asarray(sigma, float) * routine_discount(s, r)
@@ -173,8 +162,10 @@ def start_information(st, cfg, stigma, s, r, supervision, randoms, routes_off, s
     st["inference_due"] = {(o, k): np.zeros((n, width)) for o in INFERENCE_OBSERVERS for k in INFERENCE_KINDS}
 
     st["disclosure_step"] = spd * (rt["ratio_disclosure"]["day"] - 1)
+    # The disclosed LCR includes Option C's credit, if any (Clarification 12 item 7).
     lcr = compute_lcr(st)
-    st["lcr_start"], st["lcr_disclosing"] = lcr["lcr"], lcr["lcr_status"] == "required"
+    st["lcr_start"] = (lcr["hqla_bn"] + st.get("credit_left_bn", 0.0)) / lcr["calibrated_outflows_bn"]
+    st["lcr_disclosing"] = lcr["lcr_status"] == "required"
     st["ratio_disclosed"] = np.zeros(n, bool)
     st["events"] = []
 

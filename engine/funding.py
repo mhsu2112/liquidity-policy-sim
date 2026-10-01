@@ -10,7 +10,9 @@ sale), Home Loan Bank, discount window.
     1      same half-day         reserves above floor; repo of Level 1, then
                                  Level 2A, within the bank's same-day repo line
                                  (Clarifications 6-7); Home Loan Bank line;
-                                 window on prepositioned loans, if tested
+                                 window on prepositioned loans, if tested;
+                                 window on prepositioned Level 1, then Level 2A
+                                 securities, if tested (Clarification 12)
     2      next day              repo beyond the line (Clarification 7);
                                  sell Level 1; Home Loan Bank above the line;
                                  window on untested prepositioned loans,
@@ -33,10 +35,10 @@ import numpy as np
 import yaml
 
 from engine.balance_sheet import ONE_DOLLAR_BN, total_assets
+from engine.collateral import (LOAN_TYPES, SECURITY_CLASSES, loan_capacity, start_placement,  # noqa: F401
+                               total, unpledged_capacity)
 
 FUNDING_SETTINGS_PATH = Path(__file__).resolve().parent.parent / "config" / "funding.yaml"
-LOAN_TYPES = ("resi", "cre", "ci")
-SECURITY_CLASSES = ("level1", "level2a")
 
 # The sources in waterfall order: (name, plain-English label). The lag of each
 # comes from config/funding.yaml (see _lags). Sorting by lag, keeping this order
@@ -51,6 +53,8 @@ SOURCES = [
     ("fhlb_line", "Home Loan Bank line"),
     ("fhlb_above_line", "Home Loan Bank above the line"),
     ("dw_tested", "discount window, tested prepositioned loans"),
+    ("dw_tested_level1", "discount window, tested prepositioned Level 1 securities"),
+    ("dw_tested_level2a", "discount window, tested prepositioned Level 2A securities"),
     ("dw_untested", "discount window, untested prepositioned loans"),
     ("dw_level1", "discount window, Level 1 securities"),
     ("dw_level2a", "discount window, Level 2A securities"),
@@ -61,7 +65,8 @@ LABELS = dict(SOURCES)
 BORROWING_LINE = {"repo_level1": "repo_bn", "repo_level2a": "repo_bn",
                   "repo_next_level1": "repo_bn", "repo_next_level2a": "repo_bn",
                   "fhlb_line": "fhlb_advances_bn", "fhlb_above_line": "fhlb_advances_bn",
-                  "dw_tested": "dw_loans_bn", "dw_untested": "dw_loans_bn", "dw_level1": "dw_loans_bn",
+                  "dw_tested": "dw_loans_bn", "dw_untested": "dw_loans_bn",
+                  "dw_tested_level1": "dw_loans_bn", "dw_tested_level2a": "dw_loans_bn", "dw_level1": "dw_loans_bn",
                   "dw_level2a": "dw_loans_bn", "dw_unpledged": "dw_loans_bn"}
 
 
@@ -85,6 +90,7 @@ def _lags(s):
     return {"reserves": 0, "repo_level1": repo, "repo_level2a": repo,
             "repo_next_level1": repo_next, "repo_next_level2a": repo_next,
             "fhlb_line": 0, "dw_tested": dw["prepositioned_tested"],
+            "dw_tested_level1": dw["prepositioned_tested"], "dw_tested_level2a": dw["prepositioned_tested"],
             "sale_level1": sec["level1"], "fhlb_above_line": fhlb["above_line_lag_steps"],
             "dw_untested": dw["prepositioned_untested"], "dw_level1": dw["securities"],
             "dw_level2a": dw["securities"], "sale_level2a": sec["level2a"],
@@ -97,11 +103,13 @@ def waterfall_order(s):
     return sorted((name for name, _ in SOURCES), key=lambda name: lags[name])  # sort is stable
 
 
-def start_state(banks, s=None, tested=None):
+def start_state(banks, s=None, tested=None, placement=None):
     """Set up each bank before the first step.
 
     `tested` (one True/False per bank) says whether the bank's prepositioned
     collateral was tested in the last 90 days. Clarification 4: it starts untested.
+    `placement` (from a policy setup, engine/policies.py) says where collateral sits;
+    without it, the status quo of Clarification 4.
     """
     s = s or load_funding_settings()
     n = len(banks["bank_id"])
@@ -132,15 +140,15 @@ def start_state(banks, s=None, tested=None):
     st["repo_line_left_bn"] = line_share * banks["total_assets_bn"]
     st["repo_access"] = np.ones(n)
 
-    # Collateral pools (Clarification 4): eligible loans split between the Fed,
-    # the Home Loan Bank and nowhere, each pool holding the bank's own loan mix.
-    place, margins = s["collateral_placement"], s["discount_window"]["margins"]
-    eligible = banks["eligible_loans_bn"]
-    loans = banks["loans_bn"]
-    lendable_per_eligible = sum(margins[t] * banks[f"{t}_loans_bn"] / loans for t in LOAN_TYPES)
-    st["dw_prepositioned_left_bn"] = place["fed_prepositioned"] * eligible * lendable_per_eligible
-    st["dw_unpledged_left_bn"] = place["unpledged"] * eligible * lendable_per_eligible
-    st["fhlb_pledged_loans_bn"] = place["fhlb_pledged"] * eligible
+    # Collateral pools: eligible loans at the Fed, at the Home Loan Bank and nowhere
+    # (Clarification 4, or the policy's placement), plus securities prepositioned at the
+    # Fed (Clarification 12). Window pools are held as lendable value.
+    place = start_placement(banks, s) if placement is None else placement
+    st["dw_prepositioned_left_bn"] = loan_capacity(place).copy()
+    st["dw_unpledged_left_bn"] = unpledged_capacity(place).copy()
+    st["fhlb_pledged_loans_bn"] = total(place, "fhlb_{}_bn").copy()
+    for c in SECURITY_CLASSES:   # market value at the Fed not yet borrowed against
+        st[f"dw_prepos_mv_{c}_bn"] = place[f"fed_{c}_mv_bn"].copy()
     st["fhlb_total_left_bn"] = s["fhlb"]["advance_rate"] * st["fhlb_pledged_loans_bn"]
     st["fhlb_line_left_bn"] = np.minimum(s["fhlb"]["line_share_of_assets"] * banks["total_assets_bn"],
                                          st["fhlb_total_left_bn"])
@@ -223,6 +231,14 @@ def _capacity(st, name):
         return np.where(st["tested"], st["dw_prepositioned_left_bn"], 0.0)
     if name == "dw_untested":
         return np.where(st["tested"], 0.0, st["dw_prepositioned_left_bn"])
+    if name in ("dw_tested_level1", "dw_tested_level2a"):
+        # Prepositioned and tested: the same half-day (contract 7). The lower of what is
+        # still prepositioned and what is not yet sold, repo'd or pledged, so repo and sales
+        # use securities that are not prepositioned first (Clarification 12 item 4).
+        # Untested prepositioned securities wait a day, like any security (dw_level1 / dw_level2a).
+        c = name[len("dw_tested_"):]
+        mv = np.minimum(st[f"dw_prepos_mv_{c}_bn"], np.maximum(_saleable_mv(st, c), 0))
+        return np.where(st["tested"], mv * m[c], 0.0)
     if name in ("dw_level1", "dw_level2a"):
         c = name[3:]
         return np.maximum(_saleable_mv(st, c), 0) * m[c]
@@ -274,13 +290,18 @@ def _reduce_source(st, name, cash):
     elif name in ("dw_level1", "dw_level2a"):
         c = name[3:]
         st[f"dw_pledged_mv_{c}_bn"] += cash / st["settings"]["discount_window"]["margins"][c]
+    elif name in ("dw_tested_level1", "dw_tested_level2a"):
+        c = name[len("dw_tested_"):]
+        mv = cash / st["settings"]["discount_window"]["margins"][c]
+        st[f"dw_pledged_mv_{c}_bn"] += mv
+        st[f"dw_prepos_mv_{c}_bn"] -= mv
     elif name == "dw_unpledged":
         st["dw_unpledged_left_bn"] -= cash
 
 
 # Window sources a forced draw may use, fastest first. Loans not prepositioned
 # are left out: they take more than 10 days (contract section 7).
-FORCED_DW_SOURCES = ("dw_tested", "dw_untested", "dw_level1", "dw_level2a")
+FORCED_DW_SOURCES = ("dw_tested", "dw_tested_level1", "dw_tested_level2a", "dw_untested", "dw_level1", "dw_level2a")
 
 
 def force_dw_draw(st, amount_bn, t=None):

@@ -1,8 +1,9 @@
 """The liquidity coverage ratio under current rules (session M1.2).
 
 Follows contract section 7 (HQLA haircuts and the 40% cap) and docs/amendments.md
-Clarification 3 (outflow rates, no inflows). No policy credit of any kind is
-included here; discount window recognition is added in M1.7.
+Clarification 3 (outflow rates, no inflows), with encumbered securities and repo
+outflows from Clarification 12. No policy credit of any kind is included here;
+Option C's credit is added on top in engine/lcr_credit.py.
 
 All 40 banks are calculated at once: every quantity is an array, one entry per bank.
 """
@@ -34,11 +35,13 @@ def compute_lcr(banks, s=None):
     level1_mv = banks["level1_securities_bn"] * (1 - loss_rate)
     level2a_mv = banks["level2a_securities_bn"] * (1 - loss_rate)
 
-    # 1b. Securities encumbered by repo stop counting as HQLA (Clarification 6).
-    #     Zero for a bank that has not repo'd anything. Securities pledged at the
-    #     window are not removed here; that is part of M1.7.
-    level1_mv = level1_mv - banks.get("repo_pledged_mv_level1_bn", 0.0)
-    level2a_mv = level2a_mv - banks.get("repo_pledged_mv_level2a_bn", 0.0)
+    # 1b. Encumbered securities stop counting as HQLA: those pledged for repo
+    #     (Clarification 6) and those the window has lent against (Clarification 12
+    #     item 5). Zero for a bank that has done neither. Securities prepositioned at
+    #     the Fed but not borrowed against stay HQLA (contract 2d).
+    for enc in ("repo_pledged_mv", "dw_pledged_mv"):
+        level1_mv = level1_mv - banks.get(f"{enc}_level1_bn", 0.0)
+        level2a_mv = level2a_mv - banks.get(f"{enc}_level2a_bn", 0.0)
 
     # 2. Level 1 HQLA: reserves at the Fed plus Level 1 securities, no haircut.
     level1_hqla = (banks["reserves_bn"] + level1_mv) * (1 - h["level1_haircut"])
@@ -56,9 +59,14 @@ def compute_lcr(banks, s=None):
 
     # 6-7. Thirty-day outflows at the agreed run-off rates, less inflows
     #      (none are modeled; the 75% inflow cap is kept so the rule is complete).
+    #      Repo outstanding is secured funding maturing within 30 days, at the rate for
+    #      its collateral (Clarification 12 item 6). Discount window loans add no outflow
+    #      in v1: an open item (Clarification 12 item 6).
     outflows = (rates["insured_deposits"] * banks["insured_deposits_bn"]
                 + rates["uninsured_deposits"] * banks["uninsured_deposits_bn"]
-                + rates["stwf"] * banks["stwf_bn"])
+                + rates["stwf"] * banks["stwf_bn"]
+                + rates["repo_level1"] * banks.get("repo_out_level1_bn", 0.0)
+                + rates["repo_level2a"] * banks.get("repo_out_level2a_bn", 0.0))
     inflows = s["inflows"]["loan_inflow_rate"] * banks["loans_bn"]
     net_outflows = outflows - np.minimum(inflows, s["inflows"]["cap_share_of_outflows"] * outflows)
 

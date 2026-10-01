@@ -20,7 +20,8 @@ from engine.balance_sheet import check_balances
 from engine.banks import generate_banks
 from engine.episode import draw_noise, episode_step, load_yaml, start_episode
 from engine.information import (NEVER, draw_info_randoms, effective_stigma, load_information_settings,
-                                read_as_distress, routine_rate, weekly_act_step, weekly_revealing)
+                                read_as_distress, weekly_act_step, weekly_revealing)
+from engine.policies import routine_rate   # moved here from engine.information in M1.7b (Clarification 12 item 8)
 
 BANKS = generate_banks()
 AGENTS = load_yaml("agents.yaml")

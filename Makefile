@@ -48,6 +48,6 @@ demo-info: $(VENV)/.installed
 demo-episode: $(VENV)/.installed
 	$(PY) -m engine.demo_episode
 
-## make policy-table: each bank's starting position under A, B, C, C' and E (static; no stress runs)
+## make policy-table: each bank's starting position under A, B, B', C, C' and E (static; no stress runs)
 policy-table: $(VENV)/.installed
 	$(PY) -m engine.write_policy_table

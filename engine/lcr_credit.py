@@ -20,6 +20,7 @@ All banks at once: every quantity is an array with one entry per bank.
 
 import numpy as np
 
+from engine.lcr import compute_lcr
 from engine.collateral import (SECURITY_CLASSES, add_loans, fill_in_order, loan_capacity, move_to_fed,
                                pool_caps)
 
@@ -99,6 +100,16 @@ def credit(limits, eligible):
 def credit_after_draws(credit_bn, drawn_bn):
     """Contract 2d: unused-capacity credit falls by the amount drawn, never below zero."""
     return np.maximum(np.asarray(credit_bn) - np.asarray(drawn_bn), 0.0)
+
+
+def reported_lcr(st, lcr_s=None):
+    """The LCR a bank reports at this moment of an episode: (HQLA + credit left) / calibrated outflows.
+
+    HQLA leaves out securities pledged for repo or at the window (engine/lcr.py). With no
+    credit (every policy but C and C'), it is the plain LCR. Reporting only: no agent reads it.
+    """
+    lcr = compute_lcr(st, lcr_s)
+    return (lcr["hqla_bn"] + st.get("credit_left_bn", 0.0)) / lcr["calibrated_outflows_bn"]
 
 
 def release_hqla(banks, amount, floor_bn, order):

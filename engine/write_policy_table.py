@@ -1,8 +1,9 @@
 """Write each bank's starting position under each policy (run with `make policy-table`).
 
-One row per bank per policy (40 banks x 5 policies = 200 rows) in
+One row per bank per policy (40 banks x 6 policies = 240 rows) in
 outputs/policy_table.csv. Static calculations only: no stress episode runs
-(project Rule 2). Policy names: A, B, C, C_prime (C without the usage multiple), E.
+(project Rule 2). Policy names: A, B, B_prime (B counting loans only; Amendment 3),
+C, C_prime (C without the usage multiple), E.
 
 Collateral columns are face value (securities at market value) unless they say
 "lendable", which is after the Fed's margin (contract 2b).
@@ -11,7 +12,7 @@ Collateral columns are face value (securities at market value) unless they say
 import numpy as np
 
 from engine.banks import SETTINGS_PATH, generate_banks, load_settings
-from engine.collateral import fed_loans
+from engine.collateral import LOAN_TYPES, fed_loans, fed_loans_of_type
 from engine.funding import BEHAVIOR_SETTINGS_PATH, FUNDING_SETTINGS_PATH, load_funding_settings
 from engine.information import INFO_SETTINGS_PATH, load_information_settings
 from engine.lcr import LCR_SETTINGS_PATH, load_lcr_settings
@@ -19,7 +20,7 @@ from engine.policies import POLICY_SETTINGS_PATH, SWITCHES, draw_policy_randoms,
 from engine.write_banks import ROOT, stamps, write_csv
 
 DEFAULT_OUT = ROOT / "outputs" / "policy_table.csv"
-POLICY_ORDER = ["A", "B", "C", "C_prime", "E"]
+POLICY_ORDER = ["A", "B", "B_prime", "C", "C_prime", "E"]
 
 
 def money(x):
@@ -50,6 +51,7 @@ def policy_columns(banks, s):
         "fed_loans_from_fhlb_bn": money(p["fed_loans_from_fhlb_bn"]),
         "fed_loans_turned_into_reserves_bn": money(p["fed_loans_converted_bn"]),
         "fed_loans_total_bn": money(fed_loans(p)),
+        **{f"fed_{t}_loans_bn": money(fed_loans_of_type(p, t)) for t in LOAN_TYPES},
         "fed_level2a_securities_mv_bn": money(p["fed_level2a_mv_bn"]),
         "fed_level1_securities_mv_bn": money(p["fed_level1_mv_bn"]),
         "loans_still_unpledged_bn": money(p["unpledged_loans_bn"]),
@@ -59,10 +61,12 @@ def policy_columns(banks, s):
         "tested_last_90_days": yes_no(s["tested"]),
         "test_draws_per_year": s["test_draws_per_year"].astype(str),
         "routine_borrowing_rate": ratio(s["routine_rate"]),
-        # Option B (contract 2c), reported under every policy.
+        # Option B (contract 2c), reported under every policy; B' counts loans only (Amendment 3).
+        "five_day_ratio_counts": np.full(n, s["five_day_counts"]),
         "five_day_ratio": ratio(s["five_day_ratio"]),
         "five_day_collateral_shortfall_bn": money(s["five_day_shortfall_bn"]),
         "b_extra_reserves_bn": money(s["extra_reserves_bn"]),
+        "b_non_compliant": yes_no(s["non_compliant"]),            # Amendment 3 item 2
         "b_gap_left_after_all_loans_bn": money(s["five_day_unmet_bn"]),
         # LCR and Option C (contract 2d).
         "lcr_status": np.where(no_lcr, "not required", "required"),
@@ -110,4 +114,4 @@ def write_policy_table(out_path=DEFAULT_OUT):
 
 if __name__ == "__main__":
     path, rows = write_policy_table()
-    print(f"Wrote {path.relative_to(ROOT)}: {rows} rows (40 banks x 5 policies). No stress runs.")
+    print(f"Wrote {path.relative_to(ROOT)}: {rows} rows (40 banks x {len(POLICY_ORDER)} policies). No stress runs.")

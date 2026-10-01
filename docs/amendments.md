@@ -407,3 +407,85 @@ Format for each entry:
   C′ has no draws and A's rate and tested status; B's ratio ≥ 100% (and the least that passes); full-run sensitivity;
   B, C and a loss-realizing release worked by hand; E's collateral equals B's; same seed, same table; balance sheets
   balance under every policy. `make policy-table` → `outputs/policy_table.csv`.
+
+## 2026-10-01 — Amendment 3: add named variant B′ (loan collateral only); non-compliant banks under B (before session M1.7b)
+- **What changed:**
+  1. **B stays exactly as registered.** A new named variant **B′** is added and reported alongside it. B′ uses B's
+     five-day ratio, but only post-haircut capacity against **loans** prepositioned at the Fed counts toward it.
+     Securities already count as liquid assets, so they do not count again, mirroring Option C's eligibility rule
+     (contract 2d). Under B′ banks preposition loans cheapest first by contract section 6 rates (C&I, then residential
+     and CRE), in Clarification 4 order (unpledged, then Home Loan Bank-pledged), then hold extra reserves funded as in
+     Clarification 11 item 2. Quarterly $50m tests; tested; routine borrowing rate 1.0. E is unchanged (it mirrors
+     registered B's collateral), so B′ has no matching mandate-only variant in v1.
+  2. **Banks that cannot meet B's or B′'s ratio** even after converting every loan run **non-compliant**: they operate
+     below 100% with the remaining gap reported and flagged in every output where it occurs. Under the registered
+     settings no bank is non-compliant under B; three SVB-like banks are under the full-run sensitivity.
+  3. Policies compared in v1 become A, B, B′, C, C′ and E.
+- **Why:** under the registered cheapest-first rule, every bank meets B with securities that could already raise cash by
+  same-day repo, so B never mobilizes loan collateral while C does. B′ shows what B would do if it mobilized loans, so
+  a difference between B and C is not driven by the cost rule alone. The sponsor proposed a version of B; keeping B as
+  registered and adding B′ as a labelled variant avoids redefining the sponsor's own option after seeing how it is met.
+- **Seen results before the change?** No stress or policy-performance result exists. The M1.7 static policy table
+  (who prepositions what, ratios and credit sizes; no stress run) showed B met entirely by securities, which prompted
+  this.
+- **Hypotheses:** none is pre-registered for B′. Any B′ result is reported as exploratory.
+- **Evidence:** session M1.7b (rules in Clarification 12). `config/policies/policies.yaml` → `B_prime` (B's switches;
+  `five_day_counts: loans_only`; C&I first, then residential and CRE together, each unpledged then Home Loan Bank);
+  `config/information.yaml` → `B_prime: 1.0`. `tests/test_policies.py`: B′ counts loans only (moving every security to
+  the Fed leaves its ratio unchanged), moves no securities, follows the loan order, is tested at rate 1.0 with quarterly
+  tests, and passes unless flagged; B and B′ non-compliant banks are flagged with the exact gap under the full-run
+  sensitivity; no bank is non-compliant under registered B. `make policy-table` adds B′ rows and a `b_non_compliant`
+  column (240 rows); episode outcomes carry `non_compliant` and `five_day_gap_bn`. Static, reported, not results: under
+  B′ all 10 SVB-like banks hold extra reserves after prepositioning every eligible loan (SVB-03 also turns some of its
+  loans at the Fed into reserves); no bank is non-compliant at the registered settings. Under the full-run sensitivity
+  B has 3 non-compliant banks (SVB-04, -08, -09) and B′ has all 10 SVB-like banks (ratios 46–64%).
+
+## 2026-10-01 — Clarification 12: B′ and connecting the policies to the episode (session M1.7b)
+- **What changed:** implementation rules for Amendment 3 and for running episodes from each policy's setup (closes
+  Clarification 11 item 10). No value or range in the contract changes. Code in `engine/policies.py`,
+  `engine/collateral.py`, `engine/five_day.py`, `engine/funding.py`, `engine/episode.py`, `engine/lcr.py`,
+  `engine/lcr_credit.py`, `engine/outcomes.py`.
+  1. **B′ loan order** (owner's choice): type first, then pool. C&I unpledged → C&I at the Home Loan Bank → residential
+     and CRE unpledged → residential and CRE at the Home Loan Bank. Residential and CRE (both 20bp, contract 6) move
+     together, the same share of each holding. Loans are now tracked by type in every pool; B, E and C still move loans
+     at the bank's own mix, so their M1.7 figures are unchanged.
+  2. **Non-compliance** (Amendment 3 item 2): flag `non_compliant` and the gap left (`five_day_gap_bn`), in the policy
+     table and episode outcomes.
+  3. **Episodes start from the setup:** balance sheet (released HQLA, extra reserves), collateral at the Fed, tested
+     status, routine borrowing rate and C's credit. Without a setup, the episode builds policy A through the same setup
+     builder; every policy-A result is identical to before (all earlier tests pass, and `make demo-episode` output is
+     unchanged apart from four added columns). If a caller sets r by hand (demos, tests), tested status is drawn from
+     that r as in Clarification 10 item 4.
+  4. **Window on prepositioned securities:** two same-half-day sources, tested prepositioned Level 1 then Level 2A,
+     placed after the window on tested loans (owner's choice), open only to tested banks. Capacity is the lower of the
+     prepositioned value not yet borrowed against and the securities not yet sold, repo'd or pledged, × 96%, so repo and
+     sales use securities that are not prepositioned first. Untested prepositioned securities use the existing next-day
+     window source (contract 7). The bank's ahead-of-need request uses the same fastest-first order.
+  5. **HQLA:** securities the window has lent against leave HQLA, as repo'd securities already did. Prepositioned
+     securities not borrowed against stay HQLA (contract 2d).
+  6. **Repo outflow in the LCR:** 0% for repo against Level 1 and 15% against Level 2A (12 CFR 249.32(j)(1)(i)–(ii)),
+     in `config/lcr.yaml`. **Open item:** discount window loans add no LCR outflow in v1 (owner's choice). Contract 2d says
+     existing treatment applies, but its rate was not confirmed in this session. Nothing in the episode reads the
+     in-episode LCR, so this affects reporting only.
+  7. **C's credit in the episode:** starts at the setup's credit, with the 30% ceiling when the stress-trigger switch is
+     on (it fires on day 1); release stays sized on ordinary credit. After each half-day, credit = max(0, starting credit
+     − total window borrowing). Reported LCR = (HQLA + credit left) ÷ calibrated outflows (`lcr_credit.reported_lcr`).
+     The day-15 disclosure (Clarification 9) carries the starting reported LCR, credit included, and the five-day ratio;
+     still no confidence effect.
+  8. **Only the setup builder takes a policy name.** `routine_rate` moved from `engine/information.py` to
+     `engine/policies.py`. A check over `engine/` and `agents/` enforces that no other function takes a policy name,
+     compares to one, or passes one to anything but `policy_setup`.
+  9. **Test changes approved by the owner (Rule 4):** `tests/test_information.py` imports `routine_rate` from its new
+     place (no assertion changed); `tests/test_funding.py::test_lags_match_contract` gains the two new sources at lag 0
+     (no existing entry changed); `tests/test_policies.py` covers six policies (240 table rows) and B′'s switches.
+- **Why:** Amendment 3 adds B′ and non-compliance; policies must run through the same engine before M3, and the two
+  M1.3b gaps (window-encumbered securities in HQLA, no repo outflow) had to close before any LCR is reported mid-episode.
+- **Seen results before the change?** No stress or policy-performance results exist. No episode ran under any policy
+  but A beyond a single waterfall step with a forced withdrawal and no behavior, or one episode step with no shock;
+  no outcome was printed or compared. Items 1, 4 and 6 were chosen by the owner before any code ran.
+- **Evidence:** `tests/test_wiring.py`: every policy's starting episode matches its policy-table row; balance sheets
+  balance at the start and after one step under every policy; tested prepositioned securities pay the same half-day,
+  only after tested loans are used; untested ones wait a day; window-pledged securities leave HQLA and unused ones stay;
+  repo outflows of 0% / 15%; the trigger lifts C's ceiling to 30% (setup and episode start); credit falls one for one
+  with a forced draw; the disclosed LCR includes credit; no policy name outside the setup builder (AST check).
+  `make test` (189 checks); `make policy-table` (240 rows).

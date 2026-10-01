@@ -20,7 +20,12 @@ counts: engine/outcomes.py reads every result at the end half-day.
 
 Every run that is not a demo must supply its random numbers up front
 (`info_randoms`, from engine.information.draw_info_randoms); a run without them
-raises an error. Policy A only until session M1.7.
+raises an error.
+
+From session M1.7b every episode starts from a policy setup (engine/policies.py):
+balance sheet, collateral at the Fed, tested status, routine borrowing rate and
+Option C's credit (Clarification 12 item 3). Without one, it builds the status quo
+(policy A) through the same setup builder. Nothing here knows a policy's name.
 """
 
 from pathlib import Path
@@ -34,7 +39,9 @@ from agents.lenders import morning_decisions
 from engine.balance_sheet import ONE_DOLLAR_BN
 from engine.funding import force_dw_draw, load_funding_settings, start_state, step
 from engine.information import (BORROWING_ROUTES, NEVER, deliver, load_information_settings, no_information_randoms,
-                                observe, routine_rate, start_information, tested_recently)
+                                observe, start_information, tested_recently)
+from engine.lcr_credit import credit_after_draws
+from engine.policies import policy_setup
 
 CONFIG = Path(__file__).resolve().parent.parent / "config"
 
@@ -61,8 +68,10 @@ def draw_noise(seed, rows, steps, agents):
 def start_episode(banks, shock, noise, funding=None, agents=None, behavior=None, tested=None,
                   info=None, stigma=0.0, strength_s=None, routine=None, supervision=None,
                   info_randoms=None, routes_off=(), forced_draws=None, decision=None,
-                  distress_shock=None, demo=False):
+                  distress_shock=None, demo=False, setup=None):
     """Set up every row. Options, one value or one per row:
+
+    setup         a policy setup for these rows (engine.policies.policy_setup); default: the status quo
 
     stigma        market stigma, the chance a known draw is read as distress (contract 5 grid)
     strength_s    routine-borrowing effect strength s (default: config/information.yaml)
@@ -90,11 +99,24 @@ def start_episode(banks, shock, noise, funding=None, agents=None, behavior=None,
     agents = agents or load_yaml("agents.yaml")
     behavior = behavior or load_yaml("behavior.yaml")
     decision = decision or load_yaml("decision.yaml")
-    r = routine_rate("A", info) if routine is None else routine
+    if setup is None:   # the status quo, built by the one setup builder (Clarification 12 item 3)
+        test_u = info_randoms.get("test_u", np.ones(n))   # a `tested` override needs no test_u
+        setup = policy_setup(banks, "A", randoms={"test_u": test_u}, fs=funding, info=info)
+    banks = setup["banks"]
+    r = setup["routine_rate"] if routine is None else routine
     if tested is None:
-        tested = tested_recently(info_randoms["test_u"], np.broadcast_to(np.asarray(r, float), (n,)))
+        # The setup's tested status, unless a caller sets r by hand (demos, tests); then it is
+        # drawn from that r exactly as in M1.6 (Clarification 10 item 4).
+        tested = (setup["tested"] if routine is None
+                  else tested_recently(info_randoms["test_u"], np.broadcast_to(np.asarray(r, float), (n,))))
 
-    st = start_state(banks, funding, tested)
+    st = start_state(banks, funding, tested, setup["placement"])
+    # Option C's credit (zero under every other policy) and B / B' non-compliance (Amendment 3).
+    st["credit_start_bn"] = setup["credit_bn"].copy()
+    st["credit_left_bn"] = setup["credit_bn"].copy()
+    st["non_compliant"] = setup["non_compliant"].copy()
+    st["five_day_gap_bn"] = setup["five_day_unmet_bn"].copy()
+    st["five_day_ratio_start"] = setup["five_day_ratio"].copy()
     _, steps = noise.shape
     st.update(agents=agents, behavior=behavior, noise=noise, decision_cfg=decision,
               shock=np.broadcast_to(np.asarray(shock, float), (n,)).copy(),
@@ -200,6 +222,8 @@ def episode_step(st):
     refused_bn = sum(v for k, v in rec.items() if k.startswith("outflow_repo_out_") or k == "outflow_stwf_bn")
     observe(st, t, drawn, sold, np.zeros(n) + refused_bn)
     deliver(st, t, "end")
+    # Contract 2d: Option C's credit falls by every dollar actually borrowed at the window.
+    st["credit_left_bn"] = credit_after_draws(st["credit_start_bn"], st["dw_drawn_total_bn"])
 
     # What outcomes need, counted only while the row's episode is running.
     st["first_shortfall_seen_step"] = np.where(active & dec["shortfall_seen"] & (st["first_shortfall_seen_step"] == NEVER),
