@@ -64,3 +64,22 @@ benchmark:                    # make benchmark: policy A only
   other_seed: 20261004        # shows that a different seed changes results
   runs_per_bank: 250          # 40 x 250 = 10,000 episodes at once
   shock: 0.50                 # S1 news shock (Clarification 15 item 1)
+
+# What M3 reports from these runs (no output adds a run). Contract 4 and PRD metrics, plus the
+# pre-registered additions. Only the first block feeds the lead / tie / trade-off rule (contract 4).
+outputs:
+  scored:                     # contract 4: paired differences with 90% intervals; the lead / tie / trade-off rule
+    - survival_rate
+    - liquidity_shortfall
+    - official_support
+    - annual_cost             # cost model (M1.8, Clarification 13)
+    - effective_stigma        # contract 3a
+  reported:                   # contract 4 and PRD; not part of the lead rule
+    - routine_borrowing_frequency
+    - hesitation_gap
+    - false_comfort           # H5
+    - needless_borrowing      # S2; H8 scored per Clarifications 17 (item 3) and 18 (item 1)
+    - buffer_gap              # C and C' only
+    - timing_band_shares      # Clarification 18 item 2: per policy x scenario x bank type
+    - timing_only_upper_bound # Amendment 6: per policy x cell, labelled "upper bound on timing-only failures";
+                              # not used in the lead / tie / trade-off rule; no hypothesis is scored against it

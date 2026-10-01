@@ -25,6 +25,10 @@ every row moves together).
                         "pure timing" (owed no more than cash already agreed and arriving by the
                         next day, equity positive), "partly covered", "not covered", or
                         "equity below zero"; blank if the run did not fail
+    timing_only_upper_bound  Amendment 6 grace-rule count: a failed run whose unpaid amount at
+                        failure is covered by cash already agreed and arriving by the next
+                        morning, with equity >= 0. An UPPER BOUND on timing-only failures;
+                        never used in the lead / tie / trade-off rule or to score a hypothesis
 """
 
 import numpy as np
@@ -70,7 +74,14 @@ def episode_outcomes(st):
         "owed_at_failure_bn": st["owed_at_failure_bn"],
         "on_way_at_failure_bn": st["on_way_at_failure_bn"],
         "timing_band": timing_band(st),
+        "timing_only_upper_bound": timing_only(st),
     }
+
+
+def timing_only(st):
+    """Amendment 6: failed, and the unpaid amount was covered by cash arriving by the next morning, equity >= 0."""
+    return ((st["end_state"] == FAILED) & (st["owed_at_failure_bn"] <= st["by_next_morning_at_failure_bn"])
+            & (st["equity_at_failure_bn"] >= 0))
 
 
 def timing_band(st):

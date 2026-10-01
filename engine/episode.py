@@ -150,6 +150,7 @@ def _start_tracking(st, cfg, n):
     # The funding-timing gap at the moment of failure (session M1.12; Clarification 18). Records only.
     st["owed_at_failure_bn"] = np.zeros(n)
     st["on_way_at_failure_bn"] = np.zeros(n)
+    st["by_next_morning_at_failure_bn"] = np.zeros(n)   # Amendment 6: the grace-rule count
     st["equity_at_failure_bn"] = np.full(n, np.nan)
 
 
@@ -179,6 +180,8 @@ def _check_end(st, t, rec, active):
     st["owed_at_failure_bn"] = np.where(newly_failed, rec["unpaid_end"], st["owed_at_failure_bn"])
     on_way = rec.get("on_way_next_day", np.zeros(len(failed)))   # absent in hand-made test records
     st["on_way_at_failure_bn"] = np.where(newly_failed, on_way, st["on_way_at_failure_bn"])
+    by_morning = rec.get("on_way_by_next_morning", np.zeros(len(failed)))
+    st["by_next_morning_at_failure_bn"] = np.where(newly_failed, by_morning, st["by_next_morning_at_failure_bn"])
     st["equity_at_failure_bn"] = np.where(newly_failed, st["equity_bn"], st["equity_at_failure_bn"])
     for mask, state in ((failed, FAILED), (stabilized, STABILIZED)):
         now = active & mask & (st["end_state"] == RUNNING)
@@ -237,6 +240,10 @@ def episode_step(st):
     # Cash already agreed and arriving within the next day (the next two half-days), from every
     # source, including what was asked for ahead of need (session M1.12). A record; nothing reads it.
     rec["on_way_next_day"] = sum(sched[:, t + 1:t + 3].sum(axis=1) for sched in st["incoming"].values())
+    # Amendment 6: cash already agreed and arriving by the next morning (from an afternoon, the next
+    # half-day; from a morning, this afternoon and the next morning). A record; nothing reads it.
+    last = t + 1 if t % st["settings"]["time"]["steps_per_day"] else t + 2
+    rec["on_way_by_next_morning"] = sum(sched[:, t + 1:last + 1].sum(axis=1) for sched in st["incoming"].values())
 
     # What outcomes need, counted only while the row's episode is running.
     st["first_shortfall_seen_step"] = np.where(active & dec["shortfall_seen"] & (st["first_shortfall_seen_step"] == NEVER),

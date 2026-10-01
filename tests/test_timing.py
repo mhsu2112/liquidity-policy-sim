@@ -74,3 +74,31 @@ def test_exposure_is_static(monkeypatch):
 
 def test_frozen_values_unchanged():
     assert frozen_fingerprint() == "05f9e763efc16772"
+
+
+# ---------------------------------------------------------------- Amendment 6: grace-rule count
+
+def test_by_next_morning_window():
+    # From a morning the window is this afternoon and the next morning (= the next two half-days);
+    # from an afternoon it is the next morning only (never more than the next two half-days).
+    one = {k: (np.repeat(v[:10], 5) if isinstance(v, np.ndarray) else v) for k, v in BANKS.items()}
+    n = len(one["bank_id"])
+    st = start_episode(one, 0.5, draw_noise(7, n, 12, AGENTS), info_randoms=draw_info_randoms(7, n))
+    recs = [episode_step(st) for _ in range(12)]
+    for t, r in enumerate(recs):
+        if t % 2 == 0:
+            np.testing.assert_array_equal(r["on_way_by_next_morning"], r["on_way_next_day"])
+        else:
+            assert np.all(r["on_way_by_next_morning"] <= r["on_way_next_day"] + 1e-12)
+    for i in np.flatnonzero(st["end_state"] == FAILED):
+        assert st["by_next_morning_at_failure_bn"][i] == recs[st["end_step"][i]]["on_way_by_next_morning"][i]
+
+
+def test_timing_only_flag_by_hand():
+    from engine.outcomes import timing_only
+    st = {"end_state": np.array([FAILED, FAILED, FAILED, FAILED, RUNNING]),
+          "owed_at_failure_bn": np.array([3.0, 3.0, 3.0, 3.0, 3.0]),
+          "by_next_morning_at_failure_bn": np.array([3.0, 2.9, 9.0, 9.0, 9.0]),
+          "equity_at_failure_bn": np.array([0.0, 1.0, -0.1, 1.0, 1.0])}
+    # covered with equity exactly 0: yes; not covered: no; negative equity: no; covered: yes; did not fail: no
+    assert list(timing_only(st)) == [True, False, False, True, False]

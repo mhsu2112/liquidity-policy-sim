@@ -153,6 +153,13 @@ never gets a weekend to mobilize collateral, as First Republic did between 10 an
 Funding Program (par-value lending on securities, from 12 March 2023) isn't modeled. One bank's failure never moves
 depositors at another. Check 2 fails partly for these reasons (docs/notes/check2-first-republic-diagnostic.md); no
 fix was built (owner's decision).</li>
+<li><strong>No weekends (Amendment 6).</strong> There is no weekend calendar in v1: every half-day is a business day,
+so no bank gets two quiet days to mobilize collateral. This is a stated limit, not a model result.</li>
+<li><strong>The grace count is an upper bound.</strong> Every failure in the model happens on a half-day when funding
+already agreed was on its way (docs/notes/funding-timing-and-failure-rule.md). M3 reports, for each policy and cell,
+how many failures would be timing-only: covered by cash arriving by the next morning, with equity ≥ 0 (Amendment 6).
+That count is an <em>upper bound on timing-only failures</em>, because the bank's own decisions assume the strict
+failure rule. It's never used to decide which policy leads, and no hypothesis is scored against it.</li>
 <li><strong>Disclosures move no one.</strong> Scheduled ratio disclosures (B's five-day ratio, the LCR including C's
 credit) have no effect on depositors or lenders in v1 (Clarification 15 item 6). C's reported LCR neither
 reassures nor misleads observers, and keeping B's ratio private has no effect by construction.</li>

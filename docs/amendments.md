@@ -803,3 +803,32 @@ Format for each entry:
   `outputs/timing_exposure.csv`. `tests/test_timing.py`: bands by hand, exhaustive and exclusive; failure records
   equal the failing half-day's record; the alternative rules by hand; the exposure table runs no episode; frozen
   fingerprint unchanged.
+
+## 2026-10-01 — Amendment 6: failure-rule decisions and the grace-rule counterfactual
+- **Background:** the M1.12 diagnostic (`docs/notes/funding-timing-and-failure-rule.md`) found that every failure in
+  the model is a timing failure. Under policy A, every failed run owes less than the cash already agreed and on its
+  way, with positive equity.
+- **What changed:**
+  - (a) **The strict failure rule** in Clarification 10 (item 6) **stays unchanged.**
+  - (b) **No weekend calendar in v1.** This is a stated limit (validation report, Known limits).
+  - (c) **Grace-rule count.** For every policy × cell, M3 also reports how many failures are "timing-only": the cash
+    already agreed and arriving by the next morning covers the unpaid amount at the moment of failure, and equity
+    is ≥ 0. It is computed from the same runs, with no new runs and no parameter changes. It is labelled **"upper
+    bound on timing-only failures"**. It is not used in the lead / tie / trade-off rule (contract 4), and no
+    hypothesis is scored against it.
+- **How it is computed:**
+  - Each half-day's record carries `on_way_by_next_morning`. From a morning that is this afternoon plus the next
+    morning; from an afternoon, the next morning only.
+  - At failure the episode stores it, and `engine/outcomes.py` reports `timing_only_upper_bound` per run.
+  - This is a separate record from Clarification 18's timing band, which uses the next two half-days.
+- **Run plan:** `config/run_plan.yaml` gains an `outputs` list (scored, reported). The count is under "reported".
+  Run counts are unchanged (Clarification 14).
+- **Why:** the strict rule matches how the 2023 failures happened and is what the frozen SVB fit rests on. A grace
+  period or a calendar would shrink, by assumption, the very difference in same-day cash the readiness policies act
+  on. Reporting the count shows how much of any survival difference depends on the strict rule, without changing
+  the rule.
+- **Seen results before the change?** Policy-A runs only (M1.10–M1.12); no policy comparison exists.
+- **Evidence:** `tests/test_timing.py::test_by_next_morning_window` (window by hand; the value stored at failure
+  equals that half-day's record) and `::test_timing_only_flag_by_hand` (covered with equity 0 counts; not covered,
+  negative equity, or no failure does not). Frozen fingerprint unchanged: params_frozen fingerprint
+  `05f9e763efc16772`. Policy-A `make demo-episode` output is unchanged apart from the new column.
