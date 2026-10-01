@@ -1,5 +1,17 @@
 # Liquidity Policy Simulator — Implementation Plan
 
+> **Superseded in part by `docs/contract.md` v0.5 (2026-09-30).** The contract governs wherever the two differ. Main changes
+> since this PRD was written, mostly from the outside review of Option C (`docs/review-log.md`):
+> - **Option C is the full 2026 Treasury design:** a 20% ceiling rising to 30% under funding stress (run as an off / on
+>   switch in S1); credit capped at 75 × the average of the 1st, 3rd and 5th largest overnight discount window borrowings
+>   over two quarters; default uptake 75%; default HQLA release 100% of credit.
+> - **New named variant C′:** C's ceilings with no usage cap and no draw requirement.
+> - **Policies compared in v1:** A, B, C, C′ and E.
+> - **Bank population:** 40 banks, four types; Category III regional banks (85% LCR) added.
+> - **B's five-day test:** 40% of uninsured deposits and 100% of short-term wholesale funding; B's ratio disclosed quarterly.
+> - **Routine-borrowing effect:** the more often banks borrow routinely, the lower both market stigma and supervisory and
+>   internal reluctance, by the same rule for every policy. Effective stigma is a reported outcome.
+
 Sep 23, 2026 · Mike Hsu · Live version: https://claude.ai/code/artifact/8b7daca1-f330-4828-9436-270b6c6f8125
 
 ## Overview

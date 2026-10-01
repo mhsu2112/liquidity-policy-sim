@@ -15,7 +15,8 @@ readiness policies, and what each policy costs:
 | --- | --- |
 | A | Status quo |
 | B | Standalone readiness requirement: reserves + prepositioned discount window capacity cover five days of stressed runnable outflows; mandatory prepositioning and quarterly test draws |
-| C | Capped LCR recognition: discount window capacity against non-HQLA collateral counts toward the LCR, up to a cap |
+| C | Capped LCR recognition (2026 Treasury design): discount window capacity against non-HQLA collateral counts toward the LCR, up to 20% of net cash outflows (30% under funding stress), and up to 75 × recent overnight borrowing |
+| C′ | As C, with no cap tied to recent borrowing and no draw requirement |
 | E | Mandate only: required prepositioning and quarterly test draws, no new ratio or LCR credit |
 
 ## Status

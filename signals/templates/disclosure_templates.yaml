@@ -1,0 +1,234 @@
+# Disclosure templates — session M0.3 (DRAFT v0.1, 2026-09-23). All 20 kept by Mike.
+# Flagged for the outside reviewer (M0.5) as possibly unbalanced: AN6, L2, W2 (may favor B/E);
+# L3, P5 (may cut against C); W4 (district-level inference).
+#
+# What these are: the text an observer (depositor, counterparty, analyst) could actually see during a stress
+# episode, through one of the information routes in docs/contract.md section 3. In M2.5, each template is
+# paraphrased 3-5 ways and Jev is asked how observers would read it. Jev never sees the simulation.
+#
+# Rules:
+#  1. Every template has a realistic route. No route = not used.
+#  2. Templates for different policies differ only in facts the policy actually changes.
+#  3. Placeholders in {braces} are filled in code with illustrative values, never by Jev.
+#  4. Frozen at tag pre-registration-v1.
+#
+# Routes (contract section 3):
+#   weekly_aggregate  Fed weekly balance sheet (H.4.1): lending in aggregate and by Reserve Bank, no bank named
+#   announcement      the bank's own press release or filing
+#   leak              press report citing unnamed sources
+#   policy_disclosure quarterly public ratio disclosure (LCR; B's five-day ratio, decision 3-1)
+# Not used for templates:
+#   named_disclosure  Fed names borrowers about 2 years later: outside any episode
+#   inference         asset sales, pulled lines: handled as model mechanics, not as text
+#
+# Fields: id, route, policies (which policies make this text possible), bank_condition (sound | rumored |
+# stressed), prevalence (few | many banks borrowing that week), text, realism (why an observer could see this)
+
+templates:
+
+  # ---------------- weekly_aggregate ----------------
+  - id: W1
+    route: weekly_aggregate
+    policies: [A, C]
+    bank_condition: any
+    prevalence: few
+    text: >-
+      The Federal Reserve's weekly balance sheet showed primary credit outstanding rose to ${total_bn} billion
+      from ${prior_bn} billion, the largest weekly increase since {period}. The Fed does not identify borrowers.
+    realism: H.4.1 reports discount window lending weekly in aggregate; financial press covers large moves.
+
+  - id: W2
+    route: weekly_aggregate
+    policies: [B, E]
+    bank_condition: any
+    prevalence: many
+    text: >-
+      Primary credit outstanding rose to ${total_bn} billion in the week ended {date}, in line with the
+      quarter-end pattern since large banks began required test borrowing.
+    realism: Under a testing mandate, routine quarter-end draws would appear in the weekly aggregate.
+
+  - id: W3
+    route: weekly_aggregate
+    policies: [A, B, C, E]
+    bank_condition: any
+    prevalence: many
+    text: >-
+      Discount window borrowing jumped to ${total_bn} billion this week as several banks tapped the facility
+      amid market turmoil.
+    realism: Matches coverage of March 2023, when aggregate borrowing spiked across many banks.
+
+  - id: W4
+    route: weekly_aggregate
+    policies: [A, C]
+    bank_condition: rumored
+    prevalence: few
+    text: >-
+      Discount window loans at the Federal Reserve Bank of {district} rose by ${delta_bn} billion this week.
+      {bank} is one of a handful of large banks in the district.
+    realism: H.4.1 reports each Reserve Bank's lending, so analysts can infer when few banks are borrowing.
+
+  # ---------------- announcement ----------------
+  - id: AN1
+    route: announcement
+    policies: [B, E]
+    bank_condition: sound
+    prevalence: any
+    text: >-
+      As required under the Federal Reserve's discount window readiness rule, the Bank completed its quarterly
+      test borrowing of $50 million, repaid the next day. Collateral prepositioned at the Federal Reserve supports
+      borrowing capacity of ${capacity_bn} billion.
+    realism: Quarterly filings would describe compliance with a mandate.
+
+  - id: AN2
+    route: announcement
+    policies: [C]
+    bank_condition: sound
+    prevalence: any
+    text: >-
+      Our liquidity coverage ratio was {lcr_pct}% at quarter-end. It includes ${credit_bn} billion of recognized
+      discount window capacity backed by prepositioned loans, within the regulatory cap.
+    realism: Banks subject to LCR disclosure would explain the recognized component.
+
+  - id: AN3
+    route: announcement
+    policies: [A, B, C, E]
+    bank_condition: stressed
+    prevalence: any
+    text: >-
+      To strengthen its liquidity position, the Bank has borrowed ${dw_bn} billion from the Federal Reserve
+      discount window and ${fhlb_bn} billion from the Federal Home Loan Bank. Total available liquidity now
+      stands at ${liquidity_bn} billion.
+    realism: Modeled on bank statements during March 2023.
+
+  - id: AN4
+    route: announcement
+    policies: [A, B, C, E]
+    bank_condition: rumored
+    prevalence: any
+    text: >-
+      The Bank has ${liquidity_bn} billion of available liquidity, including discount window capacity, and has
+      not needed to draw on it. Deposit flows are within normal ranges.
+    realism: Common reassurance statement when a bank faces rumors.
+
+  - id: AN5
+    route: announcement
+    policies: [A, B, C, E]
+    bank_condition: stressed
+    prevalence: any
+    text: >-
+      On {date}, the Bank borrowed ${dw_bn} billion from the Federal Reserve Bank of {district}, secured by
+      loans and securities. The Bank expects to repay the borrowing as conditions normalize.
+    realism: A material borrowing could require a current-report filing.
+
+  - id: AN6
+    route: announcement
+    policies: [B, E]
+    bank_condition: stressed
+    prevalence: any
+    text: >-
+      The Bank drew ${dw_bn} billion from the discount window using collateral it already keeps at the Federal
+      Reserve for its required quarterly tests. The draw is larger than its routine tests and meets deposit
+      outflows this week.
+    realism: Under a mandate, a bank could frame a stress draw as an extension of routine practice.
+
+  # ---------------- leak ----------------
+  - id: L1
+    route: leak
+    policies: [A, C]
+    bank_condition: stressed
+    prevalence: few
+    text: >-
+      {bank} tapped the Federal Reserve's discount window this week, according to people familiar with the
+      matter. The bank declined to comment.
+    realism: Standard press formulation for leaked borrowing.
+
+  - id: L2
+    route: leak
+    policies: [B, E]
+    bank_condition: sound
+    prevalence: few
+    text: >-
+      {bank} borrowed from the Federal Reserve's discount window last week, according to people familiar with
+      the matter. A spokesperson said it was a scheduled test that all large banks must conduct each quarter.
+    realism: A leak under a mandate would be met with the routine-test explanation.
+
+  - id: L3
+    route: leak
+    policies: [C]
+    bank_condition: rumored
+    prevalence: few
+    text: >-
+      {bank} has borrowed from the discount window several times this year, according to people familiar with
+      the matter. Under new rules, recent borrowing raises the amount of discount window capacity a bank can
+      count toward its liquidity ratio.
+    realism: Under a usage-conditioned cap, regular borrowing becomes a rational, reportable strategy.
+
+  - id: L4
+    route: leak
+    policies: [A, B, C, E]
+    bank_condition: rumored
+    prevalence: many
+    text: >-
+      Several regional banks, including {bank}, have drawn on the Federal Reserve's discount window in recent
+      days, according to people familiar with the matter.
+    realism: Matches coverage when borrowing is widespread.
+
+  - id: L5
+    route: leak
+    policies: [A, B, C, E]
+    bank_condition: stressed
+    prevalence: few
+    text: >-
+      {bank} has borrowed about ${dw_bn} billion from the Federal Reserve as deposits leave, according to people
+      familiar with the matter, and is exploring options including a capital raise.
+    realism: Modeled on reporting about stressed banks in spring 2023.
+
+  # ---------------- policy_disclosure ----------------
+  - id: P1
+    route: policy_disclosure
+    policies: [A, E]
+    bank_condition: any
+    prevalence: any
+    text: >-
+      Liquidity coverage ratio: {lcr_pct}% (average for the quarter).
+    realism: Current public LCR disclosure; baseline wording.
+
+  - id: P2
+    route: policy_disclosure
+    policies: [B]
+    bank_condition: sound
+    prevalence: any
+    text: >-
+      Five-day readiness ratio: {ratio_pct}% (requirement: 100%). Reserves ${reserves_bn} billion; prepositioned
+      discount window capacity ${capacity_bn} billion. Liquidity coverage ratio: {lcr_pct}%.
+    realism: Decision 3-1: B's ratio disclosed quarterly like the LCR.
+
+  - id: P3
+    route: policy_disclosure
+    policies: [B]
+    bank_condition: rumored
+    prevalence: any
+    text: >-
+      Five-day readiness ratio: {ratio_pct}%, down from {prior_ratio_pct}% last quarter (requirement: 100%).
+      Liquidity coverage ratio: {lcr_pct}%.
+    realism: A falling disclosed ratio is itself a signal under decision 3-1.
+
+  - id: P4
+    route: policy_disclosure
+    policies: [C]
+    bank_condition: any
+    prevalence: any
+    text: >-
+      Liquidity coverage ratio: {lcr_pct}%, including {credit_pp} percentage points from recognized discount
+      window capacity (cap: {cap_pct}% of net cash outflows).
+    realism: Disclosure of the recognized component alongside the headline ratio.
+
+  - id: P5
+    route: policy_disclosure
+    policies: [C]
+    bank_condition: rumored
+    prevalence: any
+    text: >-
+      Liquidity coverage ratio fell to {lcr_pct}% from {prior_lcr_pct}%, as recognized discount window capacity
+      declined with lower recent borrowing.
+    realism: Under a usage-conditioned cap, less borrowing reduces the recognized amount.

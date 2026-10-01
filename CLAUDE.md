@@ -15,7 +15,8 @@ He knows banking regulation deeply but does not write code. He directs coding ag
 ## What this project is
 
 A small, open simulator comparing discount window readiness policies (A status quo, B standalone
-five-day readiness requirement, C capped LCR recognition, E prepositioning-and-testing mandate only)
+five-day readiness requirement, C capped LCR recognition with a usage multiple, C′ the same without the
+usage multiple, E prepositioning-and-testing mandate only)
 during a bank run, and what each costs. It is a showcase, built to be inspected and extended.
 
 ## Documents, in order of authority
