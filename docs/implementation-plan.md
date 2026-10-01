@@ -123,13 +123,13 @@ M1 builds the simulator one piece at a time, each piece checked before the next 
 
 | Session | Goal | You check | Done when |
 | --- | --- | --- | --- |
-| M1.1 Settings and banks | Read the config files and generate the 30 synthetic banks from the contract's ranges, using a fixed seed | Open `outputs/banks.csv` in Excel: 30 rows, sizes and ratios look plausible | Same 30 banks every time |
+| M1.1 Settings and banks | Read the config files and generate the 40 synthetic banks from the contract's ranges, using a fixed seed | Open `outputs/banks.csv` in Excel: 40 rows, sizes and ratios look plausible | Same 40 banks every time |
 | M1.2 Balance sheet and LCR | Hold each bank's balance sheet and compute its LCR under current rules | Open the worked-examples spreadsheet Claude builds; the model matches the hand calculations | Balance sheets always balance; LCR matches 3 worked examples |
 | M1.3 Funding waterfall | When cash is needed, draw in order: reserves, securities sales (with price impact and realized losses), Home Loan Bank, discount window | `make demo-waterfall` prints a plain-English account of one bank meeting an outflow | Each source has its limits and delays |
 | M1.4 Depositors and counterparties | Fast and slow uninsured depositors, insured depositors, and wholesale lenders who roll or refuse | `make demo-run` shows a bigger shock causing a faster run | Behavior responds in the expected direction |
 | M1.5 Supervisor and information | The supervisor's response dial, plus the contract's information routes: weekly aggregate, leaks, announcements, inference | Demo log shows who learned what, and when | Nobody learns anything without a route |
 | M1.6 Borrowing decision and discount window | The bank's borrow-or-not rule; the window's haircuts and readiness lag; half-day steps; end conditions (fail, stabilize, day 30) | One full episode, day by day, in plain English | An episode runs start to finish |
-| M1.7 Policy switches | The four switches and A, B, C, E as combinations. B's five-day ratio; C's credit accounting exactly as in the contract | `make policy-table`: each bank's ratios under each policy, with no stress run | Contract checks pass, e.g. C never credits HQLA collateral |
+| M1.7 Policy switches | The four switches and A, B, C, C′, E as combinations. B's five-day ratio; C's credit accounting exactly as in the contract | `make policy-table`: each bank's ratios under each policy, with no stress run | Contract checks pass, e.g. C never credits HQLA collateral |
 | M1.8 Cost model | Annual steady-state cost per bank per policy, by collateral type | `outputs/costs.csv`; spot-check one bank against Claude's hand calculation | Totals match the worked example |
 | M1.9 Speed and repeatability | Run 10,000 episodes at once; time it; confirm the same seed gives identical results | `make benchmark` prints the time, and "identical: yes" | On track for the under-an-hour target |
 | M1.10 Tuning (status quo only) | Set behavioral parameters so an SVB-like bank reproduces 2023 outflow timing and failure. Then freeze them | Chart of model vs. 2023 pattern | **Parameters frozen and tagged `params-frozen`** |
@@ -162,11 +162,11 @@ M3 is the first time any policy is compared under stress. It starts only after b
 
 | Session | Goal | You check | Done when |
 | --- | --- | --- | --- |
-| M3.1 Run the grid | Bring in the frozen Jev file. Run a 1% dry run of the full grid, then the full grid (4 policies × 2 scenarios × 30 banks × 35 sweep cells × 200 paired runs) plus the feature-switch runs | The dry run finishes and prints a time estimate for the full run | Full run complete, stamped with versions |
+| M3.1 Run the grid | Bring in the frozen Jev file. Run a 1% dry run of the full grid, then the full grid (5 policies × 2 scenarios × 40 banks × 35 sweep cells × 200 paired runs) plus the feature-switch runs | The dry run finishes and prints a time estimate for the full run | Full run complete, stamped with versions |
 | M3.2 Scorecard | Compute each metric as a paired difference with a 90% interval. Apply the contract's lead / tie / trade-off rule | Pick one cell and ask "explain this cell in plain English" | Scorecard CSV and HTML table |
 | M3.3 Trade-off chart | The main chart with the Jev marker, the cost frontier panel, the Option C panel, and reversal distances | Can you write one plain sentence for each panel? | Charts open in a browser |
 | M3.4 Feature attribution | What each switch contributes: prepositioning mandate, testing mandate, five-day ratio, LCR credit | Does the table explain why the leading policy leads? | Attribution table |
-| M3.5 Episode replays | The median run for each scenario under A, B, C and E, day by day in plain English. Jev checks every sentence against the log | Read one full replay; review every flagged sentence | All flags resolved |
+| M3.5 Episode replays | The median run for each scenario under A, B, C, C′ and E, day by day in plain English. Jev checks every sentence against the log | Read one full replay; review every flagged sentence | All flags resolved |
 | M3.6 Reproduce and compare with hypotheses | Delete all outputs and regenerate them with `make results`. Then write a memo comparing results with the pre-registered hypotheses, unedited | Outputs match; read the memo | **Tagged `M3-complete`** |
 
 **The discipline that matters most here.** The first real results appear in M3.2. If they surprise you, ask Claude Code to explain the mechanism first. Change nothing unless the explanation reveals a genuine mechanical bug.

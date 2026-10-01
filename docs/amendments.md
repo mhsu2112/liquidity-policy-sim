@@ -11,7 +11,7 @@ Format for each entry:
 - **Seen results before the change?** yes / no
 - **Evidence (test or reviewer comment):**
 
-## 2026-10-01 — Clarification 1: how the 40 synthetic banks are drawn (before session M1.1)
+## 2026-09-30 — Clarification 1: how the 40 synthetic banks are drawn (before session M1.1) — date corrected from 2026-10-01 on 2026-09-30
 - **What changed:** three implementation rules the contract left unstated. No value or range in the contract changes.
   1. **Asset shares must fit.** Securities, reserves and loans are drawn from their contract ranges. If together they exceed
      100% of assets, that bank's draw is rejected and redrawn (same seed sequence). Whatever is left is "other assets",
