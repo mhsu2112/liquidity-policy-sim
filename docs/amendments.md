@@ -740,3 +740,31 @@ Format for each entry:
   5. **No shock: PASS.** All 40 banks are stable with no outflows in every run (stabilize on day 3).
   6. **Tests:** `tests/test_validation.py` (the banks match the stated totals and balance; Signature's loans leave
      only the window pools; scenario shocks; frozen fingerprint unchanged).
+
+## 2026-10-02 — Clarification 17: after M1.11 (Check 2 decision; S2 wording; H8 scoring), before any policy comparison
+- **What changed:** three decisions by the owner after the M1.11 checks. No value or range in the contract changes,
+  and no frozen value changes (fingerprint `05f9e763efc16772`).
+  1. **Check 2 stays failed.** No fix is built for the First Republic-like check: neither a weekend calendar nor
+     scripted contagion. "No weekends; no BTFP; no contagion between banks" is added to the known limits, in
+     `outputs/validation_report.html` and in the `M1-complete` tag message. The scripted contagion shock considered in
+     `docs/notes/check2-first-republic-diagnostic.md` is **dropped permanently**. A business-day calendar is a
+     separate M2 decision. It will be proposed only after measuring how often failures come from funding that was
+     agreed but arrives the next day, and after a write-up on whether the strict failure rule (Clarification 10 item 6)
+     is the right one. That timing gap may be part of what M3 measures.
+  2. **Correction to Clarification 16 item 3.** The SVB-like banks are reported, not scored, in the false-alarm check
+     "because those banks are not sound". That wording is wrong: all 10 have positive mark-to-market equity
+     (unrealized losses 44–80% of book equity). The correct reason: **their unrealized losses amplify the rumor (the
+     confidence rule, Clarification 8) until it lands about as hard as S1, so S2 is not a false alarm for them**
+     (`docs/notes/svb-false-alarm-note.md`). The check's result and its scoring are unchanged.
+  3. **H8 scoring, decided in advance.** Hypothesis H8 (no extra needless borrowing under B or E in S2) is scored only
+     on archetypes whose S2 runs under policy A survive in at least 90% of runs (in M1.11: diversified regional,
+     Category III regional and GSIB). SVB-like S2 results are reported separately as a "rumor-triggered run", not as
+     needless borrowing, and are not counted as evidence independent of S1. The hypothesis text in
+     `docs/hypotheses.md` is unchanged; only how its metric is applied is fixed here. A tie-handling rule for H8 is to
+     be added, with the owner's approval, before any S2 policy run.
+- **Why:** M1.11 showed Check 2's gap comes mostly from funding timing, not run size. It also showed S2 behaves as a
+  run for SVB-like banks, which would contaminate H8's "needless borrowing" if it were counted.
+- **Seen results before the change?** M1.11 validation results (policy A only) and throwaway policy-A what-ifs on the
+  validation banks; no policy comparison exists. Item 3 is fixed before any S2 run under any policy but A.
+- **Evidence:** `docs/notes/check2-first-republic-diagnostic.md`, `docs/notes/svb-false-alarm-note.md`;
+  `validation/validation_report.py` (known limits).

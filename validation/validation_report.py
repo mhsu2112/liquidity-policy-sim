@@ -105,8 +105,9 @@ fail within 30 days (not required either way).</p>
 <div class="wrap"><table><tr><th>Bank type</th><th class="n">Survive</th><th class="n">No shortfall</th>
 <th class="n">Borrowed at all</th><th class="n">Median support</th><th class="n">Median outflow (share of deposits)</th>
 </tr>{fa_rows}</table></div>
-<p>SVB-like banks are reported, not scored (they are not sound): under the S2 rumor almost all of them fail, because
-their unrealized losses amplify the news (see Known limits).</p>
+<p>SVB-like banks are reported, not scored (Clarification 16). They are solvent, with positive mark-to-market equity,
+but their unrealized losses amplify the rumor until it lands about as hard as S1, so S2 is not a false alarm for them
+(corrected wording, Clarification 17). Almost all of them fail.</p>
 
 <h3>4. No shock on all 40 banks</h3>
 {crit_table([("Banks stable with no outflows in every run", "all 40", f"{ns['banks_stable']} of 40 "
@@ -147,6 +148,11 @@ the Signature-like bank fails on day 1 rather than day 3.</li>
 <li><strong>The wholesale roll threshold and fire-sale price impact are not identified.</strong> SVB's pattern
 doesn't pin them down, so they keep their pre-tuning values (0.6; 10 and 30 bp per $10bn). Results that depend
 on wholesale refusals or securities sales rest on those starting values.</li>
+<li><strong>No weekends, no BTFP, no contagion between banks.</strong> Every half-day is a business day, so a bank
+never gets a weekend to mobilize collateral, as First Republic did between 10 and 13 March 2023. The Fed's Bank Term
+Funding Program (par-value lending on securities, from 12 March 2023) isn't modeled. One bank's failure never moves
+depositors at another. Check 2 fails partly for these reasons (docs/notes/check2-first-republic-diagnostic.md); no
+fix was built (owner's decision).</li>
 <li><strong>Disclosures move no one.</strong> Scheduled ratio disclosures (B's five-day ratio, the LCR including C's
 credit) have no effect on depositors or lenders in v1 (Clarification 15 item 6). C's reported LCR neither
 reassures nor misleads observers, and keeping B's ratio private has no effect by construction.</li>
