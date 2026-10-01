@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -69,3 +69,8 @@ tune: $(VENV)/.installed
 validate: $(VENV)/.installed
 	$(PY) -m validation.checks
 	$(PY) -m validation.validation_report
+
+## make timing-gap: how often policy-A failures come from funding agreed but arriving next day; static exposure for every policy
+timing-gap: $(VENV)/.installed
+	$(PY) -m analysis.timing_gap
+	$(PY) -m analysis.timing_exposure

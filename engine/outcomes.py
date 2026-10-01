@@ -21,11 +21,15 @@ every row moves together).
     non_compliant       B / B' only: the bank started below its five-day ratio, with
                         the gap shown (Amendment 3 item 2)
     c_credit_left_bn    Option C's credit at the end, after every window draw (contract 2d)
+    timing_band         for a failed run, why it failed (session M1.12; Clarification 18):
+                        "pure timing" (owed no more than cash already agreed and arriving by the
+                        next day, equity positive), "partly covered", "not covered", or
+                        "equity below zero"; blank if the run did not fail
 """
 
 import numpy as np
 
-from engine.episode import END_NAMES
+from engine.episode import END_NAMES, FAILED
 from engine.information import NEVER
 from engine.lcr_credit import credit_after_draws
 
@@ -63,4 +67,17 @@ def episode_outcomes(st):
         "five_day_gap_bn": st["five_day_gap_bn"],
         "c_credit_start_bn": st["credit_start_bn"],
         "c_credit_left_bn": credit_after_draws(st["credit_start_bn"], st["dw_agreed_bn"]),   # draws up to the end
+        "owed_at_failure_bn": st["owed_at_failure_bn"],
+        "on_way_at_failure_bn": st["on_way_at_failure_bn"],
+        "timing_band": timing_band(st),
     }
+
+
+def timing_band(st):
+    """Why a failed run failed: one of four bands, exhaustive and exclusive; blank if it did not fail."""
+    failed = st["end_state"] == FAILED
+    owed, on_way, equity = st["owed_at_failure_bn"], st["on_way_at_failure_bn"], st["equity_at_failure_bn"]
+    band = np.where(equity < 0, "equity below zero",
+                    np.where(owed <= on_way, "pure timing",
+                             np.where(on_way > 0, "partly covered", "not covered")))
+    return np.where(failed, band, "")

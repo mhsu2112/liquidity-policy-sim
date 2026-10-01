@@ -768,3 +768,38 @@ Format for each entry:
   validation banks; no policy comparison exists. Item 3 is fixed before any S2 run under any policy but A.
 - **Evidence:** `docs/notes/check2-first-republic-diagnostic.md`, `docs/notes/svb-false-alarm-note.md`;
   `validation/validation_report.py` (known limits).
+
+## 2026-10-02 — Clarification 18: H8 tie rule and the funding-timing diagnostic, decided before any policy comparison (session M1.12)
+- **What changed:** two rules for how M3 reports results, fixed before any stress run under a policy other than A.
+  No value or range in the contract changes, no run is added (Clarification 14 unchanged) and no frozen value
+  changes (fingerprint `05f9e763efc16772`).
+  1. **H8 tie-handling rule** (owner's choice):
+     - A bank × cell enters H8's test only if at least 5% of its paired runs borrow at the window under A or under
+       the policy compared (B or E).
+     - If fewer than 10% of the scored bank × cells (Clarification 17 item 3: archetypes that survive S2 under A in
+       at least 90% of runs) qualify, H8 is reported as **"untestable: no measurable borrowing"**, never as confirmed.
+     - Otherwise the 90% interval test of `docs/hypotheses.md` runs on the cells that qualify.
+     - The number of qualifying cells, the share of runs that borrow under each policy, and the share of exact ties
+       are always reported.
+  2. **Pre-registered timing diagnostic for M3.** For every policy, scenario and bank type, M3 reports the share of
+     failures in each timing band: pure timing, partly covered, not covered, equity below zero. These come from the
+     outcome columns added in M1.12 (`owed_at_failure_bn`, `on_way_at_failure_bn`, `timing_band`), with no new runs.
+     Under policy A in M1.12, 100% of failures are "pure timing" (`docs/notes/funding-timing-and-failure-rule.md`).
+  3. **Rule 2 holds.** The cross-policy timing measurement waits for M3. In M1.12, stress runs are policy A only; other
+     policies get only a static capacity table (`outputs/timing_exposure.csv`).
+- **Engine records added** (mechanical, the same for every policy; nothing reads them):
+  - each half-day's record carries `on_way_next_day`, the cash already agreed and arriving within the next two
+    half-days;
+  - at failure, the episode records what was owed, that cash, and book equity.
+  - Policy-A `make demo-episode` output is identical apart from three new columns.
+- **Open, for the owner's decision** (not decided here): whether to keep the strict failure rule; whether to add a
+  weekend calendar (M2); and whether M3 reports the grace-rule counterfactual as an unscored sensitivity. The
+  recommendation is in the note above.
+- **Why:** M1.11's Check 2 diagnostic showed failures while funding was on its way. The owner asked for the size of
+  that gap before any calendar or rule change, and for H8 ties to be handled before any S2 policy run.
+- **Seen results before the change?** Policy-A runs only (M1.11 checks, M1.10 tuning and this diagnostic); no policy
+  comparison exists.
+- **Evidence:** `make timing-gap` → `outputs/timing_gap_summary.json`, `outputs/timing_gap.csv`,
+  `outputs/timing_exposure.csv`. `tests/test_timing.py`: bands by hand, exhaustive and exclusive; failure records
+  equal the failing half-day's record; the alternative rules by hand; the exposure table runs no episode; frozen
+  fingerprint unchanged.

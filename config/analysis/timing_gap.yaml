@@ -1,0 +1,7 @@
+# Funding-timing diagnostic (session M1.12; Clarification 18). Policy A only (project Rule 2).
+# Cells come from config/run_plan.yaml (main grid); scenario shocks from config/scenarios/scenarios.yaml.
+runs: 200                 # per bank per cell (Clarification 14's runs per cell)
+seeds:                    # paired: the same draws in every cell of a scenario (Clarification 14 item 2)
+  S1: 20261012
+  S2: 20261013
+  validation: 20261011    # the M1.11 check seed

@@ -147,6 +147,10 @@ def _start_tracking(st, cfg, n):
     st["first_borrow_yes_step"] = np.full(n, NEVER)
     for k in ("peak_owed_bn", "peak_uncovered_bn", "dw_agreed_bn", "peak_fhlb_bn"):
         st[k] = np.zeros(n)
+    # The funding-timing gap at the moment of failure (session M1.12; Clarification 18). Records only.
+    st["owed_at_failure_bn"] = np.zeros(n)
+    st["on_way_at_failure_bn"] = np.zeros(n)
+    st["equity_at_failure_bn"] = np.full(n, np.nan)
 
 
 def _today_outflows(st, outflows):
@@ -171,6 +175,11 @@ def _check_end(st, t, rec, active):
     st["calm_streak"] = np.where(calm, st["calm_streak"] + 1, 0)
     stabilized = ~failed & (st["calm_streak"] >= cfg["calm_steps"])
 
+    newly_failed = active & failed & (st["end_state"] == RUNNING)
+    st["owed_at_failure_bn"] = np.where(newly_failed, rec["unpaid_end"], st["owed_at_failure_bn"])
+    on_way = rec.get("on_way_next_day", np.zeros(len(failed)))   # absent in hand-made test records
+    st["on_way_at_failure_bn"] = np.where(newly_failed, on_way, st["on_way_at_failure_bn"])
+    st["equity_at_failure_bn"] = np.where(newly_failed, st["equity_bn"], st["equity_at_failure_bn"])
     for mask, state in ((failed, FAILED), (stabilized, STABILIZED)):
         now = active & mask & (st["end_state"] == RUNNING)
         st["end_state"] = np.where(now, state, st["end_state"])
@@ -224,6 +233,10 @@ def episode_step(st):
     deliver(st, t, "end")
     # Contract 2d: Option C's credit falls by every dollar actually borrowed at the window.
     st["credit_left_bn"] = credit_after_draws(st["credit_start_bn"], st["dw_drawn_total_bn"])
+
+    # Cash already agreed and arriving within the next day (the next two half-days), from every
+    # source, including what was asked for ahead of need (session M1.12). A record; nothing reads it.
+    rec["on_way_next_day"] = sum(sched[:, t + 1:t + 3].sum(axis=1) for sched in st["incoming"].values())
 
     # What outcomes need, counted only while the row's episode is running.
     st["first_shortfall_seen_step"] = np.where(active & dec["shortfall_seen"] & (st["first_shortfall_seen_step"] == NEVER),
