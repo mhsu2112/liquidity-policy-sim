@@ -102,3 +102,20 @@ Format for each entry:
 - **Seen results before the change?** No. Agreed before any funding calculation ran.
 - **Evidence:** `tests/test_funding.py` (order, limits, lags, hand-worked sale, balance, shortfall); also completes the
   evidence for Clarification 4.
+
+## 2026-10-01 — Clarification 6: same-day repo of liquid securities (before session M1.3b)
+- **What changed:** a funding source the waterfall lacked. No value or range in the contract changes.
+  1. **Same-day private repo.** A bank can raise cash the same half-day by repo of Level 1 securities (haircut 2%) and
+     agency MBS (haircut 5%) [ESTIMATE]. Repo does not realize unrealized losses; the securities stay on the balance sheet
+     as encumbered and stop counting as HQLA while pledged.
+  2. **Order.** Within the same-day tier, repo comes after reserves and before the Home Loan Bank line and the discount
+     window. Securities sales (T+1 / T+2) remain in the next-day tier, used only for what repo cannot cover.
+  3. **Rolling.** Repo is overnight and must be rolled each day. From session M1.4, repo lenders roll or refuse using the
+     same confidence rule as other wholesale lenders, so access shrinks as a run deepens. Until then, repo always rolls.
+  4. **Not official support.** Private repo is not counted as official support. The Fed's Standing Repo Facility is not
+     modeled in v1.
+- **Why:** in practice a bank can usually turn Treasuries and agency MBS into cash the same day by repo without selling
+  them. Without this source the model understates how quickly liquid assets become cash, which affects every policy.
+- **Seen results before the change?** No stress or policy results exist. The M1.3 demo (a mechanical test of two fixed
+  outflows) showed Level 1 securities paying only the next day, which prompted this.
+- **Evidence:** to be added in session M1.3b.
