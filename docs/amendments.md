@@ -491,7 +491,7 @@ Format for each entry:
   with a forced draw; the disclosed LCR includes credit; no policy name outside the setup builder (AST check).
   `make test` (189 checks); `make policy-table` (240 rows).
 
-## 2026-10-02 — Amendment 4: LCR outflow on discount window loans secured by loans (before session M1.8)
+## 2026-10-01 — Amendment 4: LCR outflow on discount window loans secured by loans (before session M1.8)
 - **What changed:** resolves Clarification 12 item 6 and adds one reporting sensitivity to contract section 5.
   1. A discount window loan is a secured funding transaction (12 CFR 249.3), and the Fed is a "sovereign entity"
      (249.3: "a central government … or an agency, department, ministry, or central bank of a central government").
@@ -513,7 +513,7 @@ Format for each entry:
   a waterfall step and a forced draw; balance sheets balance). Reporting only: `make demo-episode` output (policy A) is
   identical to session M1.7b's.
 
-## 2026-10-02 — Clarification 13: the cost model (session M1.8)
+## 2026-10-01 — Clarification 13: the cost model (session M1.8)
 - **What changed:** implementation rules for contract section 6 that the contract leaves unstated. No value or range in
   the contract changes. Settings in `config/costs.yaml`; code in `engine/costs.py`, `engine/write_costs.py`,
   `engine/cost_workbook.py`.
@@ -549,7 +549,7 @@ Format for each entry:
   `outputs/cost_worked_example.xlsx` (SVB-09 and GSIB-02 under B, B′ and C), worked by pycel, matches the code.
   `make costs`.
 
-## 2026-10-02 — Clarification 14: the M3 run plan, binding (session M1.9)
+## 2026-10-01 — Clarification 14: the M3 run plan, binding (session M1.9)
 - **What changed:** fixes exactly which runs M3 makes, which contract sections 4–5 describe only in outline. No value
   or range in the contract changes. The plan lives in `config/run_plan.yaml`; `engine/run_plan.py` counts it;
   `make benchmark` prints it and writes `outputs/run_plan.csv`. **Binding for M3:** it changes only through a later entry
@@ -594,7 +594,7 @@ Format for each entry:
   random-number function takes a policy; run counts match a hand calculation (3,360,000 + 21,320,000 + 1,152,000 =
   25,832,000).
 
-## 2026-10-02 — Clarification 15: tuning set-up, fixed before any tuning run (before session M1.10)
+## 2026-10-01 — Clarification 15: tuning set-up, fixed before any tuning run (before session M1.10)
 - **What changed:** the inputs and targets for M1.10, fixed in advance. No value or range in the contract changes.
   1. **Scenario shocks.** S1 (fast run) news shock = 0.50; S2 (false alarm) news shock = 0.15, on a bank with no added
      losses. These are nominal scales; tuning adjusts how depositors respond, not the shock.
@@ -668,7 +668,7 @@ Format for each entry:
      - `test_higher_costs_never_borrow_sooner`: the "some bank borrows" guard applies at 0.40 only, as in M1.6b;
      - `test_inference_timing`: shock 0.4 → 0.6, the smallest of 0.4 / 0.5 / 0.6 at which SVB-01 sells securities.
 
-## 2026-10-02 — Amendment 5: S2 false-alarm shock raised to 0.45 (after tuning, before any S2 run)
+## 2026-10-01 — Amendment 5: S2 false-alarm shock raised to 0.45 (after tuning, before any S2 run)
 - **What changed:** Clarification 15 item 1 set the S2 (false alarm) news shock at 0.15. It is now **0.45**. S1 is
   unchanged at 0.50.
 - **Why:** with the frozen tolerance level θ = 0.6 (params-frozen), a 0.15 rumor never pushes any bank's confidence
@@ -681,7 +681,7 @@ Format for each entry:
   `tests/test_validation.py::test_scenario_shocks_and_frozen_values_unchanged`. The false-alarm check (Clarification 16
   item 3) ran at 0.45. No frozen value changed (fingerprint `05f9e763efc16772`).
 
-## 2026-10-02 — Clarification 16: out-of-sample checks and pass criteria, fixed before any check runs (before session M1.11)
+## 2026-10-01 — Clarification 16: out-of-sample checks and pass criteria, fixed before any check runs (before session M1.11)
 - **What changed:** the validation banks, scenarios and pass criteria for M1.11. No value or range in the contract
   changes. All checks run under policy A at the tuning cell (Clarification 15 item 2) with the frozen settings.
   Results are published whether they pass or fail; a failure is reported as a model limit, never fixed by retuning.
@@ -741,7 +741,7 @@ Format for each entry:
   6. **Tests:** `tests/test_validation.py` (the banks match the stated totals and balance; Signature's loans leave
      only the window pools; scenario shocks; frozen fingerprint unchanged).
 
-## 2026-10-02 — Clarification 17: after M1.11 (Check 2 decision; S2 wording; H8 scoring), before any policy comparison
+## 2026-10-01 — Clarification 17: after M1.11 (Check 2 decision; S2 wording; H8 scoring), before any policy comparison
 - **What changed:** three decisions by the owner after the M1.11 checks. No value or range in the contract changes,
   and no frozen value changes (fingerprint `05f9e763efc16772`).
   1. **Check 2 stays failed.** No fix is built for the First Republic-like check: neither a weekend calendar nor
@@ -769,7 +769,7 @@ Format for each entry:
 - **Evidence:** `docs/notes/check2-first-republic-diagnostic.md`, `docs/notes/svb-false-alarm-note.md`;
   `validation/validation_report.py` (known limits).
 
-## 2026-10-02 — Clarification 18: H8 tie rule and the funding-timing diagnostic, decided before any policy comparison (session M1.12)
+## 2026-10-01 — Clarification 18: H8 tie rule and the funding-timing diagnostic, decided before any policy comparison (session M1.12)
 - **What changed:** two rules for how M3 reports results, fixed before any stress run under a policy other than A.
   No value or range in the contract changes, no run is added (Clarification 14 unchanged) and no frozen value
   changes (fingerprint `05f9e763efc16772`).
@@ -832,3 +832,9 @@ Format for each entry:
   equals that half-day's record) and `::test_timing_only_flag_by_hand` (covered with equity 0 counts; not covered,
   negative equity, or no failure does not). Frozen fingerprint unchanged: params_frozen fingerprint
   `05f9e763efc16772`. Policy-A `make demo-episode` output is unchanged apart from the new column.
+
+## 2026-10-01 — Correction: dates of Amendments 4–5 and Clarifications 13–18
+- Correction 2026-10-01: Amendments 4–5 and Clarifications 13–18 were dated 2026-10-02 in error; dates corrected to
+  the commit dates (2026-10-01 for each, from the commit that first added the entry: Amendment 4 and Clarification 13
+  in 7e1c48f; Clarification 14 in 9dc1b0e; Clarification 15 in c3d0ced; Amendment 5 and Clarification 16 in 2d7ca2a;
+  Clarification 17 in 5ba0741; Clarification 18 in f2007e2). No other text changed.
