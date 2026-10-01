@@ -1,6 +1,6 @@
 # Funding timing and the strict failure rule
 
-Written 2026-10-02 (session M1.12). **Policy A only** for every stress run (project Rule 2); the cross-policy
+Written 2026-10-01 (session M1.12). **Policy A only** for every stress run (project Rule 2); the cross-policy
 measurement is pre-registered for M3 (Clarification 18). Frozen settings unchanged (fingerprint `05f9e763efc16772`).
 Numbers: `make timing-gap` → `outputs/timing_gap_summary.json`, `outputs/timing_gap.csv` (every cell),
 `outputs/timing_exposure.csv`. **Nothing is built from this note; the recommendation below is for your decision.**

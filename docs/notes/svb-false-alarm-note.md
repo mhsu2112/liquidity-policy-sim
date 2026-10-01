@@ -1,10 +1,10 @@
 # The SVB-like banks under the false alarm (S2), and what it means for M3
 
-> **Recorded (owner, 2026-10-02):** the "not sound" wording is corrected and the H8 restriction to surviving
+> **Recorded (owner, 2026-10-01):** the "not sound" wording is corrected and the H8 restriction to surviving
 > archetypes is decided in advance (Clarification 17). The tie-handling rule is proposed separately, for approval
 > before any S2 policy run.
 
-Written 2026-10-02, after M1.11. Policy A only; no policy has been compared.
+Written 2026-10-01, after M1.11. Policy A only; no policy has been compared.
 
 ## The result
 

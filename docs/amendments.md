@@ -401,7 +401,7 @@ Format for each entry:
   the owner. Seen in the static table and reported, not changed: under B every bank meets the ratio with securities alone
   (39 of 40 need some; 10 also use Level 1 after their
   Level 2A); none needs loans or extra reserves. Under C, 21 of 30 LCR banks opt in; one
-  (SVB-09; corrected 2026-10-02 in session M1.8, first recorded as SVB-08 in error) releases some Level 1 ($0.76bn)
+  (SVB-09; corrected 2026-10-01 in session M1.8, first recorded as SVB-08 in error) releases some Level 1 ($0.76bn)
   because its reserves above the floor are smaller than its credit.
 - **Evidence:** `tests/test_policies.py` (42 checks): switches match contract 2a; C never credits securities at the Fed;
   credit never above any limit (C and C′, trigger on/off, three uptakes, three multiples); no-LCR banks get no credit;
@@ -838,3 +838,9 @@ Format for each entry:
   the commit dates (2026-10-01 for each, from the commit that first added the entry: Amendment 4 and Clarification 13
   in 7e1c48f; Clarification 14 in 9dc1b0e; Clarification 15 in c3d0ced; Amendment 5 and Clarification 16 in 2d7ca2a;
   Clarification 17 in 5ba0741; Clarification 18 in f2007e2). No other text changed.
+- Correction 2026-10-01: seven further dates written as 2026-10-02 in error are corrected to their commit dates
+  (2026-10-01 each): Clarification 11's SVB-09 correction note (7e1c48f); `config/params_frozen.yaml`'s "FROZEN at
+  params-frozen" comment (c3d0ced; a comment only, so the frozen values and fingerprint `05f9e763efc16772` are
+  unchanged); the "Written" and "Decision" lines of `docs/notes/check2-first-republic-diagnostic.md` and the
+  "Written" and "Recorded" lines of `docs/notes/svb-false-alarm-note.md` (5ba0741); and the "Written" line of
+  `docs/notes/funding-timing-and-failure-rule.md` (f2007e2). No other text changed.

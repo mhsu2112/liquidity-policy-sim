@@ -1,11 +1,11 @@
 # Check 2 (First Republic-like) diagnostic
 
-> **Decision (owner, 2026-10-02): neither option is built. Check 2 stays failed.** "No weekends; no BTFP; no
+> **Decision (owner, 2026-10-01): neither option is built. Check 2 stays failed.** "No weekends; no BTFP; no
 > contagion between banks" is added to the known limits (validation report and the `M1-complete` tag). The scripted
 > contagion shock is **dropped permanently**. A weekend calendar is a separate M2 decision; it will be proposed only
 > after measuring how often failures come from funding that was agreed but arrives the next day (Clarification 17).
 
-Written 2026-10-02, after M1.11. **Diagnostic only:** nothing here changes the model, and the frozen settings
+Written 2026-10-01, after M1.11. **Diagnostic only:** nothing here changes the model, and the frozen settings
 (fingerprint `05f9e763efc16772`) are not retuned. Every number comes from throwaway what-if runs under policy A on
 the validation banks (200 runs each, M1.11 seed). Those scripts are not part of the project. **Seen validation
 results: yes**, so any fix adopted from this note must be recorded that way.
