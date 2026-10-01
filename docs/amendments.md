@@ -667,3 +667,76 @@ Format for each entry:
      - `test_fast_depositors_leave_before_slow`: likewise, only for banks that withdraw at all;
      - `test_higher_costs_never_borrow_sooner`: the "some bank borrows" guard applies at 0.40 only, as in M1.6b;
      - `test_inference_timing`: shock 0.4 → 0.6, the smallest of 0.4 / 0.5 / 0.6 at which SVB-01 sells securities.
+
+## 2026-10-02 — Amendment 5: S2 false-alarm shock raised to 0.45 (after tuning, before any S2 run)
+- **What changed:** Clarification 15 item 1 set the S2 (false alarm) news shock at 0.15. It is now **0.45**. S1 is
+  unchanged at 0.50.
+- **Why:** with the frozen tolerance level θ = 0.6 (params-frozen), a 0.15 rumor never pushes any bank's confidence
+  below 0.6, even after losses amplify the news, so no depositor withdraws and S2 cannot show needless borrowing or
+  false comfort (hypothesis H8 would tie by construction). At 0.45, a bank with no losses reaches confidence 0.55,
+  just below the tolerance level, so a rumor triggers some withdrawals at a sound bank.
+- **Seen results before the change?** No S2 run and no policy result exists. The frozen θ was seen (tuning on S1,
+  policy A, SVB validation bank only).
+- **Evidence:** session M1.11. `config/scenarios/scenarios.yaml` → `S1: 0.50`, `S2: 0.45`, citing this amendment;
+  `tests/test_validation.py::test_scenario_shocks_and_frozen_values_unchanged`. The false-alarm check (Clarification 16
+  item 3) ran at 0.45. No frozen value changed (fingerprint `05f9e763efc16772`).
+
+## 2026-10-02 — Clarification 16: out-of-sample checks and pass criteria, fixed before any check runs (before session M1.11)
+- **What changed:** the validation banks, scenarios and pass criteria for M1.11. No value or range in the contract
+  changes. All checks run under policy A at the tuning cell (Clarification 15 item 2) with the frozen settings.
+  Results are published whether they pass or fail; a failure is reported as a model limit, never fixed by retuning.
+  1. **Signature-like validation bank.** Total assets about $110bn, about 90% of deposits uninsured
+     ([FDIC, 2023-09-28](https://www.fdic.gov/news/speeches/2023/spsept2823a.html)); $18bn of capital-call loans and its
+     CRE loans not usable at the window within the episode, as the FRBNY would not accept the former and said the latter
+     "would take weeks to assess" ([Harris testimony](https://www.banking.senate.gov/download/harris-testimony-5-18-23&download=1)).
+     Other balance-sheet values from the SVB-like archetype midpoints [ESTIMATE]. Scenario S1.
+     **Pass if:** at least 80% of runs fail by the end of day 3, and the median day-1 outflow is between 10% and 40% of
+     deposits (2023: $18.6bn, 20%, on March 10).
+  2. **First Republic-like validation bank.** Total assets $212.6bn; 68% of deposits uninsured
+     ([FDIC OIG](https://www.fdicoig.gov/sites/default/files/reports/2023-12/EVAL-24-03.pdf)); other values from the
+     diversified-regional archetype midpoints, sized to these totals [ESTIMATE]. Scenario S1, plus a scripted $30bn
+     deposit placement on day 5 (the March 16 consortium deposits, FDIC OIG).
+     **Pass if:** at least 80% of runs survive past day 5; median official support (window plus Home Loan Bank) peaks
+     above 25% of assets (2023: about $109bn at the window alone); and median cumulative outflows by day 10 fall between
+     $48bn and $144bn (2023: $96bn over March 10–24, ±50%). Failure within 30 days is not required (First Republic
+     failed on May 1).
+  3. **False alarm (S2, shock 0.45 per Amendment 5)** on all 40 sample banks.
+     **Pass if:** at least 90% of the Category III regional and GSIB banks survive to day 30 with no shortfall, and their
+     median official support stays below 5% of assets. SVB-like results are reported, not scored, because those banks
+     are not sound.
+  4. **No shock** on all 40 banks: every bank stays stable with no outflows. Pass if all 40 do.
+- **Why:** fixing the banks and pass criteria before running prevents them from being chosen after the fact.
+- **Seen results before the change?** No out-of-sample check, S2 run or policy result exists.
+- **Evidence:** session M1.11. `make validate` → `outputs/validation_report.html` and
+  `outputs/validation_results.json`; settings in `config/validation/checks.yaml`; code in `validation/banks.py` and
+  `validation/checks.py`. Policy A, tuning cell, frozen settings (fingerprint `05f9e763efc16772`, unchanged), 200 runs
+  per check (per bank for the 40-bank checks).
+  1. **Choices this entry left open** (fixed in config before any check ran, and listed in the report):
+     - archetype midpoints for every unstated value: SVB-like for Signature, diversified regional for First Republic,
+       which therefore has no LCR, a 40% fast share and a 3% repo line;
+     - Signature's $18bn of capital-call loans are treated as C&I, and they and all CRE loans are taken out of both
+       window pools, with Home Loan Bank pledges unchanged;
+     - the $30bn consortium deposits arrive as reserves at the start of day 5 and are held as uninsured deposits that
+       never run;
+     - tested status is drawn at A's rate;
+     - outflows are deposits withdrawn, counted to each run's end. First Republic's support is the window plus Home
+       Loan Bank peaks; the false alarm's support is the window only;
+     - a false-alarm bank passes if its median run survives with nothing ever owed, and the test counts banks (≥ 18
+       of 20).
+  2. **Signature-like: PASS.** 100% of runs fail by the end of day 3 (≥ 80% needed);
+     median day-1 outflow 23.0% of deposits (10–40% needed; 2023 20%). It fails on
+     day 1 in the model (median), not day 3 as in 2023.
+  3. **First Republic-like: FAIL** (1 of 3 criteria):
+     - 82.5% survive past day 5 (≥ 80%: met);
+     - median peak support 6.0% of assets, $12.7bn (> 25% needed:
+       not met);
+     - median outflow by day 10 $21.3bn ($48–144bn needed: not met).
+     The run is far milder than 2023's. Reported as a model limit, not retuned.
+  4. **False alarm (S2): PASS.** 20 of 20 Category III and GSIB banks
+     survive to day 30 with no shortfall (pooled runs 99.88%); their median window support
+     0% of assets. Reported, not scored: SVB-like banks survive in
+     1.4% of runs under the rumor; diversified regionals in
+     99.9%.
+  5. **No shock: PASS.** All 40 banks are stable with no outflows in every run (stabilize on day 3).
+  6. **Tests:** `tests/test_validation.py` (the banks match the stated totals and balance; Signature's loans leave
+     only the window pools; scenario shocks; frozen fingerprint unchanged).

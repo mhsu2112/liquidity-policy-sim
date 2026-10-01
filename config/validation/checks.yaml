@@ -1,0 +1,43 @@
+# Out-of-sample checks (session M1.11; Clarification 16). Policy A, tuning cell (Clarification 15 item 2),
+# frozen settings (config/params_frozen.yaml). Pass criteria are copied from Clarification 16; nothing here
+# was changed after any check ran. Choices Clarification 16 leaves open are marked CHOICE (also in the report).
+
+seed: 20261011              # random draws for every check
+runs: 200                   # runs per check (per bank for the 40-bank checks)
+
+signature:                  # Clarification 16 item 1
+  total_assets_bn: 110
+  uninsured_share_of_deposits: 0.90
+  archetype: svb_like       # CHOICE: SVB-like archetype midpoints for every other value (contract 1b)
+  capital_call_loans_bn: 18 # not usable at the window within the episode (FRBNY would not accept them)
+  # CHOICE: capital-call loans are C&I loans; they and every CRE loan are taken out of the window pools
+  # (prepositioned and unpledged). Home Loan Bank pledges keep Clarification 4's 40% of each type.
+  pass:
+    fail_by_day: 3
+    min_fail_share: 0.80
+    day1_outflow_share_of_deposits: [0.10, 0.40]
+
+first_republic:             # Clarification 16 item 2
+  total_assets_bn: 212.6
+  uninsured_share_of_deposits: 0.68
+  archetype: diversified_regional   # CHOICE: diversified-regional midpoints for every other value; so no LCR
+  consortium_deposit_bn: 30
+  consortium_day: 5         # CHOICE: arrives as reserves at the start of day 5; held as uninsured deposits that
+                            # never run (committed for 120 days, FDIC OIG)
+  pass:
+    survive_past_day: 5
+    min_survive_share: 0.80
+    min_support_share_of_assets: 0.25   # window plus Home Loan Bank, peak (median run)
+    outflow_by_day: 10
+    outflow_band_bn: [48, 144]
+
+false_alarm:                # Clarification 16 item 3
+  scored_archetypes: [regional_cat3, gsib]
+  # CHOICE: a bank "survives to day 30 with no shortfall" if it does in more than half its runs (its median
+  # run); "no shortfall" = nothing owed at the end of any half-day. Official support = window lending
+  # (Clarification 10). The pooled share of runs is reported alongside.
+  pass:
+    min_bank_share: 0.90
+    max_median_support_share_of_assets: 0.05
+
+no_shock: {}                # Clarification 16 item 4: every bank stable with no outflows, in every run

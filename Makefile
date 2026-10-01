@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -64,3 +64,8 @@ benchmark: $(VENV)/.installed
 tune: $(VENV)/.installed
 	$(PY) -m validation.tune
 	$(PY) -m validation.tuning_report
+
+## make validate: the four out-of-sample checks of Clarification 16 (policy A only), and the validation report
+validate: $(VENV)/.installed
+	$(PY) -m validation.checks
+	$(PY) -m validation.validation_report
