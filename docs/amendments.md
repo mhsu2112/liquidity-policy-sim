@@ -243,3 +243,89 @@ Format for each entry:
   cost; no function in the link takes a policy; equal r gives equal readings across policies (static); one distress
   reading at most; inference timing; disclosure day and banks; same seed, same result; rows together equal rows alone).
   `make demo-info` shows SVB-01 at r = 0.1 and r = 2.5.
+
+## 2026-10-01 — Amendment 1: sweep the size of the distress reading (before session M1.6)
+- **What changed:** contract section 5 gains one swept assumption. The confidence hit applied when a known discount
+  window draw is read as distress (Clarification 9; default 0.25) is swept over **0.10, 0.25 and 0.40**. The default
+  stays 0.25. It runs on the coarser grid around the defaults, like the other non-main sweeps.
+- **Why:** this single fixed number sets how strongly the stigma channel acts for every policy, and so how much routine
+  borrowing (B and E's tests, C's usage draws) can help. Results will report whether any conclusion changes across the
+  three sizes, so the comparison does not rest on one estimate.
+- **Seen results before the change?** No stress or policy results exist. The M1.5 demo (a forced draw under policy A
+  with placeholder settings) showed that one distress reading drains almost all of an SVB-like bank's uninsured
+  deposits, which prompted the check.
+- **Evidence:** session M1.6. `config/information.yaml` → `market_stigma.distress_news_shock_grid: [0.10, 0.25, 0.40]`,
+  with a comment citing this amendment; the default `distress_news_shock` stays 0.25. `start_episode(distress_shock=...)`
+  sets it per row for the sweep. `tests/test_decision.py::test_amendment_1_grid_in_config`. Through Clarification 10
+  item 2, the same number also sets the bank's own price of a distress reading, so the sweep covers both.
+
+## 2026-10-01 — Clarification 10: the borrowing decision, the discount window and end conditions (session M1.6)
+- **What changed:** implementation rules for the PRD's borrowing rule and contract sections 3a and 7 that neither
+  states in full. No value or range in the contract changes. Settings in `config/decision.yaml`; code in
+  `agents/bank.py`, `engine/episode.py` and `engine/outcomes.py`. The rule is the same function with the same inputs
+  for every policy; no function in it takes a policy name.
+  1. **The rule** (PRD, "How stigma enters the model"), applied each half-day once today's withdrawals and refusals
+     are known: borrow if P(fail without the window) > P(known) x P(read as distress) x L + supervisory cost. Every
+     term is in units of the bank's loss if it fails (= 1), the unit of the supervisor's dial (Clarification 9 item 3).
+     - *L, the loss from a distress reading,* equals h, the confidence hit a reading causes (0.25; swept 0.10 / 0.25 /
+       0.40 by Amendment 1). Confidence runs from 1 (calm) to 0 (full panic, what failure looks like), so the bank
+       prices a reading at h of a failure. Owner's choice in session M1.6; it adds no new number.
+     - *P(read as distress)* = effective stigma (contract 3a). *P(known)* comes only from the M1.5 routes: 1 if total
+       borrowing would reach the 5% materiality line (the 8-K); otherwise, for a first draw, leak chance + (1 − leak
+       chance) x the weekly report's revealing share; otherwise 0 (the first draw already set those routes off). Once
+       the market reads the bank as distressed the term is 0 (one reading per episode). The bank never sees its own
+       random number.
+     - *Supervisory cost:* the effective dial cost from Clarification 9 item 3, unchanged.
+  2. **How the bank projects its shortfall** [ESTIMATE]. Over this half-day and the next three (two days), it assumes
+     each coming half-day loses as much as the larger of this half-day and the last. It counts only cash that can
+     arrive in time without the window: reserves above the floor, repo (the better of repo and sale for each class of
+     securities; same-day repo within the line), the Home Loan Bank and cash already on its way, each only if its lag is
+     within reach. These are the waterfall's own capacity functions. The projected gap is the largest shortfall of
+     cash against cumulative outflows. P(fail without the window) treats future outflows as uncertain by ±50% (one
+     standard deviation, the same error for every half-day; anchored on SVB's ~$42bn on 9 March against ~$100bn queued
+     for 10 March); it is 1 if today's payments alone can't be met on time.
+  3. **What "borrow" means.** The window opens to the waterfall that half-day, after private sources as before. The
+     bank then asks for the rest of its gap ahead of need, sized at outflows one standard deviation above its central
+     projection [ESTIMATE], using the window's fastest collateral first. When the rule says wait, every window source
+     counts as empty.
+  4. **The window.** It lends post-margin collateral with contract 7's lags (code from M1.3). Whether collateral was
+     tested in the last 90 days is drawn up front for each bank: tested if U_test < 1 − e^(−r), with r the policy's
+     routine borrowing rate (draws at random over time; at A's r = 0.1 the chance is 9.5%). U_test is one random number
+     per bank, from its own stream, shared by every policy, so a bank tested at a low r is tested at any higher r.
+  5. **Same-half-day sources pay first.** A payment due now is met first from sources that pay the same half-day, even
+     if cash is already on its way; only slower sources net off cash on its way. This restates Clarification 5 item 4,
+     which the M1.3 code applied only when nothing was on its way. Found in M1.6 when cash asked for ahead stopped the
+     bank from using its reserves; all M1.3 tests pass unchanged.
+  6. **Failure** (strict, owner's choice in session M1.6): at the end of a half-day, more than 0.1% of starting total
+     assets still owed (including payments waiting for next-day cash: the depositors' wires did not go out), or book
+     equity after realized losses below zero. The tolerance sits below SVB's negative Fed balance of about $958m (~0.5%
+     of assets) at the close on 9 March 2023, which was enough to close it (California DFPI order, 10 March 2023).
+  7. **Stabilization:** three straight days (6 half-days) in which outflows are below 0.1% of starting assets, nothing is
+     owed, confidence is no lower than three days earlier, and no news of the bank's borrowing is still on its way
+     [ESTIMATE]. A bank with no shock stabilizes on day 3. **Otherwise** the episode ends on its last day (day 30).
+  8. **Outputs per episode,** read at the end half-day (rows that have ended keep being computed with the others, but
+     nothing after the end counts): end state and day; the hesitation gap (first half-day the central projection showed
+     a gap above the failure tolerance, against the first half-day the window lent; negative if the bank borrowed before
+     the central projection showed a gap); the shortfall (largest amount still owed at the end of a half-day, and the
+     part no source could cover); official support drawn (discount window lending agreed by the end, including cash on
+     its way); effective stigma. **Home Loan Bank advances are reported separately and not counted as official support.**
+  9. **Random numbers up front.** Every run that is not a demo must supply its random numbers (`draw_info_randoms`:
+     leak, reading and testing); a run without them raises an error.
+- **Why:** the PRD gives the rule's form but not how its inputs are measured; the contract gives the window's lags but
+  not how readiness is drawn or when an episode ends. Items 1 (L), 6 and the projection method were proposed in session
+  M1.6 and approved by the owner before any code ran; item 5 is a mechanical correction found while building.
+- **Seen results before the change?** No stress or policy results exist. Agreed before any run, except item 5
+  (mechanical, found in the first test run). Seen in the M1.6 demo and reported, not changed: under the M1.10 placeholder
+  behavior settings and the strict test, most of the 40 banks fail within days even under a 0.05 news shock, because the
+  placeholder depositor settings drain uninsured deposits steadily (as in M1.4). The same happens with every information
+  route switched off, so it does not come from the borrowing rule. SVB-01 borrows on the first half-day its projection
+  shows a gap at every stigma and supervisory setting tried, because its gap is certain at once; for slower runs (e.g.
+  DIV-01), high stigma or a penalizing supervisor delays the first draw by a half-day.
+- **Evidence:** `tests/test_decision.py`: higher stigma or supervisory cost never makes any of the 40 banks borrow
+  sooner (full stigma grid x five dial levels, three shocks); window closed when the rule says wait; normal curve and
+  P(fail) by hand; P(known) by route; no policy in the rule; window cash arrives with the contract lag by source,
+  tested and untested; tested share ≈ 1 − e^(−r) over 100,000 draws and nested across r; each end condition (owed above
+  and below tolerance, negative equity, six calm half-days, pending 8-K, falling confidence, last day); nothing after
+  the end counts; no random numbers → error; same seed, same result; balance sheets balance every half-day; rows
+  together equal rows alone. Set-up of the M1.4 and M1.5 tests now supplies its random numbers explicitly (no assertion
+  changed). `make demo-episode`.

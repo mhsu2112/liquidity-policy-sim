@@ -88,13 +88,39 @@ def read_as_distress(stigma_eff, revealing, read_u):
 
 
 def draw_info_randoms(seed, rows):
-    """The two random numbers per run used by the routes, drawn up front.
+    """The random numbers per run used by the routes and the window, drawn up front.
 
-    A separate stream from the news noise (a child of the same seed), so adding
-    these draws leaves every M1.4 result unchanged. Shared by every policy.
+    leak_u and read_u (M1.5) come from a separate stream from the news noise (a
+    child of the same seed), so adding them left every M1.4 result unchanged.
+    test_u (M1.6: was the bank's collateral tested in the last 90 days?) comes
+    from a second child stream, so it leaves leak_u and read_u unchanged.
+    All are shared by every policy.
     """
-    rng = np.random.default_rng(np.random.SeedSequence(seed).spawn(1)[0])
-    return {"leak_u": rng.random(rows), "read_u": rng.random(rows)}
+    children = np.random.SeedSequence(seed).spawn(2)   # child 0 is the M1.5 stream, unchanged
+    rng = np.random.default_rng(children[0])
+    out = {"leak_u": rng.random(rows), "read_u": rng.random(rows)}
+    out["test_u"] = np.random.default_rng(children[1]).random(rows)
+    return out
+
+
+def no_information_randoms(rows):
+    """Random numbers meaning "nothing leaks, nothing is read as distress, collateral untested".
+
+    For checks of depositor and lender mechanics that model no information
+    (the M1.4 tests). Supplied explicitly, never as a silent default.
+    """
+    return {"leak_u": np.ones(rows), "read_u": np.ones(rows), "test_u": np.ones(rows)}
+
+
+def tested_recently(test_u, r):
+    """Clarification 10: collateral tested in the last 90 days if U_test < 1 - e^(-r).
+
+    r is routine draws per bank per quarter (contract 3a); treating draws as random
+    over time, the chance of at least one in the last quarter is 1 - e^(-r).
+    The same U_test is used under every policy, so a bank tested at a low r is
+    also tested at any higher r.
+    """
+    return np.asarray(test_u) < 1 - np.exp(-np.asarray(r, float))
 
 
 def weekly_act_step(d, cfg, spd):
@@ -125,9 +151,8 @@ def start_information(st, cfg, stigma, s, r, supervision, randoms, routes_off, s
     st["sup_cost_eff"] = effective_supervisory_cost(st["sup_cost"], st["strength_s"], st["routine_rate"])
     st["distress_shock"] = cfg["market_stigma"]["distress_news_shock"]
 
-    # Without supplied random numbers no leak happens and no draw is read as
-    # distress. Only M1.4 callers, which model no information, rely on this.
-    randoms = randoms or {"leak_u": np.ones(n), "read_u": np.ones(n)}
+    # engine/episode.py refuses to start a non-demo run without these (M1.6).
+    randoms = randoms or no_information_randoms(n)
     st["leak_u"], st["read_u"] = randoms["leak_u"].copy(), randoms["read_u"].copy()
 
     st["assets_start_bn"] = st["total_assets_bn"].copy()

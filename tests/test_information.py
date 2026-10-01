@@ -39,6 +39,8 @@ def run(n=1, steps=24, shock=0.0, info=None, draw_at=2, draw_bn=6.0, randoms=Non
     """SVB-01 copies, calm unless a shock is given, with a forced draw (None = no draw)."""
     noise = np.repeat(draw_noise(SEED, 1, steps, AGENTS), n, axis=0)
     forced = {} if draw_at is None else {draw_at: draw_bn}
+    # From M1.6 a run must supply its random numbers; "nothing leaks, nothing is read" was the silent default.
+    randoms = ones(n) if randoms is None else randoms
     st = start_episode(svb(n), shock, noise, info=info, forced_draws=forced, info_randoms=randoms, **kw)
     recs = []
     for _ in range(steps):
@@ -48,11 +50,11 @@ def run(n=1, steps=24, shock=0.0, info=None, draw_at=2, draw_bn=6.0, randoms=Non
 
 
 def ones(n):
-    return {"leak_u": np.ones(n), "read_u": np.ones(n)}
+    return {"leak_u": np.ones(n), "read_u": np.ones(n), "test_u": np.ones(n)}   # test_u = 1: untested (M1.6)
 
 
 def zeros(n):
-    return {"leak_u": np.zeros(n), "read_u": np.zeros(n)}
+    return {"leak_u": np.zeros(n), "read_u": np.zeros(n), "test_u": np.ones(n)}
 
 
 def events(st, route, row=0):
@@ -173,7 +175,7 @@ def test_effective_stigma_and_supervisory_cost_follow_section_3a():
 def test_episode_uses_section_3a_values():
     r = np.array([0.1, 2.5])
     st = start_episode(svb(2), 0.0, draw_noise(SEED, 2, 2, AGENTS), stigma=0.5, strength_s=0.3, routine=r,
-                       supervision="penalizes")
+                       supervision="penalizes", info_randoms=ones(2))
     np.testing.assert_allclose(st["stigma_eff"], 0.5 * np.exp(-0.3 * r))
     np.testing.assert_allclose(st["sup_cost_eff"], INFO["supervisor"]["levels"]["penalizes"] * np.exp(-0.3 * r))
 
@@ -210,7 +212,7 @@ def test_same_inputs_same_reading_whatever_the_policy():
 
 def test_distress_reading_once_and_only_when_read():
     # Reading number 0: read as distress at the first route that reveals the draw (the weekly report, step 8).
-    st, recs = run(stigma=0.5, randoms={"leak_u": np.ones(1), "read_u": np.zeros(1)})
+    st, recs = run(stigma=0.5, randoms={"leak_u": np.ones(1), "read_u": np.zeros(1), "test_u": np.ones(1)})
     assert st["distress_from"][0] == 8
     assert sum(ev["new_distress"][0] for ev in st["events"] if "new_distress" in ev) == 1
     _, calm = run(stigma=0.5, randoms=ones(1))                       # reading number 1: never read as distress
@@ -236,7 +238,7 @@ def test_inference_timing():
 
 def test_ratio_disclosure_day_and_who():
     noise = draw_noise(SEED, 40, 32, AGENTS)
-    st = start_episode(BANKS, 0.0, noise)
+    st = start_episode(BANKS, 0.0, noise, info_randoms=ones(40))
     for _ in range(32):
         episode_step(st)
     (ev,) = [e for e in st["events"] if e["route"] == "ratio_disclosure"]

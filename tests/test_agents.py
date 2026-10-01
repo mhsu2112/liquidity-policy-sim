@@ -15,6 +15,7 @@ from agents.lenders import refusal_share
 from engine.balance_sheet import check_balances
 from engine.banks import generate_banks
 from engine.episode import draw_noise, episode_step, load_yaml, run_episode, start_episode
+from engine.information import no_information_randoms
 
 BANKS = generate_banks()
 AGENTS = load_yaml("agents.yaml")
@@ -24,10 +25,13 @@ STEPS = 2 * SCEN["days"]
 MILD, SEVERE = SCEN["shocks"]["mild"], SCEN["shocks"]["severe"]
 NOISE = draw_noise(SCEN["seed"], 40, STEPS, AGENTS)
 TOL = 1e-9
+# From M1.6 every run supplies its random numbers up front. These tests model no information,
+# so they supply "nothing leaks, nothing is read, collateral untested" explicitly (was the silent default).
+NO_INFO = no_information_randoms
 
 
 def run(shock, noise=NOISE, banks=BANKS, check=False):
-    st = start_episode(banks, shock, noise)
+    st = start_episode(banks, shock, noise, info_randoms=NO_INFO(len(banks["bank_id"])))
     recs = []
     for _ in range(noise.shape[1]):
         recs.append(episode_step(st))
@@ -85,7 +89,7 @@ def test_insured_follow_their_ratio(severe):
 
 
 def test_fast_and_slow_split_by_type():
-    st = start_episode(BANKS, 0.0, NOISE)
+    st = start_episode(BANKS, 0.0, NOISE, info_randoms=NO_INFO(40))
     for name, share in AGENTS["depositors"]["fast_share_of_uninsured"].items():
         rows = BANKS["archetype"] == name
         np.testing.assert_allclose(st["fast_uninsured_bn"][rows], share * BANKS["uninsured_deposits_bn"][rows])
@@ -101,8 +105,8 @@ def test_refusal_share_band():
 
 
 def test_refusals_trigger_repayment(mild):
-    st0 = start_episode(BANKS, MILD, NOISE)
-    st = start_episode(BANKS, MILD, NOISE)
+    st0 = start_episode(BANKS, MILD, NOISE, info_randoms=NO_INFO(40))
+    st = start_episode(BANKS, MILD, NOISE, info_randoms=NO_INFO(40))
     daily = AGENTS["lenders"]["stwf_maturing_share_per_day"] * BANKS["stwf_bn"]
     refused_any = False
     for t in range(STEPS):
@@ -175,10 +179,10 @@ def test_all_rows_together_equal_each_row_alone():
     rows = {k: (np.tile(v, 2) if isinstance(v, np.ndarray) else v) for k, v in BANKS.items()}
     noise = np.tile(NOISE, (2, 1))
     shock = np.repeat([MILD, SEVERE], 40)
-    together, _ = run_episode(rows, shock, noise)
+    together, _ = run_episode(rows, shock, noise, info_randoms=NO_INFO(80))
     for i in range(80):
         one = {k: (v[[i]] if isinstance(v, np.ndarray) else v) for k, v in rows.items()}
-        alone, _ = run_episode(one, shock[[i]], noise[[i]])
+        alone, _ = run_episode(one, shock[[i]], noise[[i]], info_randoms=NO_INFO(1))
         for k in ("uninsured_deposits_bn", "insured_deposits_bn", "stwf_bn", "repo_bn", "equity_bn",
                   "unpaid_outflows_bn", "reserves_bn"):
             assert alone[k][0] == together[k][i], (i, k)

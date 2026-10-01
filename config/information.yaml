@@ -19,6 +19,7 @@ routine_borrowing:                # contract 3a: routine draws per bank per quar
 market_stigma:
   grid: [0.0, 0.10, 0.20, 0.35, 0.50, 0.70, 0.90]   # contract 5: chance a known draw is read as distress
   distress_news_shock: 0.25       # Clarification 9, item 2: a distress reading lands like news of this size [ESTIMATE]
+  distress_news_shock_grid: [0.10, 0.25, 0.40]   # Amendment 1 (2026-10-01): swept on the coarser grid; default stays 0.25
 
 routes:
   weekly_aggregate:               # contract 3: Fed weekly report (H.4.1), no bank named

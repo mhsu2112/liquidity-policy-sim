@@ -1,0 +1,14 @@
+# Demonstration for `make demo-episode` (session M1.6). Policy A only.
+# Not a stress scenario from contract section 5 and not used for any comparison.
+# Behavioral settings are M1.10 PLACEHOLDERS, so everything shown is mechanics, not results.
+seed: 20261001            # news noise and the information and testing random numbers
+days: 30                  # contract 7: a full episode
+bank: SVB-01
+shock: 0.05               # a small news shock on day 1 (the M1.4 demo's mild 0.15 ends SVB-01 on day 1 morning)
+market_stigma: 0.35       # a contract section 5 grid point
+supervision: neutral      # Clarification 9 default
+table:
+  stigma: [0.10, 0.50, 0.90]                 # three contract section 5 grid points
+  supervision: [penalizes, encourages]       # two of the five dial levels (Clarification 9)
+  contrast_bank: DIV-01   # a slower run, where the borrowing rule can bind; shown for the mechanism only
+  contrast_shock: 0.15    # the M1.4 demo's mild shock

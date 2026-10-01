@@ -18,8 +18,10 @@ sale), Home Loan Bank, discount window.
     3      two days              sell Level 2A
     4      day 11                window on eligible loans pledged nowhere
 
-There is no borrowing decision and no stigma here (both come in M1.6): the
-bank always moves on to the next source when one is used up.
+The waterfall holds no decision. From session M1.6 the bank decides each
+half-day whether it will use the window at all (agents/bank.py); when it will
+not, every window source counts as empty (`dw_allowed`). Called on its own, as
+in the M1.3 tests, the window is open.
 
 Everything is vectorized: each quantity is an array with one entry per bank,
 and one call to `step` moves all banks forward together.
@@ -281,16 +283,17 @@ def _reduce_source(st, name, cash):
 FORCED_DW_SOURCES = ("dw_tested", "dw_untested", "dw_level1", "dw_level2a")
 
 
-def force_dw_draw(st, amount_bn):
-    """Borrow `amount_bn` from the discount window now, whatever the bank needs.
+def force_dw_draw(st, amount_bn, t=None):
+    """Borrow `amount_bn` from the discount window now, ahead of any payment.
 
-    A stand-in used only by `make demo-info` and tests (session M1.5): the bank's
-    real borrow-or-not decision comes in M1.6. The draw uses the window's fastest
-    collateral first. Cash arriving today goes to reserves with the loan booked at
+    Used by the bank when its decision says borrow (session M1.6: it asks for its
+    projected gap now), and by `make demo-info` and tests to force a draw. It holds
+    no decision logic. The draw uses the window's fastest collateral first. Cash arriving today goes to reserves with the loan booked at
     once; slower cash is scheduled and booked on arrival, like any other source.
+    `t` is the half-day the draw belongs to (default: the current one).
     Returns the amount taken from each source.
     """
-    t = st["t"]
+    t = st["t"] if t is None else t
     want = np.broadcast_to(np.asarray(amount_bn, float), (len(st["bank_id"]),)).copy()
     taken = {}
     for name in FORCED_DW_SOURCES:
@@ -303,16 +306,19 @@ def force_dw_draw(st, amount_bn):
             st["incoming"][name][:, t + st["lags"][name]] += cash
         taken[name] = cash
         want = want - cash
+    st["total_assets_bn"] = total_assets(st)   # same-half-day cash adds reserves
     return taken
 
 
 # ---------------------------------------------------------------- one half-day
 
-def step(st, outflows):
+def step(st, outflows, dw_allowed=None):
     """Move every bank forward one half-day.
 
     `outflows` maps a funding line (e.g. "uninsured_deposits_bn") to the amount
-    leaving each bank this half-day. Returns this step's record, all arrays.
+    leaving each bank this half-day. `dw_allowed` (one True/False per bank) says
+    whether the bank will use the discount window this half-day (M1.6 decision);
+    None means open. Returns this step's record, all arrays.
     """
     t, n = st["t"], len(st["bank_id"])
     rec = {"t": t}
@@ -353,12 +359,22 @@ def step(st, outflows):
     st["unpaid_outflows_bn"] += total_out
     rec["outflow"] = total_out
 
-    # 3. Cover what is owed and not already on its way, source by source.
+    # 3. Cover what is owed, source by source. Same-half-day sources try to pay
+    #    everything owed now, even if cash is on its way: a payment due now is met
+    #    first from sources that pay now (Clarification 5, item 4; Clarification 10).
+    #    Slower sources cover only what is owed and not already on its way.
     on_its_way = sum(sched[:, t + 1:].sum(axis=1) for sched in st["incoming"].values())
-    need = np.maximum(st["unpaid_outflows_bn"] - on_its_way, 0)
+    need = st["unpaid_outflows_bn"].copy()
+    netted = False
     rec["realized_loss"] = np.zeros(n)
     for name in st["order"]:
+        if st["lags"][name] > 0 and not netted:   # first slower source: net off cash already coming
+            need = np.maximum(need - on_its_way, 0)
+            need = np.where(need < ONE_DOLLAR_BN, 0.0, need)
+            netted = True
         cap = _capacity(st, name)
+        if dw_allowed is not None and name.startswith("dw_"):
+            cap = np.where(dw_allowed, cap, 0.0)  # the bank has decided not to borrow this half-day
         # Under $1 of capacity is rounding dust (e.g. securities left after repo), not a source.
         rec[f"capacity_{name}"] = np.where(cap < ONE_DOLLAR_BN, 0.0, cap)  # recorded so tests can check the order
         cash = np.minimum(need, rec[f"capacity_{name}"])

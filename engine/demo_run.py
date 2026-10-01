@@ -35,7 +35,7 @@ def main():
     # Same draws for each bank under every shock: draw once per bank, repeat per shock.
     noise = np.tile(draw_noise(scen["seed"], n, steps, load_yaml("agents.yaml")), (len(names), 1))
 
-    st = start_episode(rows, shock, noise)
+    st = start_episode(rows, shock, noise, demo=True)   # a demo: no information random numbers needed
     recs = []
     for _ in range(steps):
         recs.append(episode_step(st))

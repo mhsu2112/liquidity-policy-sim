@@ -73,7 +73,8 @@ def main():
     read_u = np.tile([rnd1["read_u"][0], 0.0], m)
     st = start_episode(rows_of(banks, i, 2 * m), scen["shock"], np.repeat(noise1, 2 * m, axis=0),
                        routine=np.repeat(rates, 2), **base,
-                       info_randoms={"leak_u": np.repeat(rnd1["leak_u"], 2 * m), "read_u": read_u})
+                       info_randoms={"leak_u": np.repeat(rnd1["leak_u"], 2 * m), "read_u": read_u,
+                                     "test_u": np.repeat(rnd1["test_u"], 2 * m)})
     recs = [episode_step(st) for _ in range(steps)]
     # Batch 2: every route switched off. The draw happens but nobody learns of it.
     ctl = start_episode(rows_of(banks, i, m), scen["shock"], np.repeat(noise1, m, axis=0), routine=rates,

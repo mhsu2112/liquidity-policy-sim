@@ -1,0 +1,22 @@
+# The bank's borrow-or-not decision and the end of an episode (session M1.6).
+#
+# Sources: docs/PRD.md "How stigma enters the model" (the rule), docs/contract.md
+# sections 3a and 7, and docs/amendments.md Clarification 10 (every value below).
+# The rule is the same for every policy; nothing here names a policy.
+# Times are in half-day steps. Shares are fractions.
+
+projection:
+  horizon_steps: 4            # Clarification 10: this half-day and the next three (two days) [ESTIMATE];
+                              # matches the 2-day news half-life and SVB's two-day collapse
+  forecast_sd: 0.50           # Clarification 10: future outflows uncertain by +/-50% (one standard deviation)
+                              # [ESTIMATE]; SVB lost ~$42bn on 9 March and had ~$100bn queued for 10 March
+  request_at_sd: 1.0          # Clarification 10: when it borrows, the bank asks for the gap if outflows run one
+                              # standard deviation above its central projection [ESTIMATE]
+
+end:
+  failure_owed_share_of_assets: 0.001   # Clarification 10: fail if still owed above 0.1% of starting assets at the
+                                        # end of a half-day [ESTIMATE]; SVB's ~0.5% negative Fed balance on 9 March
+                                        # was enough to close it (Cal. DFPI order, 10 March 2023)
+  calm_outflow_share_of_assets: 0.001   # Clarification 10: a calm half-day has outflows below 0.1% of starting assets
+  calm_steps: 6                         # Clarification 10: stabilized after 3 straight calm days [ESTIMATE]
+  confidence_lookback_steps: 6          # Clarification 10: confidence no lower than 3 days earlier
