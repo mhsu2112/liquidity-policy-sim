@@ -1,0 +1,24 @@
+# LCR under current rules (session M1.2). No policy credits here; those come in M1.7.
+#
+# Sources: docs/contract.md section 7 (HQLA haircuts) and docs/amendments.md
+# Clarification 3 (outflow and inflow rates, chosen from 12 CFR 249.32 / 249.33).
+# Each type's calibration (100% / 85% / 70% / none) lives in config/banks/archetypes.yaml,
+# because it belongs to the bank type (contract section 1c).
+# Shares are fractions (0.15 = 15%).
+
+hqla:
+  level1_haircut: 0.00     # contract 7; 12 CFR 249.21: Level 1 counts in full
+  level2a_haircut: 0.15    # contract 7; 12 CFR 249.21: Level 2A counts at 85% of market value
+  level2_cap: 0.40         # contract 7; 12 CFR 249.21: Level 2 at most 40% of total HQLA
+
+outflow_rates:             # 30-day run-off rates, Clarification 3
+  insured_deposits: 0.03   # 12 CFR 249.32(a)(1): stable retail deposits
+  uninsured_deposits: 0.40 # 12 CFR 249.32(h)(1)(ii): non-operational corporate; same basis as contract Decision 2-2
+  stwf: 1.00               # 12 CFR 249.32(h)(3): unsecured wholesale from financial counterparties, all maturing within 30 days
+
+inflows:
+  loan_inflow_rate: 0.00   # Clarification 3: share of loans paying in within 30 days; no inflows are modeled
+  cap_share_of_outflows: 0.75  # 12 CFR 249.30: inflows count up to 75% of outflows (no effect while inflows are zero)
+
+# Banks with no LCR requirement still get a ratio, on unadjusted outflows (Clarification 3).
+no_requirement_factor: 1.00

@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks
+.PHONY: setup test banks lcr
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -27,3 +27,7 @@ test: $(VENV)/.installed
 ## make banks: draw the 40 synthetic banks and write outputs/banks.csv
 banks: $(VENV)/.installed
 	$(PY) -m engine.write_banks
+
+## make lcr: each bank's LCR and its parts, plus the worked-examples spreadsheet
+lcr: $(VENV)/.installed
+	$(PY) -m engine.write_lcr

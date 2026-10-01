@@ -45,17 +45,24 @@ def git_commit():
     return commit + ("-dirty" if git("status", "--porcelain") else "")
 
 
-def settings_hash(path=SETTINGS_PATH):
-    return hashlib.sha256(Path(path).read_bytes()).hexdigest()[:16]
+def settings_hash(*paths):
+    """Fingerprint of the settings files used, so any change to them shows."""
+    digest = hashlib.sha256()
+    for p in paths:
+        digest.update(Path(p).read_bytes())
+    return digest.hexdigest()[:16]
 
 
-def write_banks(out_path=DEFAULT_OUT, settings_path=SETTINGS_PATH):
-    banks = generate_banks(load_settings(settings_path))
-    assets = banks["total_assets_bn"]
-    stamps = {"git_commit": git_commit(), "config_hash": settings_hash(settings_path),
+def stamps(n, *settings_paths):
+    """The three stamp columns every output file carries."""
+    values = {"git_commit": git_commit(), "config_hash": settings_hash(*settings_paths),
               "jev_estimate_version": "not used"}
+    return {k: np.full(n, v) for k, v in values.items()}
 
-    # Build each column as text, all banks at once; then write rows.
+
+def bank_columns(banks):
+    """The M1.1 bank columns, as text, built for all banks at once."""
+    assets = banks["total_assets_bn"]
     cols = {
         "bank_id": banks["bank_id"],
         "archetype": banks["archetype"],
@@ -69,16 +76,25 @@ def write_banks(out_path=DEFAULT_OUT, settings_path=SETTINGS_PATH):
         cols[f"{line}_share_of_assets"] = np.char.mod("%.6f", banks[f"{line}_bn"] / assets)
     for k in DRAWN_SHARES:
         cols[f"drawn_{k}"] = np.char.mod("%.6f", banks[k])
-    for k, v in stamps.items():
-        cols[k] = np.full(len(assets), v)
+    return cols
 
+
+def write_csv(cols, out_path):
+    """Write columns to a CSV file, one row per bank."""
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", newline="") as f:
         w = csv.writer(f, lineterminator="\n")
         w.writerow(cols.keys())
         w.writerows(zip(*cols.values()))
-    return out_path, len(assets)
+    return out_path
+
+
+def write_banks(out_path=DEFAULT_OUT, settings_path=SETTINGS_PATH):
+    banks = generate_banks(load_settings(settings_path))
+    n = len(banks["bank_id"])
+    cols = {**bank_columns(banks), **stamps(n, settings_path)}
+    return write_csv(cols, out_path), n
 
 
 if __name__ == "__main__":
