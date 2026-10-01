@@ -230,3 +230,33 @@ def test_policy_names_appear_only_as_the_setup_builders_argument():
                 for a in node.args:
                     assert not (isinstance(a, ast.Constant) and a.value in POLICY_NAMES and id(a) not in allowed), \
                         f"{path.name} line {node.lineno} passes a policy name to {ast.unparse(node.func)}"
+
+
+# ---------------------------------------------------------------- Amendment 4: window loans in the LCR
+
+def test_window_loan_outflow_rates_by_collateral():
+    # Amendment 4: 0% against Level 1, 15% against Level 2A, 25% against loans (12 CFR 249.32(j)(1)(i)-(iii)).
+    banks = {k: (v.copy() if isinstance(v, np.ndarray) else v) for k, v in BANKS.items()}
+    plain = compute_lcr(banks, LCR_S)["gross_outflows_bn"]
+    banks.update(dw_out_level1_bn=np.full(N, 10.0), dw_out_level2a_bn=np.full(N, 20.0),
+                 dw_out_loans_bn=np.full(N, 40.0))
+    np.testing.assert_allclose(compute_lcr(banks, LCR_S)["gross_outflows_bn"], plain + 0.15 * 20 + 0.25 * 40)
+    assert LCR_S["outflow_rates"]["dw_loans_grid"] == [0.0, 0.25, 1.0]
+    for rate in LCR_S["outflow_rates"]["dw_loans_grid"]:   # sensitivity points
+        s = {**LCR_S, "outflow_rates": {**LCR_S["outflow_rates"], "dw_loans": rate}}
+        np.testing.assert_allclose(compute_lcr(banks, s)["gross_outflows_bn"], plain + 0.15 * 20 + rate * 40)
+
+
+@pytest.mark.parametrize("name", ["A", "B"])
+def test_window_loans_by_collateral_add_up(name):
+    # One waterfall step (no behavior), then a forced draw ahead of need: the three
+    # collateral lines always add up to the window loans booked, and balance sheets balance.
+    from engine.funding import force_dw_draw
+    s = SETUPS[name]
+    st = start_state(s["banks"], FS, np.ones(N, bool), s["placement"])
+    step(st, {"uninsured_deposits_bn": 0.6 * st["uninsured_deposits_bn"]})
+    force_dw_draw(st, 5.0)
+    by_collateral = st["dw_out_level1_bn"] + st["dw_out_level2a_bn"] + st["dw_out_loans_bn"]
+    np.testing.assert_allclose(by_collateral, st["dw_loans_bn"])
+    assert (st["dw_out_loans_bn"] > 0).any()
+    check_balances(st)

@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -51,3 +51,7 @@ demo-episode: $(VENV)/.installed
 ## make policy-table: each bank's starting position under A, B, B', C, C' and E (static; no stress runs)
 policy-table: $(VENV)/.installed
 	$(PY) -m engine.write_policy_table
+
+## make costs: each policy's annual cost per bank relative to A, plus a worked-example spreadsheet (static)
+costs: $(VENV)/.installed
+	$(PY) -m engine.write_costs

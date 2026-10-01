@@ -401,7 +401,8 @@ Format for each entry:
   the owner. Seen in the static table and reported, not changed: under B every bank meets the ratio with securities alone
   (39 of 40 need some; 10 also use Level 1 after their
   Level 2A); none needs loans or extra reserves. Under C, 21 of 30 LCR banks opt in; one
-  (SVB-08) releases some Level 1 because its reserves above the floor are smaller than its credit.
+  (SVB-09; corrected 2026-10-02 in session M1.8, first recorded as SVB-08 in error) releases some Level 1 ($0.76bn)
+  because its reserves above the floor are smaller than its credit.
 - **Evidence:** `tests/test_policies.py` (42 checks): switches match contract 2a; C never credits securities at the Fed;
   credit never above any limit (C and C′, trigger on/off, three uptakes, three multiples); no-LCR banks get no credit;
   C′ has no draws and A's rate and tested status; B's ratio ≥ 100% (and the least that passes); full-run sensitivity;
@@ -489,3 +490,61 @@ Format for each entry:
   repo outflows of 0% / 15%; the trigger lifts C's ceiling to 30% (setup and episode start); credit falls one for one
   with a forced draw; the disclosed LCR includes credit; no policy name outside the setup builder (AST check).
   `make test` (189 checks); `make policy-table` (240 rows).
+
+## 2026-10-02 — Amendment 4: LCR outflow on discount window loans secured by loans (before session M1.8)
+- **What changed:** resolves Clarification 12 item 6 and adds one reporting sensitivity to contract section 5.
+  1. A discount window loan is a secured funding transaction (12 CFR 249.3), and the Fed is a "sovereign entity"
+     (249.3: "a central government … or an agency, department, ministry, or central bank of a central government").
+  2. **Default:** discount window loans secured by Level 1 collateral carry a 0% outflow and by Level 2A a 15% outflow
+     (249.32(j)(1)(i)–(ii)); loans secured by non-HQLA collateral (loans) carry a **25%** outflow, reading
+     249.32(j)(1)(iii) ("secured funding transactions with sovereign entities …") as covering the Fed.
+  3. **Sensitivity:** 0% (the Basel treatment of secured funding from the domestic central bank) and 100%
+     (249.32(j)(1)(vi), non-HQLA collateral, if the 20% risk-weight condition in (j)(1)(iii) is read as excluding the Fed).
+- **Scope:** affects only the reported LCR during an episode, and so the false-comfort metric (hypothesis H5) and the
+  buffer gap. It does not change any bank's cash, funding sources or survival.
+- **Why:** the reported LCR during stress needs an outflow rate for discount window borrowing, and the rule's wording
+  is ambiguous for central bank counterparties.
+- **Seen results before the change?** No stress or policy results exist.
+- **Evidence:** session M1.8. Window loans are booked by the collateral behind them (`dw_out_level1_bn`,
+  `dw_out_level2a_bn`, `dw_out_loans_bn` in `engine/funding.py`); `engine/lcr.py` adds their outflows;
+  `config/lcr.yaml` → `dw_level1: 0.00`, `dw_level2a: 0.15`, `dw_loans: 0.25`, `dw_loans_grid: [0.00, 0.25, 1.00]`,
+  citing this amendment. `tests/test_wiring.py`: `test_window_loan_outflow_rates_by_collateral` (0% / 15% / 25% by
+  hand, and every grid point) and `test_window_loans_by_collateral_add_up` (the three lines add up to window loans after
+  a waterfall step and a forced draw; balance sheets balance). Reporting only: `make demo-episode` output (policy A) is
+  identical to session M1.7b's.
+
+## 2026-10-02 — Clarification 13: the cost model (session M1.8)
+- **What changed:** implementation rules for contract section 6 that the contract leaves unstated. No value or range in
+  the contract changes. Settings in `config/costs.yaml`; code in `engine/costs.py`, `engine/write_costs.py`,
+  `engine/cost_workbook.py`.
+  1. **Relative to A.** Every cost is the policy's annual cost minus policy A's, in $m, so A costs zero by
+     construction. A's own voluntary tests (rate 0.1 a quarter) are not subtracted from B, B′ and E's four tests
+     (owner's choice; about $55 a year).
+  2. **Prepositioning:** (collateral at the Fed under the policy − under A), by type, × the contract 6 rate. Loans are
+     at face value, securities at market value (owner's choice). Negative where a policy leaves less at the Fed than
+     A (owner's choice): only SVB-03 under B′, which turns some prepositioned loans into reserves (−$2.5m a year).
+     The contract 5 rate multiple (×0.5 / ×1 / ×1.5) is in config at ×1 and isn't swept in M1.8's output.
+  3. **Draws:** primary credit rate − interest on reserve balances = **10 bp** (as of 2026-09-17; Federal Reserve
+     implementation note of 2026-09-16; figure supplied by the owner in session M1.8 and not independently checked
+     here), × size × 1/360 (actual/360, owner's choice) × draws a year. B, B′ and E: four $50m tests. C banks that opt in:
+     ten usage draws a year at the Clarification 11 item 7 size. C′ and every other bank: none.
+  4. **Extra reserves** (B, B′) and **released HQLA** (C, C′ banks that opt in) at the loan-to-reserve spread. Release
+     is measured at the amount released (reserves, plus securities at market value) and counts as a negative cost.
+  5. **One-time loss:** the unrealized loss realized when securities are released (book equity under A minus under the
+     policy) is reported in its own column, never in the annual cost.
+  6. **Spread sweep** (contract 6: 200 / 250 / 300 bp) moves only the extra-reserves and released-HQLA components;
+     `costs.csv` shows the annual total at each point.
+  7. **Worked examples:** the first SVB-like bank and the first GSIB that opt in under C (SVB-09, GSIB-02), so every
+     component appears, each under B, B′ and C.
+- **Why:** the contract gives rates but not the base they apply to, the day count, how a position below A's is
+  treated, or whether A's voluntary tests are netted. Items 1–3 were chosen by the owner in session M1.8 before any
+  code ran.
+- **Seen results before the change?** No stress or policy-performance results exist. One static fact informed the
+  question asked in item 2 (SVB-03 under B′ ends with less at the Fed than under A). No ranking or summary across
+  policies was produced.
+- **Evidence:** `tests/test_costs.py`: A's every component is zero; a $50m test by hand; B and E prepositioning
+  identical; banks that don't opt in under C and C′ cost nothing; C′ has no draw cost and C's draws match by hand;
+  the spread sweep scales extra reserves and release by 0.8 / 1.2 and leaves the rest unchanged; the annual total is
+  the sum and excludes the one-time loss; same seed, same table (240 rows); every cost formula in
+  `outputs/cost_worked_example.xlsx` (SVB-09 and GSIB-02 under B, B′ and C), worked by pycel, matches the code.
+  `make costs`.

@@ -1,0 +1,20 @@
+# Annual steady-state cost of each policy, relative to policy A (session M1.8).
+#
+# Sources: docs/contract.md section 6 (cost inputs, Decision 6-1) and section 5 (sweeps);
+# docs/amendments.md Clarification 13 (how the inputs combine). Rates in basis points
+# (1 bp = 0.01% a year). Draw sizes and counts come from config/policies/policies.yaml.
+
+prepositioning_bp:          # contract 6: opportunity cost of collateral at the Fed, per year, on face value (Clarification 13)
+  level1: 2                 # Treasuries: still HQLA, operational cost only [ESTIMATE; range 1-3]
+  level2a: 2                # agency securities: as Treasuries [ESTIMATE; range 1-3]
+  resi: 20                  # residential mortgages: forgone Home Loan Bank capacity [ESTIMATE; range 10-30]
+  cre: 20                   # CRE loans: forgone Home Loan Bank capacity or sale [ESTIMATE; range 10-30]
+  ci: 15                    # C&I loans: forgone sale or securitization [ESTIMATE; range 8-23]
+prepositioning_rate_multiple: 1.0   # contract 5 sweeps x0.5 / x1 / x1.5; left at x1 in M1.8's output (Clarification 13)
+
+draw_spread_bp: 10          # Decision 6-1: primary credit rate minus interest on reserve balances, as of 2026-09-17
+                            # (Federal Reserve implementation note, 2026-09-16; figure supplied by the owner, M1.8)
+day_count_days: 360         # Clarification 13: one night = 1/360 of the annual rate (actual/360, money-market convention)
+
+loan_to_reserve_spread_bp: 250        # contract 6: B's extra reserves and C's released HQLA [ESTIMATE]
+loan_to_reserve_spread_grid_bp: [200, 250, 300]   # contract 6 range, swept

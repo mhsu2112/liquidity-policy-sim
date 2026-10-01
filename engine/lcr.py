@@ -59,14 +59,16 @@ def compute_lcr(banks, s=None):
 
     # 6-7. Thirty-day outflows at the agreed run-off rates, less inflows
     #      (none are modeled; the 75% inflow cap is kept so the rule is complete).
-    #      Repo outstanding is secured funding maturing within 30 days, at the rate for
-    #      its collateral (Clarification 12 item 6). Discount window loans add no outflow
-    #      in v1: an open item (Clarification 12 item 6).
+    #      Repo and discount window loans outstanding are secured funding, at the rate for
+    #      their collateral (Clarification 12 item 6; Amendment 4 for window loans against loans).
     outflows = (rates["insured_deposits"] * banks["insured_deposits_bn"]
                 + rates["uninsured_deposits"] * banks["uninsured_deposits_bn"]
                 + rates["stwf"] * banks["stwf_bn"]
                 + rates["repo_level1"] * banks.get("repo_out_level1_bn", 0.0)
-                + rates["repo_level2a"] * banks.get("repo_out_level2a_bn", 0.0))
+                + rates["repo_level2a"] * banks.get("repo_out_level2a_bn", 0.0)
+                + rates["dw_level1"] * banks.get("dw_out_level1_bn", 0.0)
+                + rates["dw_level2a"] * banks.get("dw_out_level2a_bn", 0.0)
+                + rates["dw_loans"] * banks.get("dw_out_loans_bn", 0.0))
     inflows = s["inflows"]["loan_inflow_rate"] * banks["loans_bn"]
     net_outflows = outflows - np.minimum(inflows, s["inflows"]["cap_share_of_outflows"] * outflows)
 

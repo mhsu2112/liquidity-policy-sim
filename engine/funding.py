@@ -68,6 +68,10 @@ BORROWING_LINE = {"repo_level1": "repo_bn", "repo_level2a": "repo_bn",
                   "dw_tested": "dw_loans_bn", "dw_untested": "dw_loans_bn",
                   "dw_tested_level1": "dw_loans_bn", "dw_tested_level2a": "dw_loans_bn", "dw_level1": "dw_loans_bn",
                   "dw_level2a": "dw_loans_bn", "dw_unpledged": "dw_loans_bn"}
+# Window loans by the collateral behind them (Amendment 4: their LCR outflow depends on it).
+DW_COLLATERAL = {"dw_tested": "loans", "dw_untested": "loans", "dw_unpledged": "loans",
+                 "dw_tested_level1": "level1", "dw_level1": "level1",
+                 "dw_tested_level2a": "level2a", "dw_level2a": "level2a"}
 
 
 BEHAVIOR_SETTINGS_PATH = Path(__file__).resolve().parent.parent / "config" / "behavior.yaml"
@@ -133,6 +137,8 @@ def start_state(banks, s=None, tested=None, placement=None):
         st[f"dw_pledged_mv_{c}_bn"] = np.zeros(n)  # market value pledged at the window
         st[f"repo_pledged_mv_{c}_bn"] = np.zeros(n)  # market value encumbered by repo (Clarification 6)
         st[f"repo_out_{c}_bn"] = np.zeros(n)  # repo outstanding against class c (memo; total is repo_bn)
+    for k in set(DW_COLLATERAL.values()):   # window loans by collateral (memo; total is dw_loans_bn)
+        st[f"dw_out_{k}_bn"] = np.zeros(n)
 
     # Same-day repo line by bank type (Clarification 7), and the share of repo
     # lenders still willing to lend (1 until lenders start refusing; M1.4).
@@ -260,13 +266,20 @@ def _use(st, name, cash, t):
     _reduce_source(st, name, cash)
     if lag == 0:
         if name != "reserves":  # borrowed today: the loan and the cash arrive together
-            st[BORROWING_LINE[name]] += cash
-            if name.startswith("repo_"):
-                st[f"repo_out_{name.rsplit('_', 1)[1]}_bn"] += cash
+            _book_borrowing(st, name, cash)
         st["unpaid_outflows_bn"] -= cash
     else:
         st["incoming"][name][:, t + lag] += cash
     return np.zeros_like(cash)
+
+
+def _book_borrowing(st, name, cash):
+    """Book a loan when its cash arrives: the borrowing line, plus the memo line by collateral."""
+    st[BORROWING_LINE[name]] += cash
+    if name.startswith("repo_"):
+        st[f"repo_out_{name.rsplit('_', 1)[1]}_bn"] += cash
+    if name in DW_COLLATERAL:
+        st[f"dw_out_{DW_COLLATERAL[name]}_bn"] += cash
 
 
 def _reduce_source(st, name, cash):
@@ -321,7 +334,7 @@ def force_dw_draw(st, amount_bn, t=None):
         cash = np.minimum(want, _capacity(st, name))
         _reduce_source(st, name, cash)
         if st["lags"][name] == 0:
-            st["dw_loans_bn"] += cash
+            _book_borrowing(st, name, cash)
             st["reserves_bn"] += cash
         else:
             st["incoming"][name][:, t + st["lags"][name]] += cash
@@ -351,9 +364,7 @@ def step(st, outflows, dw_allowed=None):
         if name.startswith("sale_"):
             st["sale_proceeds_due_bn"] -= cash
         elif name in BORROWING_LINE:  # a loan is booked when its cash arrives
-            st[BORROWING_LINE[name]] += cash
-            if name.startswith("repo_"):
-                st[f"repo_out_{name.rsplit('_', 1)[1]}_bn"] += cash
+            _book_borrowing(st, name, cash)
         rec[f"arrived_{name}"] = cash.copy()
         arrived += cash
     paid_late = np.minimum(st["unpaid_outflows_bn"], arrived)
