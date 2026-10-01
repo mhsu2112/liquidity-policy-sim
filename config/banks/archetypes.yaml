@@ -1,0 +1,86 @@
+# The 40 synthetic banks: ranges and LCR treatment.
+#
+# Every number here is copied from docs/contract.md. Section 1b gives the ranges
+# (marked ESTIMATE in the contract, anchored to the 2023 failures in section 1a);
+# section 1c gives the LCR treatment (SOURCED, 2019 tailoring rules).
+# How the ranges combine is set by docs/amendments.md, Clarifications 1 and 2.
+#
+# Shares are fractions (0.55 = 55%). Money is in $ billions.
+# Each bank draws every [low, high] range uniformly (contract section 1).
+
+seed: 20260923            # contract section 1: fixed seed for the bank population
+banks_per_archetype: 10   # contract section 1: 10 variants of each of four archetypes
+
+archetypes:
+
+  svb_like:
+    label: SVB-like (Cat. IV)
+    id_prefix: SVB
+    total_assets_bn: [100, 250]               # 1b: total assets ($bn)
+    uninsured_share_of_deposits: [0.80, 0.95] # 1b: uninsured share of deposits
+    securities_share_of_assets: [0.40, 0.60]  # 1b: securities share of assets
+    level1_share_of_securities: [0.30, 0.50]  # 1b: of which Level 1
+    level2a_share_of_securities: [0.50, 0.70] # 1b: of which Level 2A (= 1 - Level 1, Clarification 2)
+    unrealized_loss_share_of_securities: [0.08, 0.17]  # 1b: unrealized loss on securities
+    reserves_share_of_assets: [0.05, 0.10]    # 1b: reserves (cash at Fed)
+    loans_share_of_assets: [0.30, 0.45]       # 1b: loans share of assets
+    loan_mix: {resi: 0.30, cre: 0.20, ci: 0.50}  # 1b: loan mix, fixed (not a range)
+    eligible_share_of_loans: [0.60, 0.80]     # 1b: share of loans eligible as collateral
+    stwf_share_of_liabilities: [0.03, 0.08]   # 1b: short-term wholesale funding
+    equity_share_of_assets: [0.07, 0.09]      # 1b: equity share of assets
+    lcr_category: IV                          # 1c: Category IV, wSTWF >= $50bn
+    lcr_calibration: 0.70                     # 1c + Decision 1-2: reduced (70%) LCR
+
+  diversified_regional:
+    label: Diversified regional (Cat. IV)
+    id_prefix: DIV
+    total_assets_bn: [100, 250]               # 1b
+    uninsured_share_of_deposits: [0.35, 0.55] # 1b
+    securities_share_of_assets: [0.15, 0.25]  # 1b
+    level1_share_of_securities: [0.40, 0.60]  # 1b
+    level2a_share_of_securities: [0.40, 0.60] # 1b (= 1 - Level 1, Clarification 2)
+    unrealized_loss_share_of_securities: [0.04, 0.10]  # 1b
+    reserves_share_of_assets: [0.04, 0.08]    # 1b
+    loans_share_of_assets: [0.60, 0.70]       # 1b
+    loan_mix: {resi: 0.35, cre: 0.35, ci: 0.30}  # 1b
+    eligible_share_of_loans: [0.70, 0.90]     # 1b
+    stwf_share_of_liabilities: [0.05, 0.10]   # 1b
+    equity_share_of_assets: [0.08, 0.10]      # 1b
+    lcr_category: IV                          # 1c: Category IV, wSTWF < $50bn
+    lcr_calibration: null                     # 1c: no LCR applies
+
+  regional_cat3:
+    label: Regional (Cat. III)
+    id_prefix: REG
+    total_assets_bn: [250, 700]               # 1b
+    uninsured_share_of_deposits: [0.35, 0.55] # 1b
+    securities_share_of_assets: [0.18, 0.28]  # 1b
+    level1_share_of_securities: [0.40, 0.60]  # 1b
+    level2a_share_of_securities: [0.40, 0.60] # 1b (= 1 - Level 1, Clarification 2)
+    unrealized_loss_share_of_securities: [0.04, 0.10]  # 1b
+    reserves_share_of_assets: [0.05, 0.10]    # 1b
+    loans_share_of_assets: [0.55, 0.65]       # 1b
+    loan_mix: {resi: 0.35, cre: 0.30, ci: 0.35}  # 1b
+    eligible_share_of_loans: [0.70, 0.90]     # 1b
+    stwf_share_of_liabilities: [0.08, 0.15]   # 1b
+    equity_share_of_assets: [0.08, 0.10]      # 1b
+    lcr_category: III                         # 1c: Category III, wSTWF < $75bn
+    lcr_calibration: 0.85                     # 1c: reduced (85%) LCR
+
+  gsib:
+    label: GSIB / large bank
+    id_prefix: GSIB
+    total_assets_bn: [700, 2000]              # 1b
+    uninsured_share_of_deposits: [0.40, 0.60] # 1b
+    securities_share_of_assets: [0.20, 0.30]  # 1b
+    level1_share_of_securities: [0.50, 0.70]  # 1b
+    level2a_share_of_securities: [0.30, 0.50] # 1b (= 1 - Level 1, Clarification 2)
+    unrealized_loss_share_of_securities: [0.03, 0.08]  # 1b
+    reserves_share_of_assets: [0.08, 0.15]    # 1b
+    loans_share_of_assets: [0.45, 0.60]       # 1b
+    loan_mix: {resi: 0.40, cre: 0.20, ci: 0.40}  # 1b
+    eligible_share_of_loans: [0.70, 0.90]     # 1b
+    stwf_share_of_liabilities: [0.10, 0.20]   # 1b
+    equity_share_of_assets: [0.07, 0.09]      # 1b
+    lcr_category: I-II                        # 1c: Categories I-II (and III with wSTWF >= $75bn)
+    lcr_calibration: 1.00                     # 1c: full (100%) LCR

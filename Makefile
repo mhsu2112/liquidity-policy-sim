@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test
+.PHONY: setup test banks
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -23,3 +23,7 @@ setup: $(VENV)/.installed
 ## make test: run every automated check in tests/
 test: $(VENV)/.installed
 	$(PY) -m pytest tests/ -v
+
+## make banks: draw the 40 synthetic banks and write outputs/banks.csv
+banks: $(VENV)/.installed
+	$(PY) -m engine.write_banks
