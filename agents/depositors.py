@@ -11,6 +11,10 @@ starting uninsured deposits withdrawn over the last day, and c the
 coordination strength. Unrealized losses matter only once news draws attention
 to them, as with SVB, whose losses were public for months before the run.
 
+Withdrawals (Amendment 2, session M1.6b): fast and slow depositors leave at
+1 - e^(-a x max(0, theta - C)) of their remaining balance each half-day, so
+nobody withdraws while confidence is above the tolerance level theta.
+
 From session M1.5, S also includes the news from a known discount window draw
 read as distress (Clarification 9, item 2; engine/information.py). It is zero
 until a route reveals a draw and the market reads it as distress.
@@ -44,8 +48,16 @@ def confidence(st, t, agents, behavior):
 
 
 def leave_share(conf, behavior):
-    """Share of a group leaving this half-day: 1 - exp(-a x (1 - confidence))."""
-    return 1 - np.exp(-behavior["depositor_sensitivity"]["value"] * (1 - conf))
+    """Share of a group leaving this half-day: 1 - exp(-a x max(0, theta - confidence)).
+
+    Amendment 2: depositors tolerate small drops in confidence. Above the
+    tolerance level theta nobody leaves; below it, the further confidence falls,
+    the more leave. Fast and slow depositors both use this rule (slow with their
+    lag); insured depositors leave at a fixed fraction of the fast rate.
+    """
+    sens = behavior["depositor_sensitivity"]
+    theta = sens["tolerance_theta"]["value"]
+    return 1 - np.exp(-sens["value"] * np.maximum(0.0, theta - conf))
 
 
 def withdrawals(st, t, agents, behavior):

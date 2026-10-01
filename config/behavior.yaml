@@ -8,7 +8,9 @@
 # How each one is used: docs/amendments.md Clarification 8.
 
 depositor_sensitivity:
-  value: 1.0      # PLACEHOLDER: set only in M1.10. Share of fast depositors leaving per half-day = 1 - exp(-a x (1 - confidence))
+  value: 1.0      # PLACEHOLDER: set only in M1.10. a: share leaving per half-day = 1 - exp(-a x max(0, theta - confidence))
+  tolerance_theta:  # Amendment 2 (2026-10-01): part of depositor sensitivity, tuned with a; not a new tuned setting
+    value: 0.9    # PLACEHOLDER: set only in M1.10. Above this confidence, nobody withdraws
 coordination_strength:
   value: 1.0      # PLACEHOLDER: set only in M1.10. Confidence lost per unit share of uninsured deposits withdrawn over the last day
 slow_depositor_lag_steps:

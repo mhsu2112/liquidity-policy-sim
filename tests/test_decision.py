@@ -59,7 +59,10 @@ def test_higher_costs_never_borrow_sooner(shock):
     # Stigma rises down axis 0; supervisory cost falls along axis 1 (levels run penalizes -> encourages).
     assert (np.diff(first, axis=0) >= 0).all()          # more stigma: never sooner
     assert (np.diff(first, axis=1) <= 0).all()          # less supervisory cost: never later
-    assert (first < NEVER).any()                         # the check is not empty: banks do borrow
+    # The check is not empty: banks do borrow. Since Amendment 2 (session M1.6b) no bank borrows under the
+    # small shock (confidence stays above the tolerance level), so the guard applies only where borrowing happens.
+    if shock >= 0.15:
+        assert (first < NEVER).any()
 
 
 def test_window_closed_when_the_rule_says_wait():

@@ -329,3 +329,29 @@ Format for each entry:
   the end counts; no random numbers → error; same seed, same result; balance sheets balance every half-day; rows
   together equal rows alone. Set-up of the M1.4 and M1.5 tests now supplies its random numbers explicitly (no assertion
   changed). `make demo-episode`.
+
+## 2026-10-01 — Amendment 2: depositors tolerate small drops in confidence (before tuning, session M1.6b)
+- **What changed:** the depositor withdrawal rule in Clarification 8, item 2, gains a tolerance level θ. Fast depositors
+  now leave at 1 − e^(−a × max(0, θ − C)) of their remaining balance each half-day, instead of 1 − e^(−a × (1 − C)).
+  Slow depositors use the same rule with their lag; insured depositors still leave at 5% of the fast rate. With
+  confidence above θ, nobody withdraws.
+- **Tuning:** θ is part of "depositor sensitivity", one of the five settings contract section 7 lists as tuned in
+  M1.10. It is tuned together with a, and only in M1.10. Placeholder: θ = 0.9, marked "PLACEHOLDER: set only in M1.10".
+  No new tuned setting is created.
+- **Applies identically to every policy.** No part of the rule depends on which policy is running.
+- **Why:** under the M1.4 rule, any confidence below 100% drains deposits every half-day until confidence recovers, so a
+  sound bank facing a small rumor bleeds deposits indefinitely. Tuning would then have to trade the SVB-like run speed
+  against false-alarm survival (validation M1.11) with no way to satisfy both. A tolerance level is the standard way
+  to separate ordinary worry from a run.
+- **Seen results before the change?** No tuning and no policy results exist. The M1.6 mechanical demo (policy A,
+  placeholder settings) showed nearly every bank failing under a tiny 0.05 shock, which prompted the check.
+- **Evidence:** session M1.6b. `config/behavior.yaml` → `depositor_sensitivity.tolerance_theta.value: 0.9`, marked
+  "PLACEHOLDER: set only in M1.10" and citing this amendment; rule in `agents/depositors.py::leave_share`.
+  `tests/test_agents.py`: nobody withdraws at or above θ (function and episode); withdrawals rise strictly as confidence
+  falls below θ and match the formula by hand; no policy in the rule; same seed, same result; balance sheets balance.
+  One M1.6 test guard changed with the owner's approval: `test_higher_costs_never_borrow_sooner` still checks
+  monotonicity at all three shocks, but its "some bank borrows" guard now applies only at 0.15 and 0.40, because no bank
+  borrows at 0.05 under θ. Mechanical runs (policy A, placeholders, stigma 0.35, neutral supervision, seed 20261001),
+  reported, not results: under a 0.05 shock 0 of 40 banks fail (all stabilize, none borrow; SVB-01 stabilizes day 6);
+  under a 0.5 shock 39 of 40 fail (all SVB-like on day 1; diversified and Category III regionals days 1–3; 9 of 10
+  GSIBs days 3–4). `make demo-episode` rerun.

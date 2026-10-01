@@ -14,6 +14,9 @@ from agents.depositors import leave_share
 from agents.lenders import refusal_share
 from engine.balance_sheet import check_balances
 from engine.banks import generate_banks
+import inspect
+
+import agents.depositors as depositors
 from engine.episode import draw_noise, episode_step, load_yaml, run_episode, start_episode
 from engine.information import no_information_randoms
 
@@ -187,3 +190,43 @@ def test_all_rows_together_equal_each_row_alone():
                   "unpaid_outflows_bn", "reserves_bn"):
             assert alone[k][0] == together[k][i], (i, k)
         np.testing.assert_array_equal(alone["confidence"][0], together["confidence"][i])
+
+
+# ---------------------------------------------------------------- tolerance level (Amendment 2, session M1.6b)
+
+THETA = BEHAVIOR["depositor_sensitivity"]["tolerance_theta"]["value"]
+
+
+def test_nobody_withdraws_above_theta():
+    conf = np.array([1.0, 0.99, THETA + 1e-9, THETA])
+    assert (leave_share(conf, BEHAVIOR) == 0).all()
+    # In an episode: whenever confidence (now, or `lag` half-days ago for slow depositors) is at or above theta,
+    # that group withdraws nothing.
+    st, recs = run(MILD)
+    lag = BEHAVIOR["slow_depositor_lag_steps"]["value"]
+    for t, r in enumerate(recs):
+        assert (r["fast_out"][r["confidence"] >= THETA] == 0).all()
+        assert (r["insured_out"][r["confidence"] >= THETA] == 0).all()
+        if t >= lag:
+            assert (r["slow_out"][recs[t - lag]["confidence"] >= THETA] == 0).all()
+
+
+def test_withdrawals_rise_as_confidence_falls_below_theta():
+    conf = np.linspace(THETA, 0.0, 50)                   # from theta down to panic
+    share = leave_share(conf, BEHAVIOR)
+    assert share[0] == 0 and (np.diff(share) > 0).all()
+    a = BEHAVIOR["depositor_sensitivity"]["value"]
+    np.testing.assert_allclose(share, 1 - np.exp(-a * (THETA - conf)))   # Amendment 2's formula, by hand
+
+
+def test_withdrawal_rule_takes_no_policy():
+    for fn in (depositors.leave_share, depositors.withdrawals, depositors.confidence, depositors.start_depositors):
+        assert "policy" not in inspect.signature(fn).parameters, fn.__name__
+
+
+@pytest.mark.parametrize("shock", [MILD, SEVERE])
+def test_tolerance_rule_repeatable_and_balanced(shock):
+    a, _ = run(shock, check=True)                        # check_balances after every half-day
+    b, _ = run(shock)
+    for k in ("uninsured_deposits_bn", "insured_deposits_bn", "equity_bn", "unpaid_outflows_bn", "confidence"):
+        np.testing.assert_array_equal(a[k], b[k])
