@@ -1,0 +1,52 @@
+# The four policy switches and the five named policies (session M1.7).
+#
+# Sources: docs/contract.md sections 2a (switches), 2c (Option B), 2d (Option C), 3a
+# (routine borrowing) and 5 (swept grids); docs/amendments.md Clarifications 4, 5 and 11.
+# Collateral margins, the reserve floor and where collateral sits under A live in
+# config/funding.yaml and are read from there, not copied here.
+# Shares are fractions (0.40 = 40%). Money in $ billions.
+
+seed: 20261001            # Clarification 11: seed for the policy table's random numbers (opt-in, tested status)
+
+# Contract 2a. Each named policy is a fixed combination of the four switches.
+# C' is C with no usage multiple (contract 2d: the "no limit" point of the k sweep).
+policies:
+  A:
+    switches: {prepositioning_mandate: false, testing_mandate: false, five_day_ratio: false, lcr_credit: false}
+  B:
+    switches: {prepositioning_mandate: true, testing_mandate: true, five_day_ratio: true, lcr_credit: false}
+  C:
+    switches: {prepositioning_mandate: false, testing_mandate: false, five_day_ratio: false, lcr_credit: true}
+  C_prime:
+    switches: {prepositioning_mandate: false, testing_mandate: false, five_day_ratio: false, lcr_credit: true}
+    overrides: {usage_multiple: null}   # contract 2d: C' has no usage multiple, so no usage draws
+  E:
+    switches: {prepositioning_mandate: true, testing_mandate: true, five_day_ratio: false, lcr_credit: false}
+
+five_day_ratio:                 # contract 2c
+  runoff_uninsured: 0.40        # Decision 2-2: 40% of uninsured deposits over five days (sensitivity: 1.00)
+  runoff_stwf: 1.00             # Decision 2-2: 100% of short-term wholesale funding
+  minimum: 1.00                 # contract 2c: ratio >= 100%
+
+prepositioning:                 # contract 2c: least that passes, cheapest collateral first
+  # Clarification 11 item 3. Cheapest first by contract 6 costs: securities (2bp) before loans (15-20bp).
+  # Level 2A before Level 1 (same cost and margin; Level 1 is kept free for same-day repo).
+  # Loans in Clarification 4 order: unpledged first, then loans pledged to the Home Loan Bank.
+  order: [level2a, level1, unpledged_loans, fhlb_loans]
+
+testing:                        # contract 2c, Decision 2-3
+  draw_size_bn: 0.05            # $50m
+  draws_per_year: 4             # quarterly, overnight
+
+lcr_credit:                     # contract 2d
+  ceiling: 0.20                 # R1-1: 20% of total net cash outflows; swept 15/20/25%
+  stress_ceiling: 0.30          # R1-1, R1-2: rises to 30% when the stress trigger fires
+  stress_trigger_fires: false   # S1 switch: off, or fires on day 1 (contract 2d); off for the static table
+  usage_multiple: 75            # R1-3, R1-4: k; swept no limit (= C'), 75, 100, 125
+  usage_ranks: [1, 3, 5]        # contract 2d: average of the 1st, 3rd and 5th largest overnight draws
+  usage_draws_per_six_months: 5 # contract 2d: five overnight draws every six months
+  uptake: 0.75                  # R1-6: share of eligible banks that opt in; swept 50/75/100%
+  release_share: 1.00           # R1-5: HQLA released = 100% of credit; swept 0/50/100%
+  # Clarification 11 item 1: HQLA released in this order. Reserves only down to the
+  # operating floor in config/funding.yaml (Clarification 5).
+  release_order: [reserves, level1, level2a]

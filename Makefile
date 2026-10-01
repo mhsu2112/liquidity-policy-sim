@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -47,3 +47,7 @@ demo-info: $(VENV)/.installed
 ## make demo-episode: one full SVB-01 episode in plain English, plus a stigma x supervision table (policy A; mechanics only)
 demo-episode: $(VENV)/.installed
 	$(PY) -m engine.demo_episode
+
+## make policy-table: each bank's starting position under A, B, C, C' and E (static; no stress runs)
+policy-table: $(VENV)/.installed
+	$(PY) -m engine.write_policy_table

@@ -355,3 +355,55 @@ Format for each entry:
   reported, not results: under a 0.05 shock 0 of 40 banks fail (all stabilize, none borrow; SVB-01 stabilizes day 6);
   under a 0.5 shock 39 of 40 fail (all SVB-like on day 1; diversified and Category III regionals days 1–3; 9 of 10
   GSIBs days 3–4). `make demo-episode` rerun.
+
+## 2026-10-01 — Clarification 11: building the policies from their switches (session M1.7)
+- **What changed:** implementation rules for contract sections 2a, 2c, 2d and 3a that the contract leaves unstated. No
+  value or range in the contract changes. Settings in `config/policies/policies.yaml`; code in `engine/policies.py`,
+  `engine/collateral.py`, `engine/five_day.py` and `engine/lcr_credit.py`.
+  1. **HQLA released under C** (owner's choice): reserves first, down to the 1% operating floor (Clarification 5), then
+     Level 1, then Level 2A. Securities released are sold at market value and realize their unrealized loss
+     (Clarification 5 item 2), with no fire-sale discount (a gradual steady-state choice). The cash goes into new loans
+     at the bank's loan mix and eligible share, not prepositioned. The amount is sized on ordinary-course credit
+     (stress trigger off).
+  2. **B's extra reserves** (owner's choice): funded by running off loans not eligible as collateral, at the bank's mix;
+     total assets unchanged. If those run out, loans at the Fed are converted, each $1 netting (1 − lendable value per
+     $1). If a bank still falls short once every loan is reserves, the remaining gap is reported
+     (`b_gap_left_after_all_loans_bn`) and its ratio stays below 100%. This happens only under the full-run sensitivity
+     (SVB-04, SVB-08, SVB-09; ratios 97.7%, 92.9%, 98.5%); how B treats such a bank is left open for the owner.
+  3. **Collateral for B and E, cheapest first** (owner's choice: the contract 2c rule priced by contract 6): securities
+     (2bp) before loans (15–20bp); Level 2A before Level 1 (same cost and 96% margin; Level 1 is kept free for same-day
+     repo); then loans in Clarification 4 order (unpledged, then Home Loan Bank-pledged, reducing Home Loan Bank capacity
+     one for one), each pool at the bank's loan mix. Securities are valued at market value × margin and stay HQLA
+     (contract 2d). The 30% of eligible loans already at the Fed under A counts first. E prepositions exactly B's
+     collateral and holds no extra reserves.
+  4. **Credit only for banks that opt in** (owner's choice), under both C and C′. Opt-in is drawn once per bank from its
+     own random stream (third child of the seed), opting in if U < uptake, so the same banks opt in under C and C′ and the
+     sets are nested across uptake levels. Banks with no LCR never opt in.
+  5. **Total net cash outflows** for the ceiling are the calibrated amount (×70% / ×85% for reduced-LCR banks), as
+     12 CFR 249 defines them for those banks.
+  6. **Opt-in prepositioning:** loans only (securities earn no credit), in Clarification 4 order, until loan capacity
+     reaches 30% of net cash outflows, or every eligible loan if less.
+  7. **Usage draws (C only):** five equal overnight draws every six months, each = target credit ÷ k, where target credit
+     = min(30% × net cash outflows, loan capacity). Then k × average(1st, 3rd, 5th) = target, so the usage limit never
+     stops the stress raise to 30%. C′ makes none.
+  8. **Tested status:** B, E and opted-in C banks are tested. A, C′ and C banks that do not opt in are drawn as in
+     Clarification 10 item 4 at the voluntary rate (A's 0.1). The system routine rate r stays as in contract 3a.
+  9. **Buffer gap** = reported LCR − LCR without credit (PRD metrics table). **Credit after a stress draw** =
+     max(0, credit − amount drawn).
+  10. **Not yet wired into the episode:** the starting positions are static. Feeding them into a stress run (including
+      a window source for prepositioned securities), and the two M1.3b gaps (securities encumbered at the window still
+      in HQLA; no LCR outflow for repo), are left for a later session.
+- **Why:** the contract fixes the switches and formulas but not which HQLA is released, how extra reserves are funded,
+  which collateral counts as cheapest, or who may claim credit under C′. Items 1–4 were chosen by the owner in session
+  M1.7 before any code ran; items 5–9 were stated in the approved plan.
+- **Seen results before the change?** No stress or policy results exist; no stress episode ran. Only static
+  calculations (allowed before M3): a check of each bank's five-day ratio and credit size informed the options shown to
+  the owner. Seen in the static table and reported, not changed: under B every bank meets the ratio with securities alone
+  (39 of 40 need some; 10 also use Level 1 after their
+  Level 2A); none needs loans or extra reserves. Under C, 21 of 30 LCR banks opt in; one
+  (SVB-08) releases some Level 1 because its reserves above the floor are smaller than its credit.
+- **Evidence:** `tests/test_policies.py` (42 checks): switches match contract 2a; C never credits securities at the Fed;
+  credit never above any limit (C and C′, trigger on/off, three uptakes, three multiples); no-LCR banks get no credit;
+  C′ has no draws and A's rate and tested status; B's ratio ≥ 100% (and the least that passes); full-run sensitivity;
+  B, C and a loss-realizing release worked by hand; E's collateral equals B's; same seed, same table; balance sheets
+  balance under every policy. `make policy-table` → `outputs/policy_table.csv`.
