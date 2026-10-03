@@ -6,16 +6,18 @@
 The corpus holds short public passages, 2007–2024, about banks borrowing from a central bank: the Fed's
 discount window, its emergency programs, and comparable lending by other central banks. It is the
 sampling frame for the gold set (Clarification 19). M2.6 later scores it to show how such borrowing has
-historically been described. Rules: `docs/amendments.md` Clarifications 19, 20 and 21, with every
+historically been described. Rules: `docs/amendments.md` Clarifications 19 to 22, with every
 setting and its reason in `config/corpus.yaml`. **No passage has been sent to Jev.**
 
 ## Files
 
 | File | Public? | Holds |
 | --- | --- | --- |
-| `corpus.csv` | yes | `id`, `document_id`, `url`, `pub_date`, `source_name`, `source_type`, `stratum` (period), `found_via`, `excerpt_sha256`, `eligibility` (the review's reason code), and `passage`. The passage is filled for official (Fed, ECB, BoE) and SEC text only; for news and analyst notes it is blank and only the fingerprint is published. |
+| `corpus.csv` | yes | `id`, `document_id`, `url`, `pub_date`, `source_name`, `source_type`, `stratum` (period), `found_via`, `excerpt_sha256`, `eligibility` (the review's reason code), `decided_by` (reviewer model and instruction version, or "owner check"), `gold_set_eligible` and `gold_set_exclusion` (Clarification 22), and `passage`. The passage is filled for official (Fed, ECB, BoE) and SEC text only; for news and analyst notes it is blank and only the fingerprint is published. |
 | `excerpts_private.csv` | **no** (git-ignored) | `id` and `passage` for every row, including news and analyst excerpts |
-| `eligibility_instruction.md` | yes | The fixed instruction every passage is reviewed against (v1) |
+| `eligibility_instruction.md` | yes | The instruction every passage is reviewed against (v2; v1 in `eligibility_instruction_v1.md`) |
+| `eligibility_owner_check.csv` | yes | The owner's check of 50 decisions: his blind first answer, his final answer after seeing the recommendations (not blind), and the reviewer's v1 decision. By ID and hash, no text. His final answers override the reviewer for these 50. |
+| `gold_set_exclusions.csv` | yes | Excerpt hashes the gold-set draw must skip because the owner has already seen them (check sheet, trial examples) |
 | `eligibility_reviews.csv` | yes | Every review decision: id, excerpt hash, keep/drop, reason code, reviewer model, instruction version, date (no text) |
 | `exclusions.csv` | yes | Passages excluded by hand (e.g. a private individual's words), by id and reason only |
 | `candidates/` | yes | The page lists each collector produced: links and metadata only |
@@ -30,6 +32,7 @@ discarded. The `excerpt_sha256` lets anyone holding the text confirm it is the s
    - Federal Reserve Board press releases, speeches and testimony, from its public listing files.
    - Bank of England news, speeches and statements (site map); ECB press releases and speeches (yearly
      listings); NY Fed Liberty Street Economics (site map).
+   - US congressional hearing transcripts held 2020–2024 (govinfo, public domain; Clarification 22).
    - SEC filings via EDGAR full-text search: every company found each year, up to two filings each, 8-Ks first
      (Clarification 21).
    - The Guardian and New York Times search services (free keys). Only what those services return is used:
@@ -47,8 +50,16 @@ discarded. The `excerpt_sha256` lets anyone holding the text confirm it is the s
    Written rules (`eligibility.py`) proved too inaccurate on their own: wrong on 46% of kept and 11% of
    dropped passages in a fresh trial. So every in-scope passage is read against the fixed instruction
    `eligibility_instruction.md`, by Claude (model ID recorded). The reader sees the text only and never
-   judges tone. The rules' verdict is kept for comparison. The owner hand-checks a random 50 decisions, and
-   the agreement is published.
+   judges tone. The rules' verdict is kept for comparison.
+
+   **How the review was checked (Clarification 22).** The owner checked 50 random v1 decisions twice.
+   - Blind, first answers: 16 of 50 agreed (32%). The owner attributes this to answering before studying
+     the guidelines.
+   - After seeing the recommendations, with confidence levels and reasons (not blind): 46 of 50 agreed (92%).
+
+   Instruction v2 was written from his remaining disagreements, and every passage is reviewed under v2. No
+   fresh blind check was run, by the owner's decision, so the published agreement figure is the non-blind
+   92%.
 5. **Personal data.** Quoted words of private individuals are excluded, by rule and in the review.
 6. **Build** (`build_corpus.py`), in order:
    - re-check against the current rules;
@@ -58,7 +69,10 @@ discarded. The `excerpt_sha256` lets anyone holding the text confirm it is the s
    - at most 2 passages per document;
    - filings: one per company per year.
 
-   There is **no source-type cap in the corpus**. The 25% cap applies when M2.3 draws the gold set, and
+   There is **no source-type cap in the corpus**. For the gold-set draw (M2.3), Clarification 22 sets two
+   limits: no source type above 25% of the 300, and none above 25% of a period's 75 where supply allows.
+   Doubtful review calls and passages the owner has already seen are flagged and skipped by the draw. The
+   readout reports whether the draw can be filled. The 25% cap applies when M2.3 draws the gold set, and
    type shares by period are reported. Choices among equals use a seeded random order, never the wording.
    All eligible passages are kept, with at least 150 per period. A shortfall is reported before any
    gold-set draw and is never padded.

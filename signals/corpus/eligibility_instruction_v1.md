@@ -1,8 +1,7 @@
-# Eligibility instruction (v2, 2026-10-03)
+# Eligibility instruction (v1, 2026-10-03)
 
-v1 was fixed before any passage was reviewed (Clarification 21; text kept in `eligibility_instruction_v1.md`).
-v2 adds rules 11-13 below, from the owner's check of 50 v1 decisions (Clarification 22). Any change means a
-new version number and an entry in `docs/amendments.md`. Every decision records the version it was made under.
+Fixed before any passage is reviewed (Clarification 21). Any change means a new version number and
+an entry in `docs/amendments.md`. Passages already reviewed keep the version they were reviewed under.
 
 ## Your task
 
@@ -27,7 +26,7 @@ Keep (eligible):
 | `borrowing` | borrowing that happened or is happening, by a named bank, banks in general, or in aggregate | "banks borrowed $150 billion", "the Bank had $20 million of BTFP advances outstanding", "repaid its PPPLF advances", "discount window lending spiked", "500 banks took part in the operation" |
 | `planned` | borrowing a bank plans, expects or intends | "the Company expects to use the PPPLF", "banks intend to draw £200bn" |
 | `avoided` | borrowing a bank or banks avoided, resisted or chose against | "banks were reluctant to borrow", "the facility has been shunned", "we have not used the PPPLF because our liquidity is ample" |
-| `perception` | how borrowing is or would be seen, by markets, depositors, supervisors, the public or banks; or a passage that explicitly presents banks' borrowing or access as reassurance or a sign of strength or weakness (rule 11); or officials on whether banks were ready to borrow in a run (rule 12) | stigma, "seen as a sign of weakness", "kept secret", "regulatory disapproval", "if word leaks out", "hopes to reassure the markets that the likes of RBS will survive" |
+| `perception` | how borrowing is or would be seen, by markets, depositors, supervisors, the public or banks | stigma, "seen as a sign of weakness", "kept secret", "regulatory disapproval", "if word leaks out" |
 
 Drop (not eligible):
 
@@ -62,16 +61,6 @@ Drop (not eligible):
    `avoided`, `borrowing`, `planned`, then the drop codes.
 10. **If unsure**, choose the code that best fits and add `?` after it (for example `borrowing?`). Doubtful
     calls are counted in the readout.
-11. **Explicit framing is perception (v2).** If the passage itself presents banks' borrowing from, or access
-    to, a central-bank facility as reassurance, or as a sign of strength or weakness (words like "reassure",
-    "confidence", "to show", "survive", "strength", "weakness"), use `perception`, even if it also describes
-    a facility or an amount made available. Judge only the words on the page, not a guess at anyone's intent.
-12. **Readiness in a run is perception (v2).** Officials discussing whether banks were prepared to borrow
-    from the central bank during a run or stress episode: `perception`, not `policy_design`.
-13. **Dealers count as banks (v2).** Borrowing by primary dealers, including bank-owned dealers, under the
-    PDCF, the TSLF or the TSLF options program (TOP) is `borrowing`.
-14. **Plain capacity stays a list (v2, unchanged from v1).** A bank's stated capacity, collateral or access,
-    however detailed, with no explicit framing as in rule 11: `funding_source_list`.
 
 ## Output
 

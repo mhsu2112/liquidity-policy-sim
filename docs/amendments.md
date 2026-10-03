@@ -906,3 +906,53 @@ Format for each entry:
   short of 150 in at least one period.
 - **Seen results before the change?** Trial passages and the audit only. No passage labeled or sent to Jev.
 - **Evidence:** round-3 trial readout and audit, 2026-10-03 (`signals/corpus/trial_examples.md`, git-ignored).
+
+## 2026-10-03 — Clarification 22: eligibility instruction v2 and the check approach, gold-set draw caps and exclusions, publishing the review, new sources (session M2.2, before collection at scale)
+- **What changed:**
+  1. **Eligibility instruction v2** (`signals/corpus/eligibility_instruction.md`; v1 kept as `eligibility_instruction_v1.md`).
+     It adds three rules and restates one:
+     - a passage that explicitly presents banks' central-bank borrowing or access as reassurance or as a sign of strength or
+       weakness is `perception`, judged from the words on the page;
+     - officials discussing whether banks were ready to borrow during a run is `perception`, not `policy_design`;
+     - borrowing by primary dealers, including bank-owned dealers, under the PDCF, TSLF or TSLF options program is `borrowing`;
+     - plain capacity detail stays `funding_source_list`.
+
+     The definition in Clarification 20, item 1 is unchanged. Every in-scope passage is reviewed under v2 by fresh reviewers
+     that see the passage text only.
+  2. **The check approach (note).**
+     - **First check, blind:** the owner checked 50 random v1 decisions blind, and agreement was 16 of 50 (32%). The owner
+       attributes this to answering without studying the guidelines.
+     - **Second check, not blind:** the owner then reviewed an annotated copy that showed the recommendations, a confidence
+       level and the reason for each. Final agreement was 46 of 50 (92%). This check was **not blind**, and the figure is
+       published as such.
+     - **Source of v2:** v2 rules 11 to 13 come from the owner's four remaining disagreements and his answer on dealers.
+       His decision on Pd95712cbd0 (an academic post on dealer participation) is specific to that passage's language, not a
+       general rule.
+     - **Overrides:** the owner's final decisions override the reviewer for those 50 passages. They are recorded by ID,
+       without text, in `signals/corpus/eligibility_owner_check.csv`.
+     - **No fresh blind check:** the fresh blind check planned under Clarification 21 is skipped by the owner's decision.
+  3. **Gold-set draw (M2.3), replacing Clarification 21, item 2.** No source type above 25% of the 300 overall, and none above
+     25% of a period's draw where that period's supply allows. If the 300 cannot be filled under these caps, this is reported
+     before drawing.
+  4. **Excluded from the gold-set draw** (kept in the corpus and flagged `gold_set_eligible = N`, with the reason):
+     - passages marked doubtful in the eligibility review;
+     - every passage in the owner's check sheet;
+     - every passage shown in any trial-examples file.
+
+     The latter two are listed by excerpt hash, without text, in `signals/corpus/gold_set_exclusions.csv`.
+  5. **Published with the corpus:**
+     - both instruction versions;
+     - the reviewer model and instruction version on every decision;
+     - every keep or drop decision with its reason code (`eligibility_reviews.csv`, by ID and excerpt hash, without text).
+  6. **New sources:**
+     - US congressional hearing transcripts, 2020 to 2024 (govinfo; public domain), as `speech_testimony`;
+     - targeted web searches for free-to-read news from 2020 to 2021 and 2023, each query recorded.
+
+     FDIC and OCC releases are not added.
+- **Why:** the owner's check showed v1 left out passages that explicitly frame borrowing as a signal, and passages on banks'
+  readiness to borrow in a run. Excluding passages seen during design keeps the gold set from containing text the owner
+  (a labeler) has already read and judged. The new sources target the thinnest periods.
+- **Seen results before the change?** Trial passages, review decisions and the owner's check only. No passage labeled or
+  sent to Jev.
+- **Evidence:** `signals/corpus/eligibility_owner_check.csv`, and the owner's notes on the annotated check sheet,
+  2026-10-03 (the notes are kept locally with the sheet).

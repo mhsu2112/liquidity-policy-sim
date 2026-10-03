@@ -26,7 +26,7 @@ HERE = Path(__file__).resolve().parent
 REVIEWS_PATH = HERE / "eligibility_reviews.csv"
 BATCH_DIR = WORK_DIR / "review_batches"
 CHECK_DIR = HERE / "check"                     # git-ignored: holds passage text
-INSTRUCTION_VERSION = "v1"
+INSTRUCTION_VERSION = "v2"   # Clarification 22 (v1 decisions keep "v1")
 REVIEWER = "claude-opus-5-5"                   # model ID recorded on every decision (Clarification 21)
 KEEP_CODES = {"borrowing", "planned", "avoided", "perception"}
 DROP_CODES = {"facility_description", "funding_source_list", "policy_design", "not_bank_borrower",
@@ -45,15 +45,25 @@ def raw_passages():
     return rows
 
 
-def reviews():
+def reviews(version=None):
+    """Latest decision per passage (the highest instruction version), or only those under `version`.
+
+    Earlier-version decisions stay in the file as a record; they are never overwritten.
+    """
     if not REVIEWS_PATH.exists():
         return {}
+    out = {}
     with open(REVIEWS_PATH, newline="") as f:
-        return {r["id"]: r for r in csv.DictReader(f)}
+        for r in csv.DictReader(f):
+            if version and r["instruction"] != version:
+                continue
+            if r["id"] not in out or r["instruction"] >= out[r["id"]]["instruction"]:
+                out[r["id"]] = r
+    return out
 
 
 def make_batches(size, settings):
-    done = reviews()
+    done = reviews(INSTRUCTION_VERSION)          # re-review anything decided only under an older version
     todo = sorted(i for i in raw_passages() if i not in done)
     random.Random(settings["seed"]).shuffle(todo)   # mixes sources and periods within a batch
     rows = raw_passages()
@@ -77,7 +87,7 @@ def parse_decision(decision, reason):
 
 
 def import_decisions(path):
-    rows, done = raw_passages(), reviews()
+    rows, done = raw_passages(), reviews(INSTRUCTION_VERSION)
     new = []
     with open(path, newline="") as f:
         for r in csv.DictReader(f, fieldnames=["id", "decision", "reason"]):

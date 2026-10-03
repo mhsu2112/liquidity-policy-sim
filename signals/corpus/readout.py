@@ -18,6 +18,7 @@ from collections import Counter, defaultdict
 
 from signals.corpus.build_corpus import CORPUS_PATH, DROPS_PATH, PRIVATE_PATH
 from signals.corpus.candidates import SOURCE_TYPES
+from signals.corpus.draw_feasibility import feasibility
 from signals.corpus.extract import WORK_DIR
 from signals.corpus.passages import load_settings
 
@@ -106,6 +107,20 @@ def main(n_rows=20, n_examples=0):
         over = [f"{t} {counts[(st, t)] / n:.0%}" for t in SOURCE_TYPES if n and counts.get((st, t), 0) / n > share]
         if over:
             print(f"  {st}: above {share:.0%} of the period (capped in the M2.3 draw, not here): " + ", ".join(over))
+
+    doubtful = sum(r["gold_set_exclusion"] == "doubtful_review" for r in rows)
+    excl = Counter(r["gold_set_exclusion"].split(" (")[0] for r in rows if r["gold_set_eligible"] == "N")
+    print(f"\nGold-set draw (Clarification 22): {sum(r['gold_set_eligible'] == 'Y' for r in rows)} passages eligible; "
+          f"excluded: " + (", ".join(f"{k} {v}" for k, v in excl.most_common()) or "none"))
+    print(f"  Doubtful review calls in the corpus: {doubtful}")
+    pool = Counter((r["stratum"], r["source_type"]) for r in rows if r["gold_set_eligible"] == "Y")
+    f = feasibility(pool, strata, settings["gold_set"]["per_period"], settings["caps"]["max_type_share_per_stratum"])
+    verdict = "CAN be filled" if f["can_fill"] else f"CANNOT be filled: at most {f['fillable']} of {f['target']}"
+    print(f"  Draw of {f['target']} under the caps {verdict}. Most per period: "
+          + ", ".join(f"{s} {n}" for s, n in f["per_period"].items()))
+    if f["relaxed_periods"]:
+        print("  Periods whose own supply cannot meet the 25% per-period cap (drawn as evenly as possible): "
+              + ", ".join(f["relaxed_periods"]))
 
     rng = random.Random(SAMPLE_SEED)
     print(f"\n{n_rows} random rows:")

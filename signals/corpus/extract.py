@@ -15,6 +15,7 @@ Run: python -m signals.corpus.extract [--candidates fed_board] [--sample 200]
 
 import argparse
 import csv
+import html
 import random
 import re
 import urllib.error
@@ -115,6 +116,12 @@ def record_page(cand, text, date, files, settings, scope, eligibility):
 def page_text(cand, settings):
     """(text, date) for a web page; the page's own date is used when the listing gave none."""
     body = get(cand["url"], settings)
+    if re.search(r"<pre\b", body[:3000], re.IGNORECASE):
+        # Preformatted transcripts (congressional hearings) break every line at ~70 characters; rejoin
+        # the lines of each paragraph so sentences are whole. Blank lines still separate paragraphs.
+        text = html.unescape(re.sub(r"<[^>]+>", "", body))
+        text = re.sub(r"(?<!\n)\n(?!\n)", " ", text)
+        return clean_text(text), cand["pub_date"] or page_date(body)
     is_html = bool(re.search(r"<(html|body|p|div)\b", body[:5000], re.IGNORECASE))
     return (html_to_text(body) if is_html else clean_text(body)), cand["pub_date"] or page_date(body)
 

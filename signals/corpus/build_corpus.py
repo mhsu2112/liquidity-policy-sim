@@ -41,8 +41,11 @@ EXCLUSIONS_PATH = HERE / "exclusions.csv"
 DROPS_PATH = WORK_DIR / "build_drops.csv"
 SUMMARY_PATH = WORK_DIR / "build_summary.json"
 REVIEWS_PATH = HERE / "eligibility_reviews.csv"
+OWNER_CHECK_PATH = HERE / "eligibility_owner_check.csv"        # Clarification 22: owner's final decisions override
+GOLD_EXCLUSIONS_PATH = HERE / "gold_set_exclusions.csv"        # Clarification 22: passages already seen (hashes)
+SEEN_PRIVATE_PATH = HERE / "check" / "seen_passages_private.csv"   # git-ignored text of the same, for near-copies
 FIELDS = ["id", "document_id", "url", "pub_date", "source_name", "source_type", "stratum", "found_via",
-          "excerpt_sha256", "eligibility", "passage"]
+          "excerpt_sha256", "eligibility", "decided_by", "gold_set_eligible", "gold_set_exclusion", "passage"]
 
 
 def passage_id(row):
@@ -104,6 +107,33 @@ def keep_per_group(rows, key, limit, rng):
     return kept, dropped
 
 
+def flag_gold_set(rows, settings):
+    """Clarification 22: mark passages the gold-set draw must skip (they stay in the corpus).
+
+    Skipped: doubtful review calls; passages the owner has already seen (his check sheet and every
+    trial-examples file), matched by excerpt hash, and also as near-copies of the seen text when the
+    git-ignored copy of that text is on this computer.
+    """
+    seen = {}
+    if GOLD_EXCLUSIONS_PATH.exists():
+        with open(GOLD_EXCLUSIONS_PATH, newline="") as fh:
+            seen = {e["excerpt_sha256"]: e["reason"] for e in csv.DictReader(fh)}
+    n, threshold = settings["dedup"]["shingle_words"], settings["dedup"]["jaccard_threshold"]
+    seen_text = []                                           # (5-word runs, reason) of each seen passage
+    if SEEN_PRIVATE_PATH.exists():
+        with open(SEEN_PRIVATE_PATH, newline="") as fh:
+            seen_text = [(shingles(e["passage"], n), e["reason"]) for e in csv.DictReader(fh)]
+    for r in rows:
+        why = seen.get(excerpt_sha256(r["passage"]))
+        if not why:
+            sh = shingles(r["passage"], n)
+            why = next((f"{reason} (near-copy)" for other, reason in seen_text
+                        if len(sh & other) / len(sh | other) >= threshold), None)
+        if not why and r.get("doubtful") == "Y":
+            why = "doubtful_review"
+        r["gold_set_eligible"], r["gold_set_exclusion"] = ("N", why) if why else ("Y", "")
+
+
 def build(settings=None):
     settings = settings or load_settings()
     rng = random.Random(settings["seed"])
@@ -118,10 +148,16 @@ def build(settings=None):
     for path in sorted(WORK_DIR.glob("passages_raw_*.csv")):
         with open(path, newline="") as fh:
             raw.extend(csv.DictReader(fh))
-    decisions = {}
-    if REVIEWS_PATH.exists():
-        with open(REVIEWS_PATH, newline="") as fh:
-            decisions = {d["id"]: d for d in csv.DictReader(fh)}
+    from signals.corpus.review import reviews              # here to avoid a circular import
+    decisions = {i: {**d, "decided_by": f"{d['reviewer']} ({d['instruction']})"} for i, d in reviews().items()}
+    if OWNER_CHECK_PATH.exists():                           # Clarification 22: the owner's final decisions override
+        with open(OWNER_CHECK_PATH, newline="") as fh:
+            for o in csv.DictReader(fh):
+                d = decisions.get(o["id"], {"reason": "", "doubtful": ""})
+                decisions[o["id"]] = {**d, "id": o["id"], "excerpt_sha256": o["excerpt_sha256"],
+                                      "decision": o["owner_final_after_annotation"], "decided_by": "owner check",
+                                      "reason": d["reason"] if d.get("decision") == o["owner_final_after_annotation"]
+                                      else f"owner_{o['owner_final_after_annotation']}"}
     rows, seen = [], set()
     for r in raw:
         r["stratum"], r["id"] = stratum_of(r["pub_date"], settings), passage_id(r)
@@ -144,7 +180,7 @@ def build(settings=None):
         elif d["decision"] != "keep":
             reason = f"review:{d['reason']}"
         else:
-            reason, r["eligibility"] = None, d["reason"]
+            reason, r["eligibility"], r["decided_by"], r["doubtful"] = None, d["reason"], d["decided_by"], d.get("doubtful", "")
         if reason:
             drop([r], reason)
         else:
@@ -169,6 +205,7 @@ def build(settings=None):
 
     summary = {s: dict(sorted(Counter(r["source_type"] for r in final if r["stratum"] == s).items()))
                for s in settings["strata"]}
+    flag_gold_set(final, settings)
     public = set(settings["copyright"]["public_text_types"])
     for r in final:
         r["document_id"], r["excerpt_sha256"] = document_id(r["url"]), excerpt_sha256(r["passage"])

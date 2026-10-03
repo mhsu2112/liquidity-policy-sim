@@ -11,6 +11,8 @@ Nothing here says which passages or policies are better or worse.
 """
 
 import csv
+
+import signals.corpus.build_corpus as build_corpus
 import random
 from collections import Counter
 
@@ -105,7 +107,13 @@ def test_every_corpus_row_was_reviewed_keep_and_reviews_hold_no_text():
     rows = _read(CORPUS_PATH)
     reviews = {r["id"]: r for r in _read(REVIEWS_PATH)}
     assert list(next(iter(reviews.values())).keys()) == REVIEW_FIELDS      # no passage column
+    owner = {}
+    if build_corpus.OWNER_CHECK_PATH.exists():                       # Clarification 22: owner's final decisions
+        owner = {o["id"]: o for o in _read(build_corpus.OWNER_CHECK_PATH)}
     for r in rows:
+        if r["id"] in owner:
+            assert owner[r["id"]]["owner_final_after_annotation"] == "keep" and r["decided_by"] == "owner check"
+            continue
         assert reviews[r["id"]]["decision"] == "keep" and reviews[r["id"]]["reason"] == r["eligibility"]
         assert reviews[r["id"]]["excerpt_sha256"] == r["excerpt_sha256"]
 
