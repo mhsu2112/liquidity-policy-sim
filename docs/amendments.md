@@ -856,3 +856,29 @@ Format for each entry:
 - **Agreement.** Krippendorff's alpha (ordinal, levels 1–4) on the passages both labelers answered 1–4. Reported: α(L1,L2), α(Jev,L1) and α(Jev,L2), each with a 90% bootstrap interval (seed 20260923, 2,000 resamples); exact agreement rates; N and Unsure rates per labeler; and results by period.
 - **Pass rule.** α(L1,L2) ≥ 0.60, and both α(Jev,L1) and α(Jev,L2) ≥ α(L1,L2) − 0.10, using point estimates. If it fails, no Jev marker appears in any output and the stigma sweep stands alone. A failure is not rescued by relabeling or re-running. The result is published either way.
 - **Scope.** The gold set tests whether Jev reads the language as people do. It does not test how markets behave.
+
+## 2026-10-03 — Clarification 20: corpus eligibility, caps, size, copyright and personal data (session M2.2, before collection at scale)
+- **What changed:** rules for the calibration corpus (`signals/corpus/`), set by the owner after reviewing 30 trial passages.
+  1. **Eligibility (mechanical, never judges tone).** Keep a passage only if it refers to borrowing from a central bank by a
+     bank or banks (actual, planned, expected or avoided) or to how such borrowing is seen. Drop passages that only announce
+     or describe a facility, list available funding sources, or discuss policy design. Every drop is logged with its reason.
+     Applied by written rules in `config/corpus.yaml` (owner's choice), checked by a hand audit of 100 kept and 100 dropped
+     passages with the error rates reported.
+  2. **Caps.** At most 2 passages per document in the corpus and 1 per document in the gold set (applied in M2.3). No source
+     type above 25% of any period, filings, official statements and speeches included. official_statement and
+     speech_testimony count as separate types (owner's choice). The cap keeps the largest total N for which every type has at
+     most floor(0.25 × N) passages; trimmed passages are chosen in seeded random order (seed 20260923), never by wording.
+     Filings also keep the earlier rule of one passage per company per year. The 25% filings-only cap is replaced.
+  3. **Size.** The 2,000 target is replaced by all eligible passages found, at least 150 per period. If a period falls short,
+     it is reported before any gold-set draw.
+  4. **Copyright.** News and analyst excerpts stay in a git-ignored file. The public corpus file holds ID, URL, date, source,
+     source type, period and a SHA-256 of the excerpt. Official (Fed, ECB, BoE) and SEC text may be published.
+     `signals/gold_set/sheets/` is git-ignored. News comes only from what the Guardian and NYT services return; paywalled pages
+     are never read, and the Internet Archive fallback is removed.
+  5. **Personal data.** Quoted words of private individuals (callers, commenters, readers) are excluded; the whole corpus is
+     screened, and each exclusion is recorded by ID and reason without its text.
+- **Why:** the first trial kept passages that only described facilities or listed funding sources, let filings and official
+  text dominate, quoted news text in a file bound for a public repository, and included a radio caller's name and town.
+- **Seen results before the change?** Trial passages only (their wording and sources). No passage has been labeled or sent to
+  Jev, and no corpus-level results exist.
+- **Evidence:** owner's review of `signals/corpus/trial_examples.md` (round 1), 2026-10-03.
