@@ -882,3 +882,27 @@ Format for each entry:
 - **Seen results before the change?** Trial passages only (their wording and sources). No passage has been labeled or sent to
   Jev, and no corpus-level results exist.
 - **Evidence:** owner's review of `signals/corpus/trial_examples.md` (round 1), 2026-10-03.
+
+## 2026-10-03 — Clarification 21: reviewed eligibility, type cap at the gold-set draw, all SEC filers (session M2.2, before collection at scale)
+- **What changed:** three parts of Clarification 20, decided by the owner after the round-3 trial.
+  1. **Eligibility method.** The definition is unchanged (Clarification 20, item 1). The method changes from written rules
+     alone to written rules as a first filter, then a reading of every in-scope passage. The reader is Claude (model ID
+     recorded on every decision), following `signals/corpus/eligibility_instruction.md` v1, fixed before any passage is
+     reviewed. The reader sees only the passage text (no source, date or URL), never judges tone, and records keep or drop
+     with one reason code. Decisions are published by passage ID and excerpt hash, without text, in
+     `signals/corpus/eligibility_reviews.csv`. The owner hand-checks a random 50 decisions, and the agreement rate is
+     published. Unreviewed passages never enter the corpus.
+  2. **Source-type cap.** The 25% cap moves from the corpus to the gold-set draw (M2.3): within each period's 75 passages, no
+     source type takes more than 25% where enough passages of other types exist; otherwise the draw is as even across
+     types as possible and the shortfall is reported. The corpus keeps all eligible passages, and reports type shares by
+     period.
+  3. **SEC filings.** Every company found by EDGAR full-text search each year is read (up to two filings each, 8-Ks first),
+     instead of a random 60.
+  All other Clarification 20 rules stand: at most 2 passages per document in the corpus and 1 in the gold set; all eligible
+  passages with at least 150 per period, shortfalls reported before any draw; copyright; personal data.
+- **Why:** in the round-3 trial (1,800 pages not used to write the rules), a hand audit found the written rules wrong on 26 of
+  56 kept passages (46%) and 11 of 100 dropped (11%), mostly filings describing borrowing capacity. Applied in the corpus,
+  the 25% cap left 4 passages, because most periods lack four source types in comparable numbers. Projected volume fell
+  short of 150 in at least one period.
+- **Seen results before the change?** Trial passages and the audit only. No passage labeled or sent to Jev.
+- **Evidence:** round-3 trial readout and audit, 2026-10-03 (`signals/corpus/trial_examples.md`, git-ignored).
