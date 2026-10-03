@@ -1,0 +1,235 @@
+# Calibration corpus settings (session M2.2).
+#
+# Sources: the session M2.2 brief (2007-2024, passages at most 80 words, duplicates and
+# near-duplicates removed), docs/amendments.md Clarification 19 (the four periods) and
+# Clarification 20 (eligibility, caps, size, copyright, personal data), and the owner's M2.2
+# plan decision (scope: bank borrowing only). Nothing here judges how a passage reads; that
+# is the labelers' job (and later Jev's).
+
+date_range:
+  start: "2007-01-01"
+  end: "2024-12-31"
+
+# Clarification 19, "Sample": the four periods the gold set draws from.
+strata:
+  S-A: ["2007-01-01", "2009-12-31"]
+  S-B: ["2010-01-01", "2019-12-31"]
+  S-C: ["2020-01-01", "2021-12-31"]
+  S-D: ["2022-01-01", "2024-12-31"]
+
+passage:
+  max_words: 80          # M2.2 brief: "at most 80 words", verbatim
+  min_words: 20          # plan decision: shorter snippets give a labeler too little to judge
+  max_per_document: 1    # plan: one passage per document ...
+  max_per_long_document: 2   # ... up to 2, not overlapping, for long documents (Clarification 20: at most 2 per document)
+  long_document_words: 3000  # a document counts as "long" above this many words
+  max_number_share: 0.15     # trial-round fix: drop passages where more than 15% of words are figures (filing tables)
+  # trial-round fix: a passage must read as whole sentences: start with a capital, digit or quote ...
+  start_pattern: '^["“‘(]?[A-Z0-9$]'
+  # ... and end with sentence punctuation (page breaks in filings otherwise give fragments)
+  end_pattern: '[.!?]["”’)]?$'
+  # trial-round fix: site furniture, paywall teasers, photo credits, reference lists and headline/date
+  # banners. A passage matching any of these (case-insensitive regular expressions) is dropped.
+  reject_patterns:
+    - 'subscribers? only'
+    - 'subscribe( to|:)'
+    - 'skip to main content'
+    - 'official website'
+    - 'cookies'
+    - 'sign up'
+    - 'get in touch'
+    - 'javascript'
+    - 'all rights reserved'
+    - 'confidential tip|website policy|financial decisions\.|newsletter|advertisement'
+    - '[▪•]|\s[.,%]\s|\s[.,]$'             # bullets and spaced-out punctuation from slide decks
+    - 'getty images|photographer:|\bphoto:'
+    - '\bdownload\b'
+    - '\bepisode \d+'
+    - '\breferences [A-Z][a-z]+, [A-Z]'
+    - '^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.? \d{1,2}, \d{4} '   # starts with a date banner
+  # trial-round fix: page furniture that sits inside the article body and is removed before cutting
+  # (the Fed's "For release at 10:00 a.m. EDT Share" header). Removing it changes no article wording.
+  strip_patterns:
+    - '^For release at [0-9:]+ [ap]\.m\. E[DS]T\s*(Share)?\s*'
+    - '^Published on\s*\n\d{1,2} \w+ \d{4}$'              # Bank of England date line
+
+targets:                 # Clarification 20, item 3: keep all eligible passages (no total target)
+  min_per_stratum: 150   # at least 150 per period; a shortfall is reported before any gold-set draw, never padded
+
+caps:                    # Clarification 20, item 2
+  max_per_document: 2              # in the corpus (the gold set takes at most 1 per document, applied in M2.3)
+  max_type_share_per_stratum: 0.25 # no source type above 25% of any period; official_statement and
+                                   # speech_testimony are separate types (owner's choice)
+  filings_per_company_per_year: 1  # kept from the M2.2 plan
+
+# Clarification 20, item 4: news and analyst excerpts are kept in a git-ignored file; the public
+# corpus.csv carries their link, date, source and a SHA-256 of the excerpt only.
+copyright:
+  public_text_types: ["official_statement", "speech_testimony", "data_release", "filing"]
+  # Clarification 20: paywalled pages are never read. Links from these sites are skipped (and logged).
+  paywalled_domains: ["bloomberg.com", "wsj.com", "ft.com", "nytimes.com", "reuters.com", "apnews.com",
+                      "forbes.com", "fortune.com", "economist.com", "americanbanker.com", "barrons.com",
+                      "washingtonpost.com", "businessinsider.com", "spglobal.com"]
+
+# Clarification 20, item 5: quoted words of private individuals are excluded. A passage matching any of
+# these is dropped as `personal_data`; I also read every passage and list further exclusions, by id and
+# reason only, in signals/corpus/exclusions.csv.
+personal_data:
+  patterns:
+    - '\b(listeners?|callers?|commenters?)\b'
+    - '\b(called|wrote|writes|emailed) in\b'
+    - '\breaders? (asked|asks|wrote|writes|want)'
+    - '\bletters? to the editor\b'
+    - '\bhere from [A-Z]'
+    - '\b(my|our) (savings|account|deposits?|mortgage)\b'
+
+# Clarification 20, item 1: eligibility. Mechanical, never judges tone. Rules are tried in order and the
+# first that matches decides. "Keep" rules: the passage refers to borrowing from a central bank by a bank
+# or banks (actual, planned, expected or avoided) or to how such borrowing is seen. Every drop gets the
+# reason of the first "drop" rule that matches, or `no_borrowing` if none does.
+eligibility:
+  # Round-2 audit (2026-10-03) found 13 of 49 kept and 19 of 100 dropped passages wrongly classed; the
+  # rules below were revised for the gaps it showed. The next audit uses fresh passages.
+  keep:
+    perception:      # how borrowing is seen
+      - 'stigma'                                  # incl. "destigmatize" (round-2 fix)
+      - '\b(perceived|seen|viewed|read|interpreted|regarded) as\b'
+      # round-2 fix: "signal" only when it is about weakness or condition ("price signals" is not)
+      - '\b(signal\w*|sign)\b(\W+\w+){0,8}?\W+(weak\w*|distress\w*|trouble\w*|difficult\w*|problem\w*|desperat\w*|financial condition\w*|health)\b'
+      - '\bscarlet letter\b|\bshame\b|\bembarrass|\bdisapprov\w*|\bfrown'
+      - '\breputation|\bsecret\b|\bconceal\w*|\b(outing|infer\w*)\W+(the )?(identit|discount window)'
+      - '\bfear(s|ed)? (that|of)\b'
+    avoided:         # borrowing avoided or resisted
+      # an avoidance word near a borrowing word ("avoid risky assets" alone does not count)
+      - '\b(avoid\w*|reluctan\w*|unwilling\w*|hesitan\w*|shun\w*|declin(ed|ing)|refus\w*)\b(\W+\w+){0,6}?\W+(borrow\w*|discount window|facility|tap\w*|draw\w*|use|using|access\w*|turn\w* to)\b'
+      - '\b(window|facility|scheme|program\w*)\b[^.]{0,40}\b(shunned|avoided)\b'     # round-2 fix: "shunned by the banks"
+      - '\bnot (utilized|used|borrowed|tapped)\b[^.]{0,60}\bbecause\b'                  # round-2 fix: chose not to borrow
+    borrowing:       # borrowing that happened, is happening or is under way
+      # round-2 fix: not "borrowed funds" (any lender) or "may be borrowed" (capacity)
+      - '(?<!be )\b(borrowed|have borrowed|has borrowed|had borrowed|were borrowing|are borrowing|is borrowing)\b(?! funds)'
+      - '\b(drew|drawn down|drew down|tapped|took out|turned to|took up)\b|(?<!be )\brepaid\b'
+      - '\b(are|were|is|was) (taking advantage of|using|accessing|tapping|drawing on)\b'
+      - '\b(acted|agreed|moved|decided|rushed|scrambled|went|sought)\b[^.]{0,40}\bto (tap|borrow|draw|access|use|repay)\b'
+      - '\bobtained (a|an)?\s?(\$|advance|loan|funding|credit)'
+      - '\bparticipat(ed|ing) in\b|\b(made|making) use of\b|\blin(ed|ing) up for\b'                 # round-2 fix
+      # round-2 fix: banks using or borrowing, in the present or past, without "can/could/may"
+      # (not after can/cannot/could/may/should/would/must, "to", "be" or "ready": those are capacity or policy)
+      - '\b(banks?|institutions|lenders|firms)\b (?:(?!can\b|cannot\b|could\b|may\b|might\b|should\b|would\b|must\b|to\b|be\b|ready\b|make\b)\w+ ){0,3}(use|uses|used|borrow|borrows|tap|taps|draw|draws)\b(?! from this)'
+      # round-2 fix: central bank loans extended or granted to banks
+      - '\b(loans?|credit|advances?)\b (\w+ ){0,3}(were|was|have been|has been|being|are being) (extended|granted|made)\b'
+      # borrowing amounts and changes: a borrowing noun near a change or a dollar figure ("loans",
+      # "lending" and "credit" count only as the central bank's: a bank's own "loans outstanding" is its loan book)
+      - '\b(borrowings?|borrowing|advances?|usage|use|uptake|take-up|demand|(window|facility|Fed|Federal Reserve|central bank|BTFP|TAF|PPPLF|PDCF) (loans|lending|credit))\b(\W+\w+){0,20}?\W+(rose|rise|fell|jumped|surged|spiked|soared|climbed|increased|declined|dropped|totaled|totalled|averaged|reached|hit|record|outstanding)\b'
+      - '\b(surge|spike|jump|rise|increase|drop|decline)\b in ([\w’'']+ ){0,4}(use|usage|borrowing|borrowings|demand|lending)\b'     # round-2 fix
+      # amounts count only next to borrowings or advances ("loans held as collateral" and "letters of
+      # credit" are not borrowing from the central bank; "borrowed funds" is any lender)
+      - '\b(borrowings?|borrowed(?! funds)|advances?)\b(\W+\w+){0,6}?\W+\$\s?[\d.,]+\s*(million|billion|bn)'
+      - '\$\s?[\d.,]+\s*(million|billion|bn)(\W+\w+){0,6}?\W+(in )?(borrowings?|advances?|loans) (from|under|through|at)\b'
+      - '\$\s?[\d.,]+\s*(million|billion|bn)( of)?( new)? (PPPLF|BTFP|TAF|discount window|PDCF)\b'                # round-2 fix
+    planned:         # borrowing planned or expected
+      - '\b(plans?|planned|planning|expects?|expected|intends?|intended|anticipates?|anticipated)\b(\W+\w+){0,3}?\W+(borrow|draw|tap|use|utilize|access|turn to)\b'
+      - '\b(will|would) (borrow|draw on|tap|access)\b'
+  # Checked before the borrowing and planned rules: statements that borrowing is merely possible or did not happen.
+  negations:
+    - '\b(no|none|nothing|zero)\b[^.]{0,50}\b(outstanding|borrowed|borrowings)\b'
+    - '\b(not|never) (borrowed|drawn|used|tapped|accessed|utilized)\b'
+    - '\b(did|have|has|had) not (have any |pledge[^.]{0,30})?(borrow|draw|use|tap|access|utiliz)'           # round-2 fix
+    - '\b(up to|capacity|potential|available)\b[^.$]{0,25}\$'                                              # round-2 fix: capacity figures
+  drop:
+    funding_source_list:
+      - '\bsources? of (liquidity|funding|funds)\b|\bliquidity sources\b'
+      - '\b(available|unused|additional) (sources|lines|capacity|borrowing capacity|credit)\b'
+      - '\b(can|could|may|is able to|are able to) (also )?(borrow|obtain|access|draw|use|turn to)\b'
+      - '\bborrowing (capacity|availability|lines?)\b|\bline of credit\b|\bavailable for\b'
+      - '\b(has|have|maintains?) (the )?(ability|access|capacity)\b|\beligib(le|ility) (to|for)\b'
+    facility_description:
+      - '\b(announce[ds]?|establish(ed|es)?|created?|introduc\w+|launch\w*|will offer|offered|auction\w*|terms?|maturit\w+|rate on|interest rate|collateral (framework|eligibility|requirements))\b'
+    policy_design:
+      - '\b(should|ought|propos\w+|reform\w*|design\w*|framework|consultation|consider\w*|recommend\w*|rule|requirement)\b'
+
+edgar:                          # collect_edgar.py: SEC full-text search
+  queries: ["discount window", "Term Auction Facility", "Bank Term Funding Program",
+            "Paycheck Protection Program Liquidity Facility", "borrowed from the Federal Reserve"]
+  form_groups: ["8-K", "10-Q,10-K"]
+  max_pages_per_search: 5       # 100 hits a page
+  companies_per_year: 60        # seeded random sample of companies each year; enough to fill the 25% cap
+  filings_per_company: 2        # a spare in case the first gives no usable passage
+
+news_api:                       # collect_news_api.py: Guardian and NYT search (free keys in .env)
+  queries: ["discount window", "Term Auction Facility", "Bank Term Funding Program", "Special Liquidity Scheme",
+            "emergency liquidity assistance", "lender of last resort", "borrowed from the Federal Reserve",
+            "emergency lending"]
+  guardian_max_pages: 4         # 50 articles a page
+  guardian_pause_seconds: 1.0   # Guardian free tier: 1 request a second
+  nyt_max_pages: 5              # 10 articles a page
+  nyt_pause_seconds: 12.5       # NYT free tier: 5 requests a minute, 500 a day
+
+dedup:
+  shingle_words: 5       # compare passages by overlapping runs of 5 words
+  jaccard_threshold: 0.6 # plan: share of 5-word runs in common at or above which two passages count as the same story
+
+seed: 20260923           # Clarification 19's seed, reused for any random choice here (e.g. which filings to keep)
+
+# Scope (plan decision: bank borrowing only). A passage is in scope only if one sentence names a
+# central-bank lending facility for banks AND the passage talks about borrowing, lending, access or use.
+# Discount-rate-only announcements and programs for non-banks are out (they are simply not listed here).
+scope:
+  facility_patterns:     # case-insensitive regular expressions
+    - 'discount[- ]window'
+    - '\bprimary credit\b(?! (quality|risk|rating))'   # round-2 fix: not "primary credit quality indicator"
+    - '\bsecondary credit\b'
+    - '\bseasonal credit\b'
+    - 'term auction facility'
+    - '\bTAF\b'
+    - 'primary dealer credit facility'
+    - '\bPDCF\b'
+    - 'term securities lending facility'
+    - 'paycheck protection program liquidity facility'
+    - '\bPPPLF\b'
+    - 'bank term funding program'
+    - '\bBTFP\b'
+    - 'emergency liquidity assistance'
+    - '\bELA\b'
+    - 'special liquidity scheme'
+    - 'discount window facility'          # Bank of England's facility
+    - 'marginal lending facility'         # ECB
+    - 'emergency lending assistance'      # Bank of Canada
+    - 'standing (lending|repo) facilit'   # incl. Fed Standing Repo Facility (banks are eligible)
+    - '(borrow\w*|loans?|lending|credit|advances?) (from|by|of) the (Federal Reserve|Fed\b|central bank|Bank of England|ECB|European Central Bank)'
+  usage_patterns:        # the passage must also talk about borrowing, access or use
+    - '\bborrow'
+    - '\blo(an|ans|aned)\b'
+    - '\blend'
+    - '\bdr(aw|ew)'   # draw, drew, drawn
+    - '\btap'
+    - '\baccess'
+    - '\buse[ds]?\b|\busage\b|\busing\b'
+    - '\boutstanding\b'
+    - '\bpledg'
+    - '\bpreposition'
+    - '\bcollateral\b'
+    - '\bstigma'
+    - '\bturn(ed|ing)? to\b'
+    - '\bliquidity\b'
+    - '\bcredit (extended|outstanding)\b'
+  # trial-round fix: broad terms that often appear in general policy talk ("lender of last resort for
+  # sovereigns", LTROs as monetary stimulus). They count only if the passage also says borrowing happened
+  # or was considered: borrow, draw, tap, turn to, take-up, repay, participate, or stigma.
+  weak_facility_patterns:
+    - 'lender of last resort'
+    - '(longer|long)-term refinancing operation'
+    - '\bLTROs?\b'
+  strong_usage_pattern: '\bborrow|\bdr[ae]w|\btap(ped|ping|s)?\b|\bturn(ed|ing)? to\b|take-?up|\btook up\b|\brepa(y|id)|\bparticipa|\bstigma'
+  exclude_patterns:      # passages that are only about programs for non-banks, or stimulus programs
+    - 'targeted longer-term refinancing operations?'   # trial-round fix: ECB stimulus, not a liquidity backstop
+    - '\bTLTRO'
+    - 'commercial paper funding facility'
+    - 'money market mutual fund liquidity facility'
+    - 'main street lending'
+    - 'municipal liquidity facility'
+
+# Polite reading of public websites: pause between requests to the same site.
+fetch:
+  pause_seconds: 1.0
+  timeout_seconds: 30
+  user_agent: "liquidity-policy-sim research (github.com/mhsu2112/liquidity-policy-sim)"

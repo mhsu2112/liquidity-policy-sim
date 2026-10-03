@@ -16,3 +16,12 @@ signals/audit_log.jsonl
 
 # Mac clutter
 .DS_Store
+
+# Calibration corpus working files (page-reading progress); rebuilt by make corpus
+signals/corpus/work/
+
+# Clarification 20: news and analyst excerpts never go public; gold-set sheets stay local
+signals/corpus/excerpts_private.csv
+signals/corpus/trial_examples.md
+signals/gold_set/sheets/
+signals/corpus/work_round*/

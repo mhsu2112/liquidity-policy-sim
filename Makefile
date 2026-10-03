@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -74,3 +74,20 @@ validate: $(VENV)/.installed
 timing-gap: $(VENV)/.installed
 	$(PY) -m analysis.timing_gap
 	$(PY) -m analysis.timing_exposure
+
+## make corpus: collect the calibration corpus from public sources (needs the internet and the keys in .env; takes hours; resumable)
+corpus: $(VENV)/.installed
+	$(PY) -m signals.corpus.collect_fed
+	$(PY) -m signals.corpus.collect_other_cb
+	$(PY) -m signals.corpus.collect_edgar
+	$(PY) -m signals.corpus.collect_news_api
+	caffeinate -i $(PY) -m signals.corpus.extract
+	$(MAKE) corpus-build
+
+## make corpus-build: re-check, remove duplicates, apply the Clarification 20 caps, write the corpus files (no internet)
+corpus-build: $(VENV)/.installed
+	$(PY) -m signals.corpus.build_corpus
+
+## make corpus-sample: counts by period and source type, and 20 random rows of the corpus
+corpus-sample: $(VENV)/.installed
+	$(PY) -m signals.corpus.readout
