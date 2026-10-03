@@ -206,13 +206,12 @@ def _grow(sentences, i, max_words):
 
 
 def cut_passages(text, settings, scope=None, eligibility=None, drops=None):
-    """Verbatim passages from one page, in page order: within the word limits, in scope, eligible
-    (Clarification 20) and free of private individuals' words.
+    """Verbatim passages from one page, in page order: within the word limits, in scope, and free of
+    private individuals' words (by rule). Passages never overlap.
 
-    One passage per page, or up to the "long document" limit for long pages; passages never overlap.
-    Only passages that pass every test count toward that limit, so an ineligible early mention does
-    not crowd out an eligible later one. If `drops` is a list, each rejected candidate is appended to
-    it as (reason, passage) for the drop log.
+    Eligibility does not filter here (Clarification 21): every in-scope passage, up to
+    `max_candidates_per_page`, goes on to be read and decided by the reviewer. If `drops` is a list,
+    each rejected candidate is appended to it as (reason, passage) for the drop log.
     """
     from signals.corpus.eligibility import Eligibility   # here to avoid a circular import
     scope = scope or Scope(settings)
@@ -222,10 +221,9 @@ def cut_passages(text, settings, scope=None, eligibility=None, drops=None):
     for pattern in p["strip_patterns"]:     # page furniture inside the article body
         text = re.sub(pattern, "", text, flags=re.MULTILINE)
     sentences = split_sentences(text)
-    limit = p["max_per_long_document"] if word_count(text) > p["long_document_words"] else p["max_per_document"]
     used, out = set(), []
     for i, sentence in enumerate(sentences):
-        if len(out) >= limit:
+        if len(out) >= p["max_candidates_per_page"]:
             break
         if i in used or not scope.is_anchor(sentence):
             continue
@@ -244,10 +242,6 @@ def cut_passages(text, settings, scope=None, eligibility=None, drops=None):
             continue
         if eligibility.personal_data(passage):
             drops.append(("personal_data", passage))
-            continue
-        eligible, reason = eligibility.judge(passage)
-        if not eligible:
-            drops.append((f"ineligible:{reason}", passage))
             continue
         used.update(range(span[0], span[1] + 1))
         out.append(passage)

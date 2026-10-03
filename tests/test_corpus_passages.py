@@ -91,13 +91,19 @@ def test_page_text_prefers_the_article_body_and_drops_scripts():
     assert text.startswith("Banks borrowed")
 
 
-def test_long_documents_give_at_most_the_configured_number_of_passages():
+def test_cutting_keeps_every_in_scope_passage_up_to_the_page_limit_without_overlaps():
+    # Clarification 21: eligibility is decided by review, so cutting keeps all in-scope passages (up to a bound)
     s = copy.deepcopy(SETTINGS)
+    limit = s["passage"]["max_candidates_per_page"]
+    # each mention is numbered so that every passage can be found in the page exactly once
+    text = "".join(FILLER * 6 + f"In quarter {i} smaller banks drew on the discount window as deposits ran off. "
+                   for i in range(limit + 3))
+    many = cut_passages(text, s)
+    assert len(many) == limit
+    starts = [text.find(p) for p in many]
+    assert all(starts[i] + len(many[i]) <= starts[i + 1] for i in range(len(many) - 1))   # in order, no overlap
     anchor = "Smaller banks drew on the discount window heavily during the quarter as deposits ran off. "
-    text = (FILLER * 40 + anchor) * 6                        # long page, six separated mentions
-    assert word_count(text) > s["passage"]["long_document_words"]
-    assert len(cut_passages(text, s)) == s["passage"]["max_per_long_document"]
-    assert len(cut_passages(FILLER * 3 + anchor + FILLER * 3 + anchor, s)) == s["passage"]["max_per_document"]
+    assert len(cut_passages(FILLER * 6 + anchor + FILLER * 6 + anchor, s)) == 2
 
 
 def test_page_date_reads_the_page_own_date():
@@ -171,10 +177,9 @@ def test_personal_data_rule_flags_private_individuals_only():
     assert not ELIG.personal_data("Chair Powell said banks should not hesitate to use the discount window.")
 
 
-def test_an_ineligible_early_mention_does_not_crowd_out_an_eligible_one():
+def test_cutting_does_not_filter_by_eligibility():
+    # Clarification 21: an ineligible mention (a funding-source list) still goes to review
     early = "Other sources of liquidity include the Federal Reserve discount window and brokered deposits. "
     later = "In March the bank borrowed $2 billion from the discount window as deposits ran off. "
-    drops = []
-    passages = cut_passages(early + FILLER * 8 + later, SETTINGS, drops=drops)
-    assert len(passages) == 1 and "borrowed $2 billion" in passages[0]
-    assert ("ineligible:funding_source_list", early.strip()) in [(r, p[:len(early.strip())]) for r, p in drops]
+    passages = cut_passages(early + FILLER * 8 + later, SETTINGS)
+    assert len(passages) == 2 and passages[0].startswith("Other sources") and "borrowed $2 billion" in passages[1]

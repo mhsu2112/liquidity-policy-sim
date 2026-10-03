@@ -25,3 +25,4 @@ signals/corpus/excerpts_private.csv
 signals/corpus/trial_examples.md
 signals/gold_set/sheets/
 signals/corpus/work_round*/
+signals/corpus/check/

@@ -1,4 +1,4 @@
-"""Read each candidate page and cut its eligible passages (session M2.2).
+"""Read each candidate page and cut its in-scope passages for review (session M2.2).
 
 Pages are read into memory, cut, and discarded: only the short passages, the link and a
 fingerprint of the page text are kept (M2.2 brief: links and short excerpts only). Pages on
@@ -6,7 +6,7 @@ paywalled sites are never read (Clarification 20), and there is no fallback to a
 The run can be stopped and restarted; pages already read are skipped.
 
 Everything goes to work/ (git-ignored), one set of files per candidate list:
-  passages_raw_<list>.csv   passages that passed every test
+  passages_raw_<list>.csv   in-scope passages, to be reviewed for eligibility (Clarification 21)
   cut_drops_<list>.csv      every candidate passage rejected while cutting, with its reason
   fetch_log_<list>.csv      pages that gave nothing, and why (not read, paywalled, no date, ...)
 
@@ -27,7 +27,9 @@ from signals.corpus.fetch import get
 from signals.corpus.passages import Scope, clean_text, cut_passages, html_to_text, load_settings, page_fingerprint, stratum_of
 
 WORK_DIR = Path(__file__).resolve().parent / "work"     # intermediate files; rebuilt, not saved to history
-RAW_FIELDS = ["url", "source_name", "source_type", "pub_date", "found_via", "company", "page_sha256", "passage"]
+# rule_verdict: what the written rules alone would decide; kept only to compare with the review (Clarification 21)
+RAW_FIELDS = ["url", "source_name", "source_type", "pub_date", "found_via", "company", "page_sha256", "rule_verdict",
+              "passage"]
 DROP_FIELDS = ["url", "source_name", "source_type", "pub_date", "reason", "passage"]
 LOG_FIELDS = ["url", "status"]
 
@@ -99,10 +101,14 @@ def record_page(cand, text, date, files, settings, scope, eligibility):
     base = {**cand, "pub_date": date}
     _append(files["drops"], DROP_FIELDS, [{**base, "reason": r, "passage": p} for r, p in drops])
     if not passages:
-        _append(files["log"], LOG_FIELDS, [{"url": cand["url"], "status": "read; no eligible passage"}])
+        _append(files["log"], LOG_FIELDS, [{"url": cand["url"], "status": "read; no in-scope passage"}])
         return 0
     fingerprint = page_fingerprint(text)
-    _append(files["raw"], RAW_FIELDS, [{**base, "page_sha256": fingerprint, "passage": p} for p in passages])
+    rows = []
+    for p in passages:
+        ok, why = eligibility.judge(p)
+        rows.append({**base, "page_sha256": fingerprint, "rule_verdict": f"{'keep' if ok else 'drop'}:{why}", "passage": p})
+    _append(files["raw"], RAW_FIELDS, rows)
     return len(passages)
 
 
@@ -113,7 +119,7 @@ def page_text(cand, settings):
     return (html_to_text(body) if is_html else clean_text(body)), cand["pub_date"] or page_date(body)
 
 
-def run(only=None, limit=None, sample=None, settings=None, sample_seed=None):
+def run(only=None, limit=None, sample=None, settings=None, sample_seed=None, urls=None):
     settings = settings or load_settings()
     scope, eligibility = Scope(settings), Eligibility(settings)
     WORK_DIR.mkdir(exist_ok=True)
@@ -125,6 +131,8 @@ def run(only=None, limit=None, sample=None, settings=None, sample_seed=None):
     else:
         todo = read_candidates()
     todo = [c for c in todo if c["url"] not in done]
+    if urls:   # re-read exactly these pages (e.g. the same trial pages under a new rule)
+        todo = [c for c in todo if c["url"] in urls]
     if sample:   # a seeded random spread of pages, for trial runs
         seed = settings["seed"] if sample_seed is None else sample_seed
         todo = random.Random(seed).sample(todo, min(sample, len(todo)))
@@ -151,5 +159,7 @@ if __name__ == "__main__":
     ap.add_argument("--limit", type=int, help="read at most this many pages (for a trial run)")
     ap.add_argument("--sample", type=int, help="read a seeded random sample of this many pages (trial run)")
     ap.add_argument("--sample-seed", type=int, help="seed for --sample (a fresh trial uses a new seed)")
+    ap.add_argument("--urls", help="a text file of page addresses, one per line: read only these")
     args = ap.parse_args()
-    run(args.candidates, args.limit, args.sample, sample_seed=args.sample_seed)
+    urls = set(Path(args.urls).read_text().split()) if args.urls else None
+    run(args.candidates, args.limit, args.sample, sample_seed=args.sample_seed, urls=urls)

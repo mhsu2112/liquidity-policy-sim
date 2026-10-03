@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -82,12 +82,17 @@ corpus: $(VENV)/.installed
 	$(PY) -m signals.corpus.collect_edgar
 	$(PY) -m signals.corpus.collect_news_api
 	caffeinate -i $(PY) -m signals.corpus.extract
-	$(MAKE) corpus-build
+	$(PY) -m signals.corpus.review --batches 60
+	@echo "Next: review the batches in signals/corpus/work/review_batches/ (Clarification 21), then make corpus-build"
 
-## make corpus-build: re-check, remove duplicates, apply the Clarification 20 caps, write the corpus files (no internet)
+## make corpus-build: keep reviewed-eligible passages, remove duplicates, apply the per-document and filing caps (no internet)
 corpus-build: $(VENV)/.installed
 	$(PY) -m signals.corpus.build_corpus
 
 ## make corpus-sample: counts by period and source type, and 20 random rows of the corpus
 corpus-sample: $(VENV)/.installed
 	$(PY) -m signals.corpus.readout
+
+## make corpus-check-sheet: the owner's random 50 eligibility decisions to hand-check in Excel (git-ignored)
+corpus-check-sheet: $(VENV)/.installed
+	$(PY) -m signals.corpus.review --check-sheet

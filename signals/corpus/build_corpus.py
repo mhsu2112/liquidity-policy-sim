@@ -1,22 +1,23 @@
-"""Turn the raw passages into the corpus files (session M2.2, rules of Clarification 20).
+"""Turn the reviewed passages into the corpus files (session M2.2; Clarifications 20 and 21).
 
 Steps, in order. Every passage that does not reach the corpus is logged with the step that
 dropped it (work/build_drops.csv), so nothing disappears silently:
-1. recheck      re-apply the current quality, scope, personal-data and eligibility rules, so a
-                tightened rule takes effect without reading the pages again;
-2. excluded     passages listed by id in exclusions.csv (e.g. a private individual's words);
-3. near_duplicate  passages sharing most of their 5-word runs (a syndicated story, repeated
+1. recheck      re-apply the current quality, scope and personal-data rules (no re-reading of pages);
+2. review       keep only passages the eligibility review decided `keep` (Clarification 21);
+                passages not yet reviewed are logged as `unreviewed`, never kept;
+3. excluded     passages listed by id in exclusions.csv (e.g. a private individual's words);
+4. near_duplicate  passages sharing most of their 5-word runs (a syndicated story, repeated
                 boilerplate): the earliest is kept;
-4. document_cap at most 2 passages per document;
-5. company_year_cap  filings: one passage per company per year;
-6. type_cap     no source type above 25% of any period (see type_cap_sizes).
+5. document_cap at most 2 passages per document;
+6. company_year_cap  filings: one passage per company per year.
+There is no source-type cap in the corpus: Clarification 21 moves the 25% cap to the M2.3 draw.
 Choices among equals use the seeded random order, never the wording.
 
 Outputs:
-  corpus.csv              public: id, link, date, source, type, period, SHA-256 of the excerpt, and
-                          the excerpt itself only for official and SEC text (Clarification 20, item 4)
+  corpus.csv              public: id, link, date, source, type, period, SHA-256 of the excerpt, the
+                          review's reason code, and the excerpt itself only for official and SEC text
   excerpts_private.csv    git-ignored: id and excerpt for every row (news and analyst text stay here)
-  work/build_summary.json counts before and after the type cap, for the readout
+  work/build_summary.json counts by period and source type, for the readout
 
 Run: python -m signals.corpus.build_corpus
 """
@@ -24,10 +25,9 @@ Run: python -m signals.corpus.build_corpus
 import csv
 import hashlib
 import json
-import math
 import random
 import re
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 from signals.corpus.eligibility import Eligibility
@@ -40,8 +40,9 @@ PRIVATE_PATH = HERE / "excerpts_private.csv"
 EXCLUSIONS_PATH = HERE / "exclusions.csv"
 DROPS_PATH = WORK_DIR / "build_drops.csv"
 SUMMARY_PATH = WORK_DIR / "build_summary.json"
+REVIEWS_PATH = HERE / "eligibility_reviews.csv"
 FIELDS = ["id", "document_id", "url", "pub_date", "source_name", "source_type", "stratum", "found_via",
-          "excerpt_sha256", "passage"]
+          "excerpt_sha256", "eligibility", "passage"]
 
 
 def passage_id(row):
@@ -103,26 +104,6 @@ def keep_per_group(rows, key, limit, rng):
     return kept, dropped
 
 
-def type_cap_sizes(counts, share):
-    """How many passages of each source type a period keeps so that no type exceeds `share` of the total.
-
-    The period keeps the largest total N for which every type can hold at most floor(share x N) and the
-    types together still fill N. Each type keeps min(its count, floor(share x N)); if that adds up to
-    more than N, the largest allowances are reduced one at a time (ties by type name) until it equals N.
-    With fewer than 1/share types present (4 types for 25%), no N above zero works.
-    """
-    total = sum(counts.values())
-    for n in range(total, -1, -1):
-        cap = math.floor(share * n)
-        sizes = {t: min(c, cap) for t, c in counts.items()}
-        if sum(sizes.values()) >= n:
-            while sum(sizes.values()) > n:
-                biggest = max(sorted(sizes), key=lambda t: sizes[t])
-                sizes[biggest] -= 1
-            return sizes
-    return {t: 0 for t in counts}
-
-
 def build(settings=None):
     settings = settings or load_settings()
     rng = random.Random(settings["seed"])
@@ -137,10 +118,18 @@ def build(settings=None):
     for path in sorted(WORK_DIR.glob("passages_raw_*.csv")):
         with open(path, newline="") as fh:
             raw.extend(csv.DictReader(fh))
-    rows = []
-    for r in raw:                                             # step 1: recheck
+    decisions = {}
+    if REVIEWS_PATH.exists():
+        with open(REVIEWS_PATH, newline="") as fh:
+            decisions = {d["id"]: d for d in csv.DictReader(fh)}
+    rows, seen = [], set()
+    for r in raw:
         r["stratum"], r["id"] = stratum_of(r["pub_date"], settings), passage_id(r)
-        if not r["stratum"]:
+        if r["id"] in seen:
+            continue   # the same passage read twice (e.g. a page listed by two collectors)
+        seen.add(r["id"])
+        d = decisions.get(r["id"])
+        if not r["stratum"]:                                  # step 1: recheck
             reason = "recheck:date"
         elif not reads_cleanly(r["passage"], settings["passage"]):
             reason = "recheck:quality"
@@ -148,46 +137,38 @@ def build(settings=None):
             reason = "recheck:out_of_scope"
         elif elig.personal_data(r["passage"]):
             reason = "recheck:personal_data"
+        elif d is None:                                       # step 2: review
+            reason = "unreviewed"
+        elif d["excerpt_sha256"] != excerpt_sha256(r["passage"]):
+            reason = "review_hash_mismatch"
+        elif d["decision"] != "keep":
+            reason = f"review:{d['reason']}"
         else:
-            ok, why = elig.judge(r["passage"])
-            reason = None if ok else f"recheck:ineligible:{why}"
-            r["eligibility"] = why
+            reason, r["eligibility"] = None, d["reason"]
         if reason:
             drop([r], reason)
         else:
             rows.append(r)
 
-    excluded = {}                                             # step 2: exclusion list
+    excluded = {}                                             # step 3: exclusion list
     if EXCLUSIONS_PATH.exists():
         with open(EXCLUSIONS_PATH, newline="") as fh:
             excluded = {e["id"]: e["reason"] for e in csv.DictReader(fh)}
     drop([r for r in rows if r["id"] in excluded], "excluded")
     rows = [r for r in rows if r["id"] not in excluded]
 
-    rows, dup = remove_near_duplicates(rows, settings)        # step 3
+    rows, dup = remove_near_duplicates(rows, settings)        # step 4
     drop(dup, "near_duplicate")
-    rows, over = keep_per_group(rows, lambda r: r["url"], caps["max_per_document"], rng)   # step 4
+    rows, over = keep_per_group(rows, lambda r: r["url"], caps["max_per_document"], rng)   # step 5
     drop(over, "document_cap")
-    filings = [r for r in rows if r["source_type"] == "filing"]                            # step 5
+    filings = [r for r in rows if r["source_type"] == "filing"]                            # step 6
     kept_f, over = keep_per_group(filings, lambda r: (r["company"], r["pub_date"][:4]),
                                   caps["filings_per_company_per_year"], rng)
     drop(over, "company_year_cap")
-    rows = [r for r in rows if r["source_type"] != "filing"] + kept_f
+    final = [r for r in rows if r["source_type"] != "filing"] + kept_f
 
-    final, summary = [], {}                                   # step 6: type cap per period
-    for stratum in settings["strata"]:
-        by_type = defaultdict(list)
-        for r in rows:
-            if r["stratum"] == stratum:
-                by_type[r["source_type"]].append(r)
-        counts = {t: len(v) for t, v in sorted(by_type.items())}
-        sizes = type_cap_sizes(counts, caps["max_type_share_per_stratum"])
-        for t, members in sorted(by_type.items()):
-            ordered = _seeded(members, rng)
-            final += ordered[:sizes[t]]
-            drop(ordered[sizes[t]:], "type_cap")
-        summary[stratum] = {"before_cap": counts, "after_cap": sizes}
-
+    summary = {s: dict(sorted(Counter(r["source_type"] for r in final if r["stratum"] == s).items()))
+               for s in settings["strata"]}
     public = set(settings["copyright"]["public_text_types"])
     for r in final:
         r["document_id"], r["excerpt_sha256"] = document_id(r["url"]), excerpt_sha256(r["passage"])
@@ -206,7 +187,7 @@ def build(settings=None):
         w.writeheader()
         w.writerows(drops)
     SUMMARY_PATH.write_text(json.dumps(summary, indent=1))
-    print(f"{len(raw)} raw passages -> {len(final)} in the corpus ({len(drops)} dropped at build; see {DROPS_PATH.name})")
+    print(f"{len(seen)} in-scope passages -> {len(final)} in the corpus ({len(drops)} dropped at build; see {DROPS_PATH.name})")
     return final
 
 

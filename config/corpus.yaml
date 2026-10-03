@@ -20,9 +20,10 @@ strata:
 passage:
   max_words: 80          # M2.2 brief: "at most 80 words", verbatim
   min_words: 20          # plan decision: shorter snippets give a labeler too little to judge
-  max_per_document: 1    # plan: one passage per document ...
-  max_per_long_document: 2   # ... up to 2, not overlapping, for long documents (Clarification 20: at most 2 per document)
-  long_document_words: 3000  # a document counts as "long" above this many words
+  # Clarification 21: every in-scope passage is reviewed, so cutting keeps all non-overlapping in-scope
+  # passages on a page, up to this many (a bound on reviewing time; long speeches and 10-Ks can have dozens).
+  # The corpus still keeps at most 2 per document (caps.max_per_document), chosen at build after review.
+  max_candidates_per_page: 6
   max_number_share: 0.15     # trial-round fix: drop passages where more than 15% of words are figures (filing tables)
   # trial-round fix: a passage must read as whole sentences: start with a capital, digit or quote ...
   start_pattern: '^["“‘(]?[A-Z0-9$]'
@@ -58,8 +59,8 @@ targets:                 # Clarification 20, item 3: keep all eligible passages 
 
 caps:                    # Clarification 20, item 2
   max_per_document: 2              # in the corpus (the gold set takes at most 1 per document, applied in M2.3)
-  max_type_share_per_stratum: 0.25 # no source type above 25% of any period; official_statement and
-                                   # speech_testimony are separate types (owner's choice)
+  max_type_share_per_stratum: 0.25 # Clarification 21: applied in the M2.3 gold-set draw, not the corpus;
+                                   # official_statement and speech_testimony are separate types (owner's choice)
   filings_per_company_per_year: 1  # kept from the M2.2 plan
 
 # Clarification 20, item 4: news and analyst excerpts are kept in a git-ignored file; the public
@@ -75,13 +76,12 @@ copyright:
 # these is dropped as `personal_data`; I also read every passage and list further exclusions, by id and
 # reason only, in signals/corpus/exclusions.csv.
 personal_data:
-  patterns:
+  patterns:   # (round 3: dropped "my/our deposits", which flagged a filing's "our deposit base")
     - '\b(listeners?|callers?|commenters?)\b'
     - '\b(called|wrote|writes|emailed) in\b'
     - '\breaders? (asked|asks|wrote|writes|want)'
     - '\bletters? to the editor\b'
     - '\bhere from [A-Z]'
-    - '\b(my|our) (savings|account|deposits?|mortgage)\b'
 
 # Clarification 20, item 1: eligibility. Mechanical, never judges tone. Rules are tried in order and the
 # first that matches decides. "Keep" rules: the passage refers to borrowing from a central bank by a bank
@@ -151,8 +151,8 @@ edgar:                          # collect_edgar.py: SEC full-text search
   queries: ["discount window", "Term Auction Facility", "Bank Term Funding Program",
             "Paycheck Protection Program Liquidity Facility", "borrowed from the Federal Reserve"]
   form_groups: ["8-K", "10-Q,10-K"]
-  max_pages_per_search: 5       # 100 hits a page
-  companies_per_year: 60        # seeded random sample of companies each year; enough to fill the 25% cap
+  max_pages_per_search: 20      # 100 hits a page; Clarification 21 (all filers) needs the deeper search
+  companies_per_year: all       # Clarification 21: every company found each year (was a random 60)
   filings_per_company: 2        # a spare in case the first gives no usable passage
 
 news_api:                       # collect_news_api.py: Guardian and NYT search (free keys in .env)

@@ -1,27 +1,27 @@
 """Checks on building the corpus files (session M2.2; rules of Clarification 20).
 
-Mechanics only: near-duplicates collapse to the earliest copy; the 25% type cap arithmetic
-holds and keeps the largest possible total; at most 2 passages per document; ids are stable.
-Made-up rows only; no network. If corpus.csv exists it is also checked against the brief and
-Clarification 20: word limit, dates and periods, unique ids, no near-duplicates left, the
-caps, no news or analyst wording in the public file, and hashes matching the private excerpts.
+Mechanics only: near-duplicates collapse to the earliest copy; at most 2 passages per document;
+ids are stable; review decisions are checked against the instruction's codes; the review file
+holds no passage text. Made-up rows only; no network. If corpus.csv exists it is also checked
+against the brief and Clarifications 20 and 21: word limit, dates and periods, unique ids, no
+near-duplicates left, the caps, every row reviewed `keep`, no news or analyst wording in the
+public file, and hashes matching the private excerpts. (No type cap in the corpus: it applies
+in the M2.3 draw.)
 Nothing here says which passages or policies are better or worse.
 """
 
 import csv
-import math
 import random
 from collections import Counter
 
 import pytest
 
 from signals.corpus.build_corpus import (CORPUS_PATH, FIELDS, PRIVATE_PATH, excerpt_sha256, keep_per_group,
-                                         passage_id, remove_near_duplicates, shingles, type_cap_sizes)
+                                         passage_id, remove_near_duplicates, shingles)
 from signals.corpus.candidates import SOURCE_TYPES
 from signals.corpus.passages import load_settings, stratum_of
 
 SETTINGS = load_settings()
-SHARE = SETTINGS["caps"]["max_type_share_per_stratum"]
 STORY = ("Banks borrowed $9.4 billion from the Federal Reserve's discount window in the week to Wednesday, "
          "the most since October, Fed data showed on Thursday, as lenders sought cash amid market turmoil.")
 
@@ -48,23 +48,13 @@ def test_different_passages_are_kept():
     assert len(kept) == 2
 
 
-@pytest.mark.parametrize("counts", [
-    {"filing": 300, "news": 40, "official_statement": 90, "speech_testimony": 60, "analyst_note": 20},
-    {"filing": 10, "news": 10, "official_statement": 10, "speech_testimony": 10},
-    {"filing": 500, "official_statement": 5, "speech_testimony": 200, "news": 1, "analyst_note": 3, "data_release": 2},
-])
-def test_type_cap_keeps_no_type_above_a_quarter_and_the_largest_possible_total(counts):
-    sizes = type_cap_sizes(counts, SHARE)
-    n = sum(sizes.values())
-    assert all(0 <= sizes[t] <= counts[t] for t in counts)
-    assert all(sizes[t] <= math.floor(SHARE * n) for t in counts)          # no type above 25%
-    # no larger total could satisfy the cap
-    for bigger in range(n + 1, sum(counts.values()) + 1):
-        assert sum(min(c, math.floor(SHARE * bigger)) for c in counts.values()) < bigger
-
-
-def test_type_cap_with_fewer_than_four_types_keeps_nothing():
-    assert sum(type_cap_sizes({"filing": 50, "news": 50, "official_statement": 50}, SHARE).values()) == 0
+def test_review_decisions_must_match_the_instruction_codes():
+    from signals.corpus.review import parse_decision
+    assert parse_decision("keep", "borrowing") == ("keep", "borrowing", False)
+    assert parse_decision("drop", "funding_source_list?") == ("drop", "funding_source_list", True)
+    for bad in [("keep", "funding_source_list"), ("drop", "perception"), ("maybe", "borrowing"), ("keep", "tone")]:
+        with pytest.raises(ValueError):
+            parse_decision(*bad)
 
 
 def test_at_most_two_passages_per_document():
@@ -95,7 +85,7 @@ def _read(path):
         return list(csv.DictReader(f))
 
 
-def test_corpus_file_meets_the_brief_and_clarification_20():
+def test_corpus_file_meets_the_brief_and_clarifications_20_21():
     rows = _read(CORPUS_PATH)
     assert list(rows[0].keys()) == FIELDS
     assert len({r["id"] for r in rows}) == len(rows)
@@ -108,10 +98,16 @@ def test_corpus_file_meets_the_brief_and_clarification_20():
         if r["source_type"] not in public:
             assert r["passage"] == "", f"{r['id']}: news/analyst wording must not be in the public file"
     assert max(Counter(r["document_id"] for r in rows).values()) <= SETTINGS["caps"]["max_per_document"]
-    for stratum in SETTINGS["strata"]:
-        types = Counter(r["source_type"] for r in rows if r["stratum"] == stratum)
-        n = sum(types.values())
-        assert all(c <= math.floor(SHARE * n) for c in types.values()), stratum
+
+
+def test_every_corpus_row_was_reviewed_keep_and_reviews_hold_no_text():
+    from signals.corpus.review import REVIEW_FIELDS, REVIEWS_PATH
+    rows = _read(CORPUS_PATH)
+    reviews = {r["id"]: r for r in _read(REVIEWS_PATH)}
+    assert list(next(iter(reviews.values())).keys()) == REVIEW_FIELDS      # no passage column
+    for r in rows:
+        assert reviews[r["id"]]["decision"] == "keep" and reviews[r["id"]]["reason"] == r["eligibility"]
+        assert reviews[r["id"]]["excerpt_sha256"] == r["excerpt_sha256"]
 
 
 def test_private_excerpts_match_the_public_hashes_and_limits():

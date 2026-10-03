@@ -1,7 +1,8 @@
 """Plain-English readout of the corpus (session M2.2; Clarification 20).
 
-Prints: the eligible share (eligible / in scope) and drop reasons by source type; counts by
-period and source type before and after the 25% type cap; any period under 150; and random rows.
+Prints: the eligibility review by source type (eligible share, reasons, doubtful calls, agreement
+with the written rules); counts by period and source type, with types above 25% of a period noted
+(the cap applies in the M2.3 draw); any period under 150; and random rows.
 Excerpt text is read from the git-ignored private file, so it is shown on this computer only.
 `--examples N` also writes N random rows, spread across periods and types, to the git-ignored
 signals/corpus/trial_examples.md.
@@ -11,15 +12,14 @@ Run: python -m signals.corpus.readout [--rows 20] [--examples 30]   (or: make co
 
 import argparse
 import csv
-import json
 import random
 import textwrap
 from collections import Counter, defaultdict
 
-from signals.corpus.build_corpus import CORPUS_PATH, DROPS_PATH, PRIVATE_PATH, SUMMARY_PATH
+from signals.corpus.build_corpus import CORPUS_PATH, DROPS_PATH, PRIVATE_PATH
 from signals.corpus.candidates import SOURCE_TYPES
 from signals.corpus.extract import WORK_DIR
-from signals.corpus.passages import load_settings, stratum_of
+from signals.corpus.passages import load_settings
 
 SAMPLE_SEED = 2   # any fixed number; only chooses which rows are shown
 
@@ -44,25 +44,30 @@ def _table(title, counts, strata, minimum=None):
 
 
 def eligibility_tally(settings):
-    """In-scope candidates, how many were eligible, and why the rest were dropped, by source type."""
-    cut = [r for p in sorted(WORK_DIR.glob("cut_drops_*.csv")) for r in _read(p)]
-    raw = [r for p in sorted(WORK_DIR.glob("passages_raw_*.csv")) for r in _read(p)]
-    in_scope_drops = [r for r in cut if r["reason"].startswith(("ineligible:", "personal_data"))]
-    by_type = defaultdict(Counter)
-    for r in in_scope_drops:
-        by_type[r["source_type"]][r["reason"]] += 1
-    eligible = Counter(r["source_type"] for r in raw)
-    print("\nEligibility while cutting (Clarification 20): in-scope passages, eligible share, drop reasons")
+    """Review results by source type: eligible share, reason codes, doubtful calls, and agreement with the rules."""
+    from signals.corpus.review import raw_passages, reviews
+    rows, done = raw_passages(), reviews()
+    reviewed = [(rows[i], d) for i, d in done.items() if i in rows]
+    print(f"\nEligibility review (Clarification 21): {len(reviewed)} of {len(rows)} in-scope passages reviewed")
+    by_type = defaultdict(list)
+    for r, d in reviewed:
+        by_type[r["source_type"]].append(d)
     for t in SOURCE_TYPES:
-        n_in = eligible[t] + sum(by_type[t].values())
-        if n_in:
-            reasons = ", ".join(f"{k.replace('ineligible:', '')} {v}" for k, v in by_type[t].most_common())
-            print(f"  {t:<19} {eligible[t]:>4} of {n_in:>4} eligible ({eligible[t] / n_in:5.1%})   dropped: {reasons or '-'}")
-    n_in = len(raw) + len(in_scope_drops)
-    if n_in:
-        print(f"  {'all':<19} {len(raw):>4} of {n_in:>4} eligible ({len(raw) / n_in:5.1%})")
-    other = Counter(r["reason"] for r in cut if r not in in_scope_drops)
-    print("  Also dropped before the scope test: " + ", ".join(f"{k} {v}" for k, v in other.most_common()))
+        ds = by_type.get(t, [])
+        if ds:
+            keep = sum(d["decision"] == "keep" for d in ds)
+            reasons = ", ".join(f"{k} {v}" for k, v in Counter(d["reason"] for d in ds).most_common())
+            print(f"  {t:<19} {keep:>4} of {len(ds):>4} eligible ({keep / len(ds):5.1%})   {reasons}")
+    if reviewed:
+        keep = sum(d["decision"] == "keep" for _, d in reviewed)
+        doubtful = sum(d["doubtful"] == "Y" for _, d in reviewed)
+        agree = sum(r["rule_verdict"].split(":")[0] == d["decision"] for r, d in reviewed)
+        print(f"  {'all':<19} {keep:>4} of {len(reviewed):>4} eligible ({keep / len(reviewed):5.1%}); "
+              f"doubtful calls {doubtful}")
+        print(f"  The written rules alone would have agreed with the review on {agree} of {len(reviewed)} "
+              f"({agree / len(reviewed):.0%})")
+    cut = [r for p in sorted(WORK_DIR.glob("cut_drops_*.csv")) for r in _read(p)]
+    print("  Dropped while cutting (before review): " + ", ".join(f"{k} {v}" for k, v in Counter(r["reason"] for r in cut).most_common()))
     if DROPS_PATH.exists():
         print("  Dropped at build: " + ", ".join(f"{k} {v}" for k, v in Counter(r["reason"] for r in _read(DROPS_PATH)).most_common()))
 
@@ -93,16 +98,14 @@ def main(n_rows=20, n_examples=0):
     print(f"Calibration corpus: {len(rows)} passages (Clarification 20: all eligible passages, at least "
           f"{settings['targets']['min_per_stratum']} per period)")
     eligibility_tally(settings)
-    if SUMMARY_PATH.exists():
-        summary = json.loads(SUMMARY_PATH.read_text())
-        before = {(s, t): c for s, v in summary.items() for t, c in v["before_cap"].items()}
-        _table("Before the 25% type cap (after duplicates, document and company-year caps):", before, strata)
-        for s, v in summary.items():
-            cut = {t: v["before_cap"][t] - v["after_cap"][t] for t in v["before_cap"] if v["before_cap"][t] > v["after_cap"][t]}
-            if cut:
-                print(f"  {s}: the cap removed " + ", ".join(f"{k} {c}" for k, c in cut.items()))
-    _table("In the corpus (after the type cap):", Counter((r["stratum"], r["source_type"]) for r in rows), strata,
-           settings["targets"]["min_per_stratum"])
+    counts = Counter((r["stratum"], r["source_type"]) for r in rows)
+    _table("In the corpus:", counts, strata, settings["targets"]["min_per_stratum"])
+    share = settings["caps"]["max_type_share_per_stratum"]
+    for st in strata:
+        n = sum(counts.get((st, t), 0) for t in SOURCE_TYPES)
+        over = [f"{t} {counts[(st, t)] / n:.0%}" for t in SOURCE_TYPES if n and counts.get((st, t), 0) / n > share]
+        if over:
+            print(f"  {st}: above {share:.0%} of the period (capped in the M2.3 draw, not here): " + ", ".join(over))
 
     rng = random.Random(SAMPLE_SEED)
     print(f"\n{n_rows} random rows:")

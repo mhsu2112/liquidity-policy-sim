@@ -1,11 +1,9 @@
 """Candidate pages from SEC filings, via EDGAR full-text search (session M2.2).
 
-Most filings repeat the same sentence every quarter ("we have access to the discount
-window"), so the plan caps filings at about a quarter of each period and one passage
-per company per year (config/corpus.yaml, `filings`). Here we gather, for each year, a
-seeded random set of companies and up to two of their filings, preferring 8-K exhibits
-(press releases and announcements, which more often describe actual borrowing) over
-quarterly and annual reports. build_corpus.py applies the caps.
+For each year we take every company the search finds (Clarification 21; earlier a seeded
+random 60) and up to two of its filings, preferring 8-K exhibits (press releases and
+announcements, which more often describe actual borrowing) over quarterly and annual
+reports. build_corpus.py keeps at most one filing passage per company per year.
 
 Run: python -m signals.corpus.collect_edgar
 """
@@ -55,7 +53,8 @@ def collect(settings=None):
                     by_company[src["ciks"][0]].append((FORM_PREFERENCE.get(form, 3), query, form, hit))
         companies = sorted(by_company)
         rng.shuffle(companies)
-        for cik in companies[:e["companies_per_year"]]:
+        n = e["companies_per_year"]
+        for cik in companies if n == "all" else companies[:n]:   # Clarification 21: all filers
             options = sorted(by_company[cik], key=lambda t: (t[0], t[3]["_id"]))
             for _, query, form, hit in options[:e["filings_per_company"]]:
                 src = hit["_source"]
