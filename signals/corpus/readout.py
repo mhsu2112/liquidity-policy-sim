@@ -46,10 +46,11 @@ def _table(title, counts, strata, minimum=None):
 
 def eligibility_tally(settings):
     """Review results by source type: eligible share, reason codes, doubtful calls, and agreement with the rules."""
-    from signals.corpus.review import raw_passages, reviews
-    rows, done = raw_passages(), reviews()
+    from signals.corpus.review import INSTRUCTION_VERSION, raw_passages, reviews
+    rows, done = raw_passages(), reviews(INSTRUCTION_VERSION)      # the current instruction's decisions only
     reviewed = [(rows[i], d) for i, d in done.items() if i in rows]
-    print(f"\nEligibility review (Clarification 21): {len(reviewed)} of {len(rows)} in-scope passages reviewed")
+    print(f"\nEligibility review (Clarifications 21-23; instruction {INSTRUCTION_VERSION}): {len(reviewed)} of {len(rows)} "
+          f"in-scope passages reviewed (unsampled filings are not reviewed)")
     by_type = defaultdict(list)
     for r, d in reviewed:
         by_type[r["source_type"]].append(d)
@@ -99,6 +100,12 @@ def main(n_rows=20, n_examples=0):
     print(f"Calibration corpus: {len(rows)} passages (Clarification 20: all eligible passages, at least "
           f"{settings['targets']['min_per_stratum']} per period)")
     eligibility_tally(settings)
+    rates = {}
+    for r in rows:
+        if r["source_type"] == "filing" and r["filing_sampling_rate"]:
+            rates[r["stratum"]] = float(r["filing_sampling_rate"])
+    print("\nFiling sampling rates (Clarification 23; M2.6 weights filing passages by 1/rate): "
+          + ", ".join(f"{st} {rates[st]:.1%}" for st in strata if st in rates))
     counts = Counter((r["stratum"], r["source_type"]) for r in rows)
     _table("In the corpus:", counts, strata, settings["targets"]["min_per_stratum"])
     share = settings["caps"]["max_type_share_per_stratum"]

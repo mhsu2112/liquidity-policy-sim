@@ -91,6 +91,45 @@ make corpus-sample   # eligible share, drop reasons, counts by period and type, 
 Web pages change and disappear, so a fresh collection will not match row for row. The committed
 `corpus.csv` is the record.
 
-## Counts and known gaps
+## Counts and known gaps (full collection, 2026-10-03)
 
-(Filled in after the full collection.)
+**Collected.** About 21,700 pages read:
+- Fed Board 5,501; Bank of England 2,685; ECB 2,241; NY Fed Liberty Street 1,595;
+- SEC filings 9,439 (every filer found);
+- Guardian about 480 articles; NYT about 350 summaries;
+- congressional hearings 97 (2020–24);
+- web search 236 pages.
+
+**Reviewed.** 9,272 in-scope passages:
+- Every non-filing passage and a company-year sample of filings, 6,101 in all, was reviewed under instruction
+  v2 (Clarification 23).
+- Filing sampling rates: 2007–09 100%, 2010–19 32.8%, 2020–21 100%, 2022–24 79.7%. M2.6 weights filing
+  passages by the inverse of their period's rate.
+- 21.3% were eligible. The written rules alone agree with the review on 82%.
+- 599 reviews (about 10%) were marked doubtful.
+
+**Corpus: 771 passages.**
+
+| Source type | 2007–09 | 2010–19 | 2020–21 | 2022–24 | Total |
+| --- | --- | --- | --- | --- | --- |
+| News | 56 | 32 | 8 | 43 | 139 |
+| Analyst notes | 0 | 36 | 33 | 34 | 103 |
+| Official statements | 2 | 8 | 1 | 1 | 12 |
+| Speeches and testimony | 39 | 66 | 8 | 41 | 154 |
+| Filings | 13 | 34 | 164 | 152 | 363 |
+| **Total** | **110** | **176** | **214** | **271** | **771** |
+
+**Known gaps**
+- **2007–09 is short: 110 passages, under the 150 minimum.** It is reported here and not padded. That period
+  has few filings in the SEC's full-text search, little web-available news apart from the Guardian, and no
+  analyst notes.
+- **Gold-set draw under the Clarification 22 caps: at most 288 of 300.** 2007–09 can supply at most 63 of its 75.
+  No period can meet the 25% per-period cap on its own: 2007–09 is mostly news and speeches, 2010–19 mostly
+  speeches, and 2020–21 and 2022–24 mostly filings.
+- **The gold-set draw skips 236 corpus passages:** 179 doubtful review calls, and 57 the owner has already
+  seen (his check sheet and the trial examples). 535 are eligible for the draw.
+- **The NYT contributes almost nothing.** Its search service returns only summaries, which rarely name the
+  facility.
+- **Paywalled outlets are not read** (Bloomberg, WSJ, FT, Reuters, AP and others).
+- **The eligibility check is not blind.** The owner's check of the review was blind at first (32% agreement)
+  and then not blind (92%). No fresh blind check was run (Clarification 22).
