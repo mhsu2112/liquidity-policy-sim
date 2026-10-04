@@ -956,3 +956,19 @@ Format for each entry:
   sent to Jev.
 - **Evidence:** `signals/corpus/eligibility_owner_check.csv`, and the owner's notes on the annotated check sheet,
   2026-10-03 (the notes are kept locally with the sheet).
+
+## 2026-10-03 — Clarification 23: SEC filings sampled by company-year for the eligibility review (session M2.2, before any full-run review)
+- **What changed:** how many in-scope passages are reviewed (Clarification 21 required every one).
+  1. **Non-filing passages.** Every one is reviewed, as Clarification 21 requires. Congressional hearings are included.
+  2. **SEC filings.** A random sample of company-years is drawn with seed 20260923: up to 600 company-years per period, or all
+     of them if a period has fewer. Every passage from a sampled company-year is reviewed. Unsampled company-years are not
+     reviewed and do not enter the corpus. The sample is listed in `signals/corpus/filing_sample.csv`.
+  3. **Sampling rates and weights.** The corpus records each period's filing sampling rate: sampled company-years divided by
+     all company-years with in-scope filing passages in that period. M2.6 weights filing passages by the inverse of that
+     rate when it describes the historical range. The gold-set draw is unchanged (Clarification 22).
+- **Why:** the full collection gave 7,895 in-scope filing passages. Reviewing every one would cost about 6 million tokens,
+  against the 2 million planned, for passages that are about 12% eligible in the trial and mostly routine. The gold set takes
+  at most about 75 filings (25% of 300).
+- **Seen results before the change?** No full-run review result exists. Decided before any review agent started. Only the
+  counts of in-scope passages by source were known.
+- **Evidence:** full-run collection logs, 2026-10-03.
