@@ -65,6 +65,7 @@ caps:                    # Clarification 20, item 2
   max_type_share_per_stratum: 0.25 # Clarification 21: applied in the M2.3 gold-set draw, not the corpus;
                                    # official_statement and speech_testimony are separate types (owner's choice)
   filings_per_company_per_year: 1  # kept from the M2.2 plan
+  filing_review_sample_per_period: 600   # Clarification 23: company-years sampled for review per period (seed 20260923)
 
 # Clarification 20, item 4: news and analyst excerpts are kept in a git-ignored file; the public
 # corpus.csv carries their link, date, source and a SHA-256 of the excerpt only.
@@ -164,7 +165,7 @@ news_api:                       # collect_news_api.py: Guardian and NYT search (
             "emergency lending"]
   guardian_max_pages: 4         # 50 articles a page
   guardian_pause_seconds: 1.0   # Guardian free tier: 1 request a second
-  nyt_max_pages: 5              # 10 articles a page
+  nyt_max_pages: 1              # 10 articles a page; full run: 1 (trial gave 2 usable passages from 128 articles; free tier 500 requests a day)
   nyt_pause_seconds: 12.5       # NYT free tier: 5 requests a minute, 500 a day
 
 hearings:                       # collect_hearings.py (Clarification 22): congressional hearing transcripts, public domain

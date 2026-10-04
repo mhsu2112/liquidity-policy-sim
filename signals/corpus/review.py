@@ -24,6 +24,7 @@ from signals.corpus.passages import load_settings
 
 HERE = Path(__file__).resolve().parent
 REVIEWS_PATH = HERE / "eligibility_reviews.csv"
+FILING_SAMPLE_PATH = HERE / "filing_sample.csv"   # Clarification 23: which company-years are reviewed
 BATCH_DIR = WORK_DIR / "review_batches"
 CHECK_DIR = HERE / "check"                     # git-ignored: holds passage text
 INSTRUCTION_VERSION = "v2"   # Clarification 22 (v1 decisions keep "v1")
@@ -62,9 +63,44 @@ def reviews(version=None):
     return out
 
 
+def company_year(row, settings):
+    from signals.corpus.passages import stratum_of
+    return row["company"], row["pub_date"][:4], stratum_of(row["pub_date"], settings)
+
+
+def draw_filing_sample(settings):
+    """Clarification 23: a seeded random sample of company-years per period; every passage of a sampled
+    company-year is reviewed. Writes filing_sample.csv (all company-years, sampled Y/N) and returns
+    the set of sampled (company, year) keys and each period's sampling rate."""
+    keys = {}
+    for r in raw_passages().values():
+        if r["source_type"] == "filing":
+            c, y, s = company_year(r, settings)
+            if s:
+                keys[(c, y)] = s
+    rng = random.Random(settings["seed"])
+    limit = settings["caps"]["filing_review_sample_per_period"]
+    sampled, rates = set(), {}
+    for s in settings["strata"]:
+        pool = sorted(k for k, v in keys.items() if v == s)
+        pick = rng.sample(pool, min(limit, len(pool)))
+        sampled.update(pick)
+        rates[s] = len(pick) / len(pool) if pool else 1.0
+    with open(FILING_SAMPLE_PATH, "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(["company", "year", "stratum", "sampled", "period_sampling_rate"])
+        for k in sorted(keys):
+            w.writerow([k[0], k[1], keys[k], "Y" if k in sampled else "N", f"{rates[keys[k]]:.4f}"])
+    return sampled, rates
+
+
 def make_batches(size, settings):
     done = reviews(INSTRUCTION_VERSION)          # re-review anything decided only under an older version
-    todo = sorted(i for i in raw_passages() if i not in done)
+    sampled, rates = draw_filing_sample(settings)
+    rows_all = raw_passages()
+    todo = sorted(i for i, r in rows_all.items() if i not in done
+                  and (r["source_type"] != "filing" or company_year(r, settings)[:2] in sampled))
+    print("Filing sampling rates by period: " + ", ".join(f"{s} {v:.0%}" for s, v in rates.items()))
     random.Random(settings["seed"]).shuffle(todo)   # mixes sources and periods within a batch
     rows = raw_passages()
     BATCH_DIR.mkdir(parents=True, exist_ok=True)

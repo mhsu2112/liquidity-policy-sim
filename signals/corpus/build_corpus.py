@@ -3,7 +3,8 @@
 Steps, in order. Every passage that does not reach the corpus is logged with the step that
 dropped it (work/build_drops.csv), so nothing disappears silently:
 1. recheck      re-apply the current quality, scope and personal-data rules (no re-reading of pages);
-2. review       keep only passages the eligibility review decided `keep` (Clarification 21);
+2. review       filings outside the reviewed company-year sample are dropped as `filing_not_sampled`
+                (Clarification 23); then keep only passages the review decided `keep` (Clarification 21);
                 passages not yet reviewed are logged as `unreviewed`, never kept;
 3. excluded     passages listed by id in exclusions.csv (e.g. a private individual's words);
 4. near_duplicate  passages sharing most of their 5-word runs (a syndicated story, repeated
@@ -45,7 +46,8 @@ OWNER_CHECK_PATH = HERE / "eligibility_owner_check.csv"        # Clarification 2
 GOLD_EXCLUSIONS_PATH = HERE / "gold_set_exclusions.csv"        # Clarification 22: passages already seen (hashes)
 SEEN_PRIVATE_PATH = HERE / "check" / "seen_passages_private.csv"   # git-ignored text of the same, for near-copies
 FIELDS = ["id", "document_id", "url", "pub_date", "source_name", "source_type", "stratum", "found_via",
-          "excerpt_sha256", "eligibility", "decided_by", "gold_set_eligible", "gold_set_exclusion", "passage"]
+          "excerpt_sha256", "eligibility", "decided_by", "gold_set_eligible", "gold_set_exclusion",
+          "filing_sampling_rate", "passage"]
 
 
 def passage_id(row):
@@ -158,6 +160,11 @@ def build(settings=None):
                                       "decision": o["owner_final_after_annotation"], "decided_by": "owner check",
                                       "reason": d["reason"] if d.get("decision") == o["owner_final_after_annotation"]
                                       else f"owner_{o['owner_final_after_annotation']}"}
+    sample = {}                                               # Clarification 23: filing company-years reviewed
+    sample_path = HERE / "filing_sample.csv"
+    if sample_path.exists():
+        with open(sample_path, newline="") as fh:
+            sample = {(x["company"], x["year"]): x for x in csv.DictReader(fh)}
     rows, seen = [], set()
     for r in raw:
         r["stratum"], r["id"] = stratum_of(r["pub_date"], settings), passage_id(r)
@@ -173,6 +180,8 @@ def build(settings=None):
             reason = "recheck:out_of_scope"
         elif elig.personal_data(r["passage"]):
             reason = "recheck:personal_data"
+        elif r["source_type"] == "filing" and sample.get((r["company"], r["pub_date"][:4]), {}).get("sampled") != "Y":
+            reason = "filing_not_sampled"                     # Clarification 23
         elif d is None:                                       # step 2: review
             reason = "unreviewed"
         elif d["excerpt_sha256"] != excerpt_sha256(r["passage"]):
@@ -181,6 +190,8 @@ def build(settings=None):
             reason = f"review:{d['reason']}"
         else:
             reason, r["eligibility"], r["decided_by"], r["doubtful"] = None, d["reason"], d["decided_by"], d.get("doubtful", "")
+            if r["source_type"] == "filing":
+                r["filing_sampling_rate"] = sample[(r["company"], r["pub_date"][:4])]["period_sampling_rate"]
         if reason:
             drop([r], reason)
         else:

@@ -88,3 +88,23 @@ def test_preformatted_transcripts_are_rejoined_into_whole_sentences(monkeypatch)
     monkeypatch.setattr(extract, "get", lambda url, settings: page)
     text, _ = extract.page_text({"url": "https://www.govinfo.gov/x", "pub_date": "2023-05-18"}, SETTINGS)
     assert "Did any of these banks borrow from the discount window before they failed?" in text
+
+
+def test_filing_sample_takes_at_most_the_limit_per_period_and_repeats(tmp_path, monkeypatch):
+    # Clarification 23: up to N company-years per period, all of them if fewer; same seed, same sample
+    fake = {}
+    for i in range(900):                                         # 900 company-years in 2010-19 (S-B)
+        fake[f"B{i}"] = {"source_type": "filing", "company": f"CIK {i}", "pub_date": f"{2010 + i % 10}-05-01"}
+    for i in range(40):                                          # 40 in 2020-21 (S-C)
+        fake[f"C{i}"] = {"source_type": "filing", "company": f"CIK {i}", "pub_date": "2020-05-01"}
+    fake["N1"] = {"source_type": "news", "company": "", "pub_date": "2020-05-01"}
+    monkeypatch.setattr(review, "raw_passages", lambda: fake)
+    monkeypatch.setattr(review, "FILING_SAMPLE_PATH", tmp_path / "sample.csv")
+    settings = dict(SETTINGS, caps=dict(SETTINGS["caps"], filing_review_sample_per_period=600))
+    sampled, rates = review.draw_filing_sample(settings)
+    assert sum(1 for k in sampled if int(k[1]) < 2020) == 600 and abs(rates["S-B"] - 600 / 900) < 1e-9
+    assert sum(1 for k in sampled if k[1] == "2020") == 40 and rates["S-C"] == 1.0
+    again, _ = review.draw_filing_sample(settings)
+    assert again == sampled
+    rows = list(csv.DictReader(open(tmp_path / "sample.csv")))
+    assert len(rows) == 940 and sum(r["sampled"] == "Y" for r in rows) == 640
