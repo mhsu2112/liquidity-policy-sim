@@ -972,3 +972,57 @@ Format for each entry:
 - **Seen results before the change?** No full-run review result exists. Decided before any review agent started. Only the
   counts of in-scope passages by source were known.
 - **Evidence:** full-run collection logs, 2026-10-03.
+
+## 2026-10-04 — Clarification 24: gold-set size, period shares, draw algorithm, practice set, neutral IDs (session M2.3, before the draw)
+- **What changed:** the gold-set draw rules in Clarifications 19 and 22, made exact for the corpus as tagged `corpus-v1`
+  (`d17cfbe`). The draw-eligible pool, counted at one passage per document (Clarification 20), has:
+  - by period: 55 documents in 2007–09, 91 in 2010–19, 150 in 2020–21 and 178 in 2022–24;
+  - by source type: 47 analyst notes, 6 official statements, 82 news, 80 speeches and testimony, and 259 filings.
+
+  The rules:
+  1. **Size.** The largest draw feasible under Clarification 22's cap, up to 300. The owner reads the cap as 25% of 300, so
+     at most 75 per source type over the whole draw. Under that cap the largest draw is **278**: all 47 analyst notes and
+     all 6 official statements, plus 75 each of news, speeches and filings. The pass rule and agreement measures
+     (Clarification 19) are unchanged.
+  2. **Period shares.**
+     - 2007–09 contributes every document eligible for the draw: 55. This is fewer than the 63 passages first expected,
+       because of the one-per-document rule.
+     - Its shortfall is refilled from other periods only as far as the type cap allows.
+     - The other periods share the remaining 223: 75, 74 and 74, as set by step 2 of the algorithm.
+  3. **Within each period**, documents are spread across source types as evenly as supply allows, under the overall cap.
+     No period can meet a 25% per-period cap from its own supply (Clarification 22's "where supply allows").
+  4. **2007–09 corpus below the 150 minimum.** The 2007–09 corpus holds 110 passages. This is accepted as a stated limit,
+     because the sources are exhausted, and it is recorded in the corpus method note.
+  5. **Practice set.** 15 documents eligible for the draw but not drawn, spread across periods as evenly as supply allows.
+     2007–09 has none left after the main draw, so practice comes from the other three periods, 5 each.
+  6. **Neutral IDs.** Sheets show G001–G278 (main) and PR01–PR15 (practice), never corpus IDs, because the public corpus
+     links each corpus ID to its source and date. `signals/gold_set/key.csv` maps them. It stays git-ignored until
+     `make publish-labels` publishes it with the labels, after both main-round locks.
+- **The algorithm.** One `random.Random(20260923)` is used, in this order:
+  1. **One passage per document.** Draw-eligible passages are grouped by `document_id`. Taking documents in `document_id`
+     order, one passage is picked from each with `rng.choice`, from that document's passages sorted by ID.
+  2. **Period quotas.**
+     - 2007–09 is set to all its documents.
+     - Each other period starts at 75.
+     - A maximum flow is computed: periods to (period, type) cells, limited by each cell's documents; cells to types,
+       limited to 75 per type. If it cannot fill all quotas, the deficit is removed one document at a time from the other
+       periods, taken in a seeded order (`rng.shuffle` of [2010–19, 2020–21, 2022–24]) and cycled. Each removal is kept
+       only if the reduced quotas are exactly fillable.
+  3. **Spread within periods.**
+     - The type order is fixed once by `rng.shuffle` of the source types.
+     - Quotas are filled one document at a time, period by period in turn: 2007–09, 2010–19, 2020–21, 2022–24, repeat.
+     - In each turn, a period takes the type with the fewest documents already allocated to it in that period. Ties go to
+       the type with the fewest allocated overall, then to the fixed type order.
+     - A type is eligible only if it has documents left in that period, is below 75 overall, and the remaining quotas
+       stay exactly fillable after the choice (maximum flow). Otherwise the next type is tried.
+  4. **Documents.** For each (period, type) cell, the allocated number of documents is taken with `rng.sample`, from the
+     cell's documents sorted by `document_id`.
+  5. **Practice.** From documents not drawn, periods are offered one document at a time in turn, skipping periods with none
+     left, until 15 are chosen. Within a period, `rng.choice` picks from its remaining documents sorted by `document_id`.
+  6. **Order.** `rng.shuffle` orders the main set, numbered G001–G278 in that order. Then `rng.shuffle` orders the practice
+     set, numbered PR01–PR15. Both labelers' sheets use these same orders.
+- **Why:** with one passage per document and the 25% cap, the draw cannot reach 300 or give every period 75. These rules fix
+  how it falls short before anything is drawn.
+- **Seen results before the change?** The corpus and the pool counts only. Nothing has been drawn or labeled, and no passage
+  has been sent to Jev.
+- **Evidence:** `make corpus-sample` (M2.2 readout) and the pool counts above, from `signals/corpus/corpus.csv` at `corpus-v1`.
