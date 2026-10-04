@@ -4,10 +4,10 @@ Liquidity Policy Simulator · Draft v0.9 · 2026-10-01 (becomes v1.0 after the p
 
 ## What this is
 
-You'll read 315 short public passages about banks borrowing from a central bank and answer one question about each. The passages come from 2007 to 2024: news, analyst notes, official statements and filings. Your answers test whether an AI text-reading model (Jev) reads these passages the way people do. You never see Jev's answers, and it never sees yours.
+You'll read 293 short public passages about banks borrowing from a central bank and answer one question about each. The passages come from 2007 to 2024: news, analyst notes, official statements, speeches and testimony, and filings. Your answers test whether an AI text-reading model (Jev) reads these passages the way people do. You never see Jev's answers, and it never sees yours.
 
 - **Practice round:** 15 passages, about 15 minutes. Not scored.
-- **Main round:** 300 passages, about 4–5 hours. Do it in several sittings, ideally over 2–3 days.
+- **Main round:** 278 passages, about 4–5 hours. Do it in several sittings, ideally over 2–3 days.
 - **Two labelers:** you and one other person, working alone.
 - **No technical skills needed:** one spreadsheet, one column to fill in, one file to send back.
 
@@ -62,7 +62,7 @@ The passages show no source or date, on purpose. Don't change any other column.
 **Main round**
 
 6. Re-read the final guide, especially the table of answers.
-7. Click the **Main** tab and answer all 300 passages, in batches of about 50.
+7. Click the **Main** tab and answer all 278 passages, in batches of about 50.
 8. Before saving, scroll down once to check that every row has an answer.
 9. Save and send it back. Name it `gold_set_L2_main.csv`.
 

@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -96,3 +96,23 @@ corpus-sample: $(VENV)/.installed
 ## make corpus-check-sheet: the owner's random 50 eligibility decisions to hand-check in Excel (git-ignored)
 corpus-check-sheet: $(VENV)/.installed
 	$(PY) -m signals.corpus.review --check-sheet
+
+## make gold-draw: draw the gold set and practice set from the corpus (Clarification 24; seed 20260923)
+gold-draw: $(VENV)/.installed
+	$(PY) -m signals.gold_set.draw
+
+## make gold-sheets: build the two labelers' Excel files in signals/gold_set/sheets/ (git-ignored)
+gold-sheets: $(VENV)/.installed
+	$(PY) -m signals.gold_set.sheets
+
+## make lock-labels FILE=path: check a returned CSV, fingerprint it in locks.md, commit and push locks.md only
+lock-labels: $(VENV)/.installed
+	$(PY) -m signals.gold_set.labels lock "$(FILE)"
+
+## make compare-practice: where the two practice sets differ, side by side (practice files only)
+compare-practice: $(VENV)/.installed
+	$(PY) -m signals.gold_set.labels compare-practice
+
+## make publish-labels: after both main-round locks, verify fingerprints and commit labels_L1/L2.csv and the key
+publish-labels: $(VENV)/.installed
+	$(PY) -m signals.gold_set.labels publish

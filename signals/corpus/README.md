@@ -120,7 +120,8 @@ Web pages change and disappear, so a fresh collection will not match row for row
 | **Total** | **110** | **176** | **214** | **271** | **771** |
 
 **Known gaps**
-- **2007–09 is short: 110 passages, under the 150 minimum.** It is reported here and not padded. That period
+- **2007–09 is short: 110 passages, under the 150 minimum.** It is reported here and not padded, and accepted as a stated
+  limit because the sources are exhausted (Clarification 24). The gold set takes all 55 draw-eligible 2007–09 documents. That period
   has few filings in the SEC's full-text search, little web-available news apart from the Guardian, and no
   analyst notes.
 - **Gold-set draw under the Clarification 22 caps: at most 288 of 300.** 2007–09 can supply at most 63 of its 75.
