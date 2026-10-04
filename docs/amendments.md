@@ -1026,3 +1026,14 @@ Format for each entry:
 - **Seen results before the change?** The corpus and the pool counts only. Nothing has been drawn or labeled, and no passage
   has been sent to Jev.
 - **Evidence:** `make corpus-sample` (M2.2 readout) and the pool counts above, from `signals/corpus/corpus.csv` at `corpus-v1`.
+
+## 2026-10-04 — Clarification 25: agreement on confident passages, and AI diagnostics after locking (fixed before any label exists)
+- M2.4 also reports α(L1,L2), α(Jev,L1), α(Jev,L2) and exact agreement on the subset of passages that neither labeler marked
+  Unsure, with the subset's size and 90% bootstrap intervals (same seed and resamples as Clarification 19). These are reported
+  only. The pass rule in Clarification 19 is unchanged and uses every passage both labelers answered 1-4.
+- Labelers see no AI suggestion, label, confidence or rationale at any stage before both main-round sets are locked (restating
+  Clarification 19).
+- After both locks and after the M2.4 result is recorded, an AI may be used to explain disagreements (L1 vs L2, Jev vs each
+  labeler) for the write-up. It never changes a label, the pass rule or the result.
+- **Seen results before the change?** No. No label exists: `signals/gold_set/locks.md` has no entries (the file does not yet
+  exist) and `signals/gold_set/incoming/` is empty, as checked on 2026-10-04 before this entry was committed.
