@@ -1,0 +1,84 @@
+# The M3 report layout, FIXED on mock data in session M3.0 (Clarification 28).
+#
+# Pages, their order, the charts, the metric columns and their order, and the colours all live here.
+# analysis/report/build.py draws whatever this file says. Any change to this file after M3.0 needs a dated
+# entry in docs/amendments.md giving the reason and the new layout fingerprint; tests/test_report_shells.py
+# fails until it is recorded.
+
+mock_banner: "MOCK DATA — LAYOUT ONLY — NOT RESULTS"
+
+# Pages in reading order: file, title, one-line purpose shown on the front page.
+pages:
+  - {id: index, file: index.html, title: "Front page", purpose: "Disclosure, what is compared, the stamp, links"}
+  - {id: scorecard, file: scorecard.html, title: "Scorecard", purpose: "Every metric for every policy, scenario and bank type, as paired differences against A with 90% intervals; timing bands"}
+  - {id: tradeoff, file: tradeoff.html, title: "Trade-off chart", purpose: "Where X leads, Y leads, ties or trades off across 7 stigma points x 5 supervision settings, with the cost difference"}
+  - {id: frontier, file: frontier.html, title: "Cost frontier", purpose: "Survival and shortfall against annual cost, by policy"}
+  - {id: option_c, file: option_c.html, title: "Option C panel", purpose: "C and C′ across voluntary uptake x HQLA released"}
+  - {id: reversal, file: reversal.html, title: "Reversal distances", purpose: "How far market stigma must move from the marker to change each cell"}
+  - {id: attribution, file: attribution.html, title: "Feature attribution", purpose: "What each of the four switches contributes to survival and shortfall"}
+  - {id: replay, file: replay.html, title: "Episode replay", purpose: "One run, day by day in plain English, each sentence linked to its log line"}
+  - {id: hypotheses, file: hypotheses.html, title: "Hypotheses", purpose: "H1–H8 as pre-registered, each with its test, result and verdict"}
+  - {id: limits, file: limits.html, title: "Limits", purpose: "The v1 limits recorded so far"}
+
+policy_labels: {A: "A", B: "B", B_prime: "B′", C: "C", C_prime: "C′", E: "E"}
+scenario_labels: {S1: "S1 fast run", S2: "S2 false alarm"}
+
+# Scorecard columns, left to right. Buffer gap sits next to annual cost because C's cost saving and its
+# buffer gap are the same money (PRD, cost model). The grace count is last and never scored (Amendment 6).
+scorecard_columns:
+  - {metric: survival_rate, label: "Survival rate", format: pct}
+  - {metric: liquidity_shortfall_bn, label: "Liquidity shortfall ($bn)", format: num1}
+  - {metric: support_peak_bn, label: "Official support, peak ($bn)", format: num1}
+  - {metric: support_total_bn, label: "Official support, total ($bn)", format: num1}
+  - {metric: annual_cost_m, label: "Annual cost vs A ($m per bank)", format: num0}
+  - {metric: buffer_gap_pp, label: "Buffer gap (pp; C, C′ only)", format: num1}
+  - {metric: effective_stigma, label: "Effective stigma", format: num2}
+  - {metric: routine_borrowing_per_quarter, label: "Routine borrowing (draws per quarter)", format: num1}
+  - {metric: hesitation_gap_days, label: "Hesitation gap (days)", format: num1}
+  - {metric: false_comfort, label: "False comfort", format: pct}
+  - {metric: needless_borrowing_bn, label: "Needless borrowing ($bn; S2 only)", format: num1}
+  - {metric: timing_only_upper_bound, label: "Upper bound on timing-only failures (reported, not scored)", format: count}
+
+timing_band_labels:
+  "pure timing": "Pure timing"
+  "partly covered": "Partly covered"
+  "not covered": "Not covered"
+  "equity below zero": "Equity below zero"
+
+# Trade-off chart. Colour-blind-safe (Okabe–Ito): one hue per "leads" side, neutral grey for tie,
+# hatching for trade-off. Every cell also carries its label as text, so each panel reads in black and white.
+tradeoff:
+  comparisons: [B_vs_C, B_vs_E, C_vs_A, B_vs_A, E_vs_A, C_prime_vs_C, B_prime_vs_B]
+  colours: {x_leads: "#0072B2", y_leads: "#E69F00", tie: "#D9D9D9", trade_off: "#FFFFFF"}
+  hatch: {x_leads: "", y_leads: "..", tie: "", trade_off: "///"}
+  text_colour: {x_leads: "#FFFFFF", y_leads: "#000000", tie: "#000000", trade_off: "#000000"}
+  supervision_labels:
+    strongly_penalizes: "Strongly penalizes"
+    penalizes: "Penalizes"
+    neutral: "Neutral"
+    encourages: "Encourages"
+    strongly_encourages: "Strongly encourages"
+  marker_colour: "#000000"
+  no_marker_note: "No Jev marker: the gold-set agreement test (M2.4) did not pass, so the sweep stands alone (PRD)."
+
+# Policies in the frontier panel: Okabe–Ito colours plus a distinct marker shape each, for black and white.
+policy_style:
+  A: {colour: "#000000", marker: "o"}
+  B: {colour: "#0072B2", marker: "s"}
+  B_prime: {colour: "#56B4E9", marker: "D"}
+  C: {colour: "#E69F00", marker: "^"}
+  C_prime: {colour: "#D55E00", marker: "v"}
+  E: {colour: "#009E73", marker: "P"}
+
+option_c:
+  colour_map: "PuOr"          # diverging, colour-blind safe; every cell also prints its number
+  not_run_note: "not run (Clarification 14: one setting at a time around uptake 75%, released 100%)"
+
+feature_labels:
+  prepositioning_mandate: "Prepositioning mandate"
+  testing_mandate: "Testing mandate"
+  five_day_ratio: "Five-day ratio"
+  lcr_credit: "LCR credit"
+outcome_labels: {survival_rate: "Survival rate", liquidity_shortfall_bn: "Liquidity shortfall ($bn)"}
+
+verdict_slots: "supported · not supported · untestable (H8 only) · reported (H2 only, no prediction)"

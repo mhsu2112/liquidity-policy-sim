@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap mock-report report
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -74,3 +74,12 @@ validate: $(VENV)/.installed
 timing-gap: $(VENV)/.installed
 	$(PY) -m analysis.timing_gap
 	$(PY) -m analysis.timing_exposure
+
+## make mock-report: the M3 report pages on MOCK numbers (layout only, NOT results; session M3.0). Opens nothing; prints where to look
+mock-report: $(VENV)/.installed
+	$(PY) -m analysis.mock_results
+	$(PY) -m analysis.report.build outputs/mock/results outputs/mock/report --no-marker-preview outputs/mock/results_no_marker
+
+## make report: the same pages from real M3 results in outputs/results/ (same schema, same layout; M3 calls this)
+report: $(VENV)/.installed
+	$(PY) -m analysis.report.build outputs/results outputs/report

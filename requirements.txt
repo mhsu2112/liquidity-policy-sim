@@ -6,3 +6,14 @@ pytest==9.1.1    # runs the automated checks in tests/
 openpyxl==3.1.5  # writes the worked-examples spreadsheet (.xlsx) with live formulas
 pycel==1.0b30    # works out that spreadsheet's formulas in Python, so a test can check them
 networkx==2.6.3  # needed by pycel; pinned so rebuilds are identical
+matplotlib==3.11.2  # draws the M3 report's PNG charts (session M3.0)
+# matplotlib's own add-ons, pinned so rebuilds are identical
+contourpy==1.4.0
+cycler==0.12.1
+fonttools==4.66.1
+kiwisolver==1.5.1
+packaging==26.3
+pillow==12.3.0
+pyparsing==3.3.3
+python-dateutil==2.9.0.post0
+six==1.17.0

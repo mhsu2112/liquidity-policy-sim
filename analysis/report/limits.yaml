@@ -1,0 +1,28 @@
+# The v1 limits recorded so far, as shown on the report's Limits page (session M3.0).
+# Each entry cites where the limit was first recorded. New limits are added here as they are recorded.
+
+limits:
+  - title: "Runs slow down after the first morning"
+    text: "Under the confidence rule, a run starts hard and then fades. The model can't produce a run that accelerates the way SVB's did on day 2 (tuning fit −37% on cumulative outflows), and the First Republic-like run is too mild."
+    source: "Clarification 8; tuning report (M1.10); validation report (M1.11)"
+  - title: "Some behavioral settings are not identified"
+    text: "The SVB pattern can't pin down the wholesale roll threshold or the fire-sale price impact, so both keep their pre-tuning values. Results that turn on wholesale refusals or securities sales rest on those starting values."
+    source: "Clarification 15; config/params_frozen.yaml"
+  - title: "Disclosures move no one"
+    text: "Scheduled ratio disclosures (B's five-day ratio, the LCR including C's credit) have no effect on depositors or lenders in v1. C's reported LCR neither reassures nor misleads observers, and keeping B's ratio private has no effect by construction."
+    source: "Clarification 9; Clarification 14 item 4"
+  - title: "B′ is exploratory"
+    text: "B′ (B's ratio counting loans at the Fed only) was added after pre-registration. No hypothesis covers it, and every B′ result is exploratory."
+    source: "Amendment 3"
+  - title: "Cliff-edge dynamics may produce ties"
+    text: "A bank either stays above the confidence tolerance and nobody leaves, or falls below it and runs. Banks well clear of the edge behave the same under every policy, so many paired comparisons may tie because nothing a policy changes is reached, not because the policies are equivalent."
+    source: "docs/notes/svb-false-alarm-note.md; validation report (M1.11)"
+  - title: "No weekends"
+    text: "Every half-day is a business day, so no bank gets a weekend to mobilize collateral. No BTFP and no contagion between banks either."
+    source: "Clarification 17; Amendment 6"
+  - title: "The grace count is an upper bound"
+    text: "The count of timing-only failures (cash agreed and arriving by the next morning would have covered the gap, equity ≥ 0) is an upper bound, because the bank's own decisions assume the strict failure rule. It is never used to decide which policy leads."
+    source: "Amendment 6"
+  - title: "The 2007–09 corpus is short"
+    text: "The calibration corpus holds 110 passages from 2007–09, below the 150 minimum, because the public sources are exhausted. That period is thinner than the others in the corpus and the gold set."
+    source: "Clarification 24 item 4 (m2-signals branch)"
