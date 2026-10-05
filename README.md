@@ -34,3 +34,15 @@ Setup. No results yet. See `docs/implementation-plan.md` for the build sequence.
 ## Running it
 
 Instructions arrive with session S0.2. The goal is one command: `make results`.
+
+### Jev (milestone M2)
+
+`signals/jev_client.py` is the only way the project calls Jev, TypeSafe's text-judgment model. It
+works as follows:
+- it calls the TypeSafe API directly, with the key read from `.env`, which is never committed;
+- it records the exact model version on every call;
+- it writes each call to `signals/audit_log.jsonl`, which holds a fingerprint of the text but not the text, and is
+  kept local;
+- its mock mode runs only when asked for, and mock answers are never results.
+
+`make jev-hello` makes one live call on a made-up sentence. The simulation never calls Jev (CLAUDE.md).

@@ -1,0 +1,11 @@
+# Jev client settings (session M2.1).
+#
+# Source: TypeSafe HTTP API contract, https://docs.typesafe.ai/api (read 2026-10-05), and CLAUDE.md
+# "Rules for Jev": TypeSafe API direct, model version recorded on every call, audit log, mock mode
+# for plumbing only. The key is read from TYPESAFE_API_KEY in .env and never written anywhere.
+
+endpoint: "https://api.typesafe.ai/v1/systemone"   # API contract: POST, Authorization: Bearer <key>
+model: "jev-latest"          # API contract: model is required; the exact version returned is what gets recorded
+timeout_seconds: 60          # one call; Jev is fast, this only guards against a hung connection
+retries: 4                   # API contract: retry 429 (rate limit) and 529 (overloaded) with exponential backoff
+backoff_seconds: 2.0         # first wait; doubles each retry (2, 4, 8, 16 s)

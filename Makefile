@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels jev-hello
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -116,3 +116,7 @@ compare-practice: $(VENV)/.installed
 ## make publish-labels: after both main-round locks, verify fingerprints and commit labels_L1/L2.csv and the key
 publish-labels: $(VENV)/.installed
 	$(PY) -m signals.gold_set.labels publish
+
+## make jev-hello: one live Jev call on a made-up sentence; prints the answer, model version and tokens (M2.1)
+jev-hello: $(VENV)/.installed
+	$(PY) -m signals.jev_hello
