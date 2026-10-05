@@ -16,7 +16,7 @@ import signals.jev_client as jc
 from signals.corpus.fetch import env
 
 FAKE_KEY = "ts-test-not-a-real-key-123"
-REPLY = {"model": "jev-2026-09-30", "answers": {"q": {"type": "noul", "noul": 0.93}},
+REPLY = {"model": "jev-1.13.0", "answers": {"q": {"type": "noul", "noul": 0.93}},
          "usage": {"input_tokens": 41, "output_tokens": 1}}
 
 
@@ -40,7 +40,7 @@ def test_request_follows_the_api_contract_and_hints_are_not_sent(isolated):
     jc.ask("A bank borrowed.", {"q": jc.noul("Did a bank borrow?", mock_hint="borrowed")}, mock=False)
     body = sent[0]["body"]
     assert sent[0]["url"] == "https://api.typesafe.ai/v1/systemone" and sent[0]["key"] == FAKE_KEY
-    assert body["model"] == "jev-latest" and body["state"] == "A bank borrowed."
+    assert body["model"] == "jev-1.13.0" and body["state"] == "A bank borrowed."     # Clarification 27: pinned
     assert body["questions"]["q"] == {"type": "noul", "instructions": "Did a bank borrow?",
                                       "criteria": {"true": "yes", "false": "no"}}
 
@@ -48,10 +48,10 @@ def test_request_follows_the_api_contract_and_hints_are_not_sent(isolated):
 def test_model_version_and_tokens_are_recorded(isolated):
     tmp, _, _ = isolated
     out = jc.ask("A bank borrowed.", {"q": jc.noul("Did a bank borrow?")}, mock=False, tag="t")
-    assert out["model"] == "jev-2026-09-30" and out["usage"] == {"input_tokens": 41, "output_tokens": 1}
+    assert out["model"] == "jev-1.13.0" and out["usage"] == {"input_tokens": 41, "output_tokens": 1}
     assert out["answers"]["q"] == {"type": "noul", "value": 0.93}
     rec = json.loads((tmp / "audit.jsonl").read_text().splitlines()[-1])
-    assert rec["model_version"] == "jev-2026-09-30" and rec["input_tokens"] == 41 and rec["output_tokens"] == 1
+    assert rec["model_version"] == "jev-1.13.0" and rec["input_tokens"] == 41 and rec["output_tokens"] == 1
     for field in ("timestamp", "state_sha256", "questions", "answers", "mode"):
         assert field in rec
 
@@ -68,7 +68,7 @@ def test_retries_on_429_and_529_but_not_on_401(isolated, monkeypatch):
     _, sent, fake_post = isolated
     replies = [(429, "slow down"), (529, "busy"), (200, REPLY)]
     monkeypatch.setattr(jc, "_post", lambda *a: (sent.append(1), replies.pop(0))[1])
-    assert jc.ask("x y", {"q": jc.noul("?")}, mock=False)["model"] == "jev-2026-09-30" and len(sent) == 3
+    assert jc.ask("x y", {"q": jc.noul("?")}, mock=False)["model"] == "jev-1.13.0" and len(sent) == 3
     monkeypatch.setattr(jc, "_post", lambda *a: (401, "bad key"))
     with pytest.raises(jc.JevError, match="401") as err:
         jc.ask("x y", {"q": jc.noul("?")}, mock=False)
@@ -114,3 +114,11 @@ def test_the_key_appears_in_no_tracked_file():
     leaks = [f.decode() for f in files if f and (jc.ROOT / f.decode()).is_file()
              and key.encode() in (jc.ROOT / f.decode()).read_bytes()]
     assert not leaks, f"the TypeSafe key appears in tracked file(s): {leaks}"     # names files only, never the key
+
+
+def test_a_different_model_version_stops_the_run_and_is_recorded(isolated, monkeypatch):
+    tmp, _, _ = isolated
+    monkeypatch.setattr(jc, "_post", lambda *a: (200, {**REPLY, "model": "jev-1.14.0"}))
+    with pytest.raises(jc.JevError, match="model version changed: requested jev-1.13.0, TypeSafe answered with jev-1.14.0"):
+        jc.ask("A bank borrowed.", {"q": jc.noul("Did a bank borrow?")}, mock=False)
+    assert json.loads((tmp / "audit.jsonl").read_text().splitlines()[-1])["model_version"] == "jev-1.14.0"

@@ -5,7 +5,7 @@
 # for plumbing only. The key is read from TYPESAFE_API_KEY in .env and never written anywhere.
 
 endpoint: "https://api.typesafe.ai/v1/systemone"   # API contract: POST, Authorization: Bearer <key>
-model: "jev-latest"          # API contract: model is required; the exact version returned is what gets recorded
+model: "jev-1.13.0"          # Clarification 27: pinned for all of M2 (TypeSafe accepts the exact version)
 timeout_seconds: 60          # one call; Jev is fast, this only guards against a hung connection
 retries: 4                   # API contract: retry 429 (rate limit) and 529 (overloaded) with exponential backoff
 backoff_seconds: 2.0         # first wait; doubles each retry (2, 4, 8, 16 s)

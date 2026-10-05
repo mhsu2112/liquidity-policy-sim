@@ -8,6 +8,8 @@ Rules (CLAUDE.md, "Rules for Jev"):
 - Mock mode tests the plumbing without a key. It runs only when asked for (mock=True or JEV_MOCK=1),
   never as a silent fallback, and every mock answer is labelled as not Jev. Mock answers are never results.
 - One question = one judgment; answers are combined in code, never in a prompt.
+- Every M2 call uses the pinned model version in config/jev.yaml (Clarification 27). If TypeSafe ever
+  answers with a different version, ask() records the call and then stops with a clear message.
 - No gold-set passage goes to Jev before both main-round label sets are locked (Clarification 19):
   ask() refuses such text.
 
@@ -113,6 +115,10 @@ def ask(state, questions, *, mock=None, tag=""):
     out = {"model": result["model"], "answers": answers, "usage": result.get("usage", {}),
            "mode": "mock" if mock else "live"}
     _audit(state, wire, answers, result, out["mode"], tag, time.time() - t0)
+    pinned = settings()["model"]
+    if not mock and result["model"] != pinned:     # Clarification 27: no M2 result may mix model versions
+        raise JevError(f"model version changed: requested {pinned}, TypeSafe answered with {result['model']}. "
+                       "Stop and report the change (Clarification 27); the call is in the audit log.")
     return out
 
 

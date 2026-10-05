@@ -1053,3 +1053,16 @@ Format for each entry:
 - **Why:** words are easier for labelers to read and pick than numbers. The order still runs from least to most troubling.
 - **Seen results before the change?** No. No label existed when the change was made: `signals/gold_set/locks.md` has no
   entries, `signals/gold_set/incoming/` holds no file, and the L1 sheet had no answer entered.
+
+## 2026-10-05 — Clarification 27: Jev model version pinned for all of M2
+- **What changed:** every M2 Jev call uses jev-1.13.0.
+  - **Exact version requested.** `config/jev.yaml` asks TypeSafe for the exact version `jev-1.13.0` instead of the
+    alias `jev-latest`. TypeSafe accepted it: one `make jev-hello` call on 2026-10-05 returned `jev-1.13.0`.
+  - **Mismatch stops the run.** The client checks the version TypeSafe reports on every reply. If a reply reports any
+    other version, the call is recorded in the audit log and the run stops with a clear message. The change is then
+    reported.
+  - **No mixing.** If the version changes before M2.6 freezes the outputs, no M2 result mixes versions.
+- **Why:** M2 compares Jev's readings with human labels and then freezes a reference estimate. Both are only meaningful
+  for one fixed model.
+- **Seen results before the change?** No. The only Jev calls so far are two `make jev-hello` checks on a made-up
+  sentence. No corpus or gold-set passage has been sent to Jev.
