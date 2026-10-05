@@ -15,15 +15,15 @@ You'll read 293 short public passages about banks borrowing from a central bank 
 
 **How does this passage present a bank's borrowing from a central bank: as reassuring, as routine, or as a sign of trouble?**
 
-Pick one answer per passage. A higher number means a stronger sign of trouble.
+Pick one answer per passage from the dropdown. The answers run from least to most troubling.
 
 | Answer | Meaning | Example (made up, for illustration) |
 | --- | --- | --- |
-| **1 Reassuring** | The borrowing is presented as prudent, a sign of strength, or a responsible use of the facility. | "The bank said it borrowed briefly to test its access, as supervisors encourage." |
-| **2 Routine** | The borrowing is reported as a fact or as ordinary business. There's no suggestion of strength or weakness. | "Discount window lending rose to $3.1 billion last week, Fed data showed." |
-| **3 Some concern** | The passage suggests the borrowing may point to strain, or that others may read it that way. It stops short of saying the bank is in trouble. | "The draw raised questions among analysts about the bank's deposit base." |
-| **4 Clear distress** | The borrowing is presented as evidence that the bank is in trouble: losing deposits, cut off from other funding, or close to failing. | "After depositors pulled $40 billion, the bank was forced to turn to the Fed." |
-| **N Not applicable** | The passage isn't about borrowing from a central bank, or there's too little to judge. Use this sparingly. | "The Fed held rates steady on Wednesday." |
+| **Reassuring** | The borrowing is presented as prudent, a sign of strength, or a responsible use of the facility. | "The bank said it borrowed briefly to test its access, as supervisors encourage." |
+| **Routine** | The borrowing is reported as a fact or as ordinary business. There's no suggestion of strength or weakness. | "Discount window lending rose to $3.1 billion last week, Fed data showed." |
+| **Some Concern** | The passage suggests the borrowing may point to strain, or that others may read it that way. It stops short of saying the bank is in trouble. | "The draw raised questions among analysts about the bank's deposit base." |
+| **Clear Distress** | The borrowing is presented as evidence that the bank is in trouble: losing deposits, cut off from other funding, or close to failing. | "After depositors pulled $40 billion, the bank was forced to turn to the Fed." |
+| **Not Applicable** | The passage isn't about borrowing from a central bank, or there's too little to judge. Use this sparingly. | "The Fed held rates steady on Wednesday." |
 
 "Central bank borrowing" includes the Fed's discount window and its emergency programs (for example, the Term Auction Facility or the Bank Term Funding Program), and similar lending by other central banks.
 
@@ -45,7 +45,7 @@ You'll receive one Excel file with two tabs, **Practice** and **Main**. Each row
 
 | Column | What to enter |
 | --- | --- |
-| Answer | 1, 2, 3, 4 or N |
+| Answer | Pick from the dropdown: Reassuring, Routine, Some Concern, Clear Distress or Not Applicable |
 | Unsure | Y if you hesitated; otherwise leave blank |
 | Note | Optional. A few words if something was odd (for example, "cut off mid-sentence") |
 

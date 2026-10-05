@@ -5,7 +5,10 @@
                     answers. A labeler's round can be locked only once (no re-labeling after a lock).
   compare-practice  show where the two practice sets differ, side by side. Refuses main-round files.
   publish           only after both main-round locks: check each file still matches its fingerprint,
-                    then commit labels_L1.csv and labels_L2.csv (ID, Answer, Unsure, Note) and the key.
+                    then commit labels_L1.csv and labels_L2.csv (ID, Answer word, Code, Unsure, Note) and the key.
+
+Answers are the five word labels (Clarification 26), matched ignoring case and extra spaces;
+anything else is refused. Each word maps to the Clarification 19 code (1, 2, 3, 4, N).
 
 Labelers return one tab saved as CSV (labeling guide), named gold_set_<L1|L2>_<practice|main>.csv.
 Locked files are kept in incoming/ (git-ignored) until publication.
@@ -29,7 +32,15 @@ HERE = Path(__file__).resolve().parent
 INCOMING = HERE / "incoming"
 LOCKS_PATH = HERE / "locks.md"
 NAME = re.compile(r"^gold_set_(L1|L2)_(practice|main)\.csv$")
-ANSWERS = {"1", "2", "3", "4", "N"}
+# Clarification 26: the sheets show words; analysis uses the Clarification 19 codes. This mapping is fixed.
+ANSWER_WORDS = ["Reassuring", "Routine", "Some Concern", "Clear Distress", "Not Applicable"]   # dropdown order
+WORD_TO_CODE = dict(zip(ANSWER_WORDS, ["1", "2", "3", "4", "N"]))
+
+
+def to_word(answer):
+    """The canonical word for a returned answer (case-insensitive, spaces trimmed), or None if it is not one of the five."""
+    key = " ".join(answer.split()).lower()
+    return next((w for w in ANSWER_WORDS if w.lower() == key), None)
 LOCK_HEADER = ("# Gold-set label locks\n\nEach row fingerprints a labeler's returned file (SHA-256 of the file's bytes), "
                "recorded before either labeler's answers are seen (Clarification 19). Answers are published only after "
                "both main-round locks, and each published file must match its fingerprint.\n\n"
@@ -78,10 +89,10 @@ def check(path):
         raise Refused(f"the IDs do not match the {round_} round exactly ({len(set(ids) & want)} of {len(want)} "
                       f"present, {len(set(ids) - want)} unexpected, {len(ids) - len(set(ids))} repeated)")
     blank = [r["ID"] for r in rows if not r["Answer"]]
-    invalid = [r["ID"] for r in rows if r["Answer"] and r["Answer"].upper() not in ANSWERS]
+    invalid = [r["ID"] for r in rows if r["Answer"] and to_word(r["Answer"]) is None]
     unsure = [r["ID"] for r in rows if r["Unsure"].upper() not in ("", "Y")]
     problems = [f"{len(blank)} blank answer(s): {', '.join(sorted(blank)[:10])}" if blank else "",
-                f"{len(invalid)} answer(s) not 1, 2, 3, 4 or N: {', '.join(sorted(invalid)[:10])}" if invalid else "",
+                f"{len(invalid)} answer(s) not one of {', '.join(ANSWER_WORDS)}: {', '.join(sorted(invalid)[:10])}" if invalid else "",
                 f"{len(unsure)} Unsure value(s) not Y or blank: {', '.join(sorted(unsure)[:10])}" if unsure else ""]
     if any(problems):
         raise Refused("; ".join(p for p in problems if p))
@@ -138,11 +149,11 @@ def compare_practice():
         with open(KEY_PATH, newline="") as f:
             text = {k["gold_id"]: passages.get(k["corpus_id"], "") for k in csv.DictReader(f) if k["round"] == "practice"}
     a, b = sets
-    differ = [i for i in sorted(a) if a[i]["Answer"].upper() != b[i]["Answer"].upper()]
+    differ = [i for i in sorted(a) if to_word(a[i]["Answer"]) != to_word(b[i]["Answer"])]
     print(f"Practice: the labelers agree on {len(a) - len(differ)} of {len(a)}.")
     for i in differ:
-        print(f"\n{i}  L1: {a[i]['Answer']}{' (unsure)' if a[i]['Unsure'] else ''}  {a[i]['Note']}")
-        print(f"     L2: {b[i]['Answer']}{' (unsure)' if b[i]['Unsure'] else ''}  {b[i]['Note']}")
+        print(f"\n{i}  L1: {to_word(a[i]['Answer'])}{' (unsure)' if a[i]['Unsure'] else ''}  {a[i]['Note']}")
+        print(f"     L2: {to_word(b[i]['Answer'])}{' (unsure)' if b[i]['Unsure'] else ''}  {b[i]['Note']}")
         if text.get(i):
             print(f"     {text[i]}")
 
@@ -160,9 +171,11 @@ def publish():
     for labeler, f in files.items():
         out = HERE / f"labels_{labeler}.csv"
         with open(out, "w", newline="") as fh:
-            w = csv.DictWriter(fh, fieldnames=["ID", "Answer", "Unsure", "Note"])
+            w = csv.DictWriter(fh, fieldnames=["ID", "Answer", "Code", "Unsure", "Note"])
             w.writeheader()
-            w.writerows(sorted(read_labels(f), key=lambda r: r["ID"]))
+            for r in sorted(read_labels(f), key=lambda r: r["ID"]):
+                word = to_word(r["Answer"])        # store the word and its Clarification 19 code
+                w.writerow({**r, "Answer": word, "Code": WORD_TO_CODE[word], "Unsure": r["Unsure"].upper()})
         written.append(str(out))
     key = str(KEY_PATH)
     git("add", "-f", key, *written)          # -f: the key is git-ignored until now (Clarification 24)

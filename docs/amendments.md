@@ -1037,3 +1037,19 @@ Format for each entry:
   labeler) for the write-up. It never changes a label, the pass rule or the result.
 - **Seen results before the change?** No. No label exists: `signals/gold_set/locks.md` has no entries (the file does not yet
   exist) and `signals/gold_set/incoming/` is empty, as checked on 2026-10-04 before this entry was committed.
+
+## 2026-10-05 — Clarification 26: word labels in the gold-set sheets (display change only)
+- **What changed:** the Answer dropdown in both labeling sheets shows words instead of numbers, in this order: Reassuring,
+  Routine, Some Concern, Clear Distress, Not Applicable.
+  - **Fixed mapping:** the mapping to the Clarification 19 scale is fixed in code (`signals/gold_set/labels.py`):
+    Reassuring = 1, Routine = 2, Some Concern = 3, Clear Distress = 4, Not Applicable = N. All analysis uses the codes.
+  - **Label tools:** `lock-labels`, `compare-practice` and `publish-labels` accept only the five words (case-insensitive,
+    extra spaces trimmed) and refuse anything else. `labels_L1.csv` and `labels_L2.csv` store both the word and its code.
+  - **Sheets:** `gold_set_L2.xlsx` was regenerated. `gold_set_L1.xlsx` was changed in place: its Answer dropdown was
+    replaced and any typed codes converted to words. 0 cells were converted.
+  - **Labeling guide:** updated to match.
+- **Unchanged:** the scale, its definitions, the data, the draw, the pass rule and the agreement measures (Clarifications 19,
+  24 and 25).
+- **Why:** words are easier for labelers to read and pick than numbers. The order still runs from least to most troubling.
+- **Seen results before the change?** No. No label existed when the change was made: `signals/gold_set/locks.md` has no
+  entries, `signals/gold_set/incoming/` holds no file, and the L1 sheet had no answer entered.
