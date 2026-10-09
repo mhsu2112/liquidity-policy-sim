@@ -30,3 +30,4 @@ signals/corpus/check/
 # Gold set (Clarification 24): labelers' returned files and the ID key stay private until publish-labels
 signals/gold_set/incoming/
 signals/gold_set/key.csv
+!outputs/v0.1/

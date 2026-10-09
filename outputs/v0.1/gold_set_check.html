@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Gold-set model-to-model check (v0.1)</title>
+<style>body{font-family:-apple-system,Segoe UI,sans-serif;max-width:900px;margin:2em auto;padding:0 16px;color:#222}
+.banner{background:#fff3cd;border:2px solid #b8860b;padding:12px;font-weight:bold}
+table{border-collapse:collapse;margin:1em 0}td,th{border:1px solid #ccc;padding:4px 8px;text-align:right}
+th:first-child,td:first-child{text-align:left}.note{color:#555}</style></head><body>
+<div class="banner">v0.1 proof of concept. Jev reference not validated against human readers. Not a v1 result.</div>
+<h1>Gold-set check: model-to-model agreement (v0.1)</h1>
+<p>Jev (<code>jev-1.13.0</code>) read each of the 278 gold-set passages once and placed it on the labeling guide's
+four-level scale (Reassuring, Routine, Some Concern, Clear Distress). Its answers are compared with labels from
+another AI model, GPT-6.1 Sol (high), which the owner filled in and reviewed by eye (Amendment 7). This measures how
+far two AI models read the passages alike. <strong>It says nothing about how people read them.</strong>
+1 passage(s) the AI marked Not Applicable are left out.</p>
+<h2>Main result</h2>
+<table><tr><th>Group</th><th>Passages</th><th>α (ordinal)</th><th>90% interval</th><th>Exact agreement</th></tr><tr><td>All passages</td><td>277</td><td>0.62</td><td>0.54 to 0.69</td><td>61%</td></tr><tr><td>Passages the AI did not mark Unsure</td><td>148</td><td>0.81</td><td>0.74 to 0.87</td><td>72%</td></tr></table>
+<p>For reference only: Clarification 19 set 0.60 as the bar for human agreement. α(Jev, AI) =
+0.62, which is at or above 0.60. v0.1 has no pass/fail gate.</p>
+<h3>Answers side by side (all passages)</h3><table><tr><th></th><th>Jev: Reassuring</th><th>Jev: Routine</th><th>Jev: Some Concern</th><th>Jev: Clear Distress</th></tr><tr><th>AI: Reassuring</th><td>37</td><td>48</td><td>22</td><td>4</td></tr><tr><th>AI: Routine</th><td>0</td><td>51</td><td>5</td><td>0</td></tr><tr><th>AI: Some Concern</th><td>1</td><td>6</td><td>54</td><td>5</td></tr><tr><th>AI: Clear Distress</th><td>0</td><td>2</td><td>15</td><td>27</td></tr></table>
+<h2>By source type</h2><table><tr><th>Group</th><th>Passages</th><th>α (ordinal)</th><th>90% interval</th><th>Exact agreement</th></tr><tr><td>News</td><td>75</td><td>0.54</td><td>0.37 to 0.70</td><td>63%</td></tr><tr><td>Analyst notes</td><td>46</td><td>0.39</td><td>0.16 to 0.59</td><td>54%</td></tr><tr><td>Official statements</td><td>6</td><td>0.62</td><td>-0.22 to 1.00</td><td>67%</td></tr><tr><td>Speeches and testimony</td><td>75</td><td>0.67</td><td>0.53 to 0.78</td><td>63%</td></tr><tr><td>Filings</td><td>75</td><td>0.21</td><td>-0.00 to 0.41</td><td>61%</td></tr></table>
+<h2>By period</h2><table><tr><th>Group</th><th>Passages</th><th>α (ordinal)</th><th>90% interval</th><th>Exact agreement</th></tr><tr><td>2007–09</td><td>55</td><td>0.75</td><td>0.58 to 0.87</td><td>67%</td></tr><tr><td>2010–19</td><td>75</td><td>0.65</td><td>0.50 to 0.76</td><td>59%</td></tr><tr><td>2020–21</td><td>73</td><td>0.35</td><td>0.12 to 0.55</td><td>62%</td></tr><tr><td>2022–24</td><td>74</td><td>0.54</td><td>0.36 to 0.69</td><td>58%</td></tr></table>
+<h2>Jev against the owner's human practice labels (illustrative only, n=15)</h2>
+<p class="note">Fifteen practice passages, one human labeler (the owner), not locked. Far too few to support any
+conclusion; shown only to illustrate.</p>
+<table><tr><th>Group</th><th>Passages</th><th>α (ordinal)</th><th>90% interval</th><th>Exact agreement</th></tr><tr><td>Practice passages (owner&#x27;s labels)</td><td>15</td><td>0.20</td><td>-0.24 to 0.51</td><td>33%</td></tr></table>
+<p class="note">Method: Krippendorff's alpha, ordinal, levels 1–4; 90% interval from 2,000 resamples of passages
+(seed 20260923); Jev's label is its most likely level. Configuration fixed in Clarification 30 before any call.
+Groups with few passages have wide intervals or none.</p>
+</body></html>

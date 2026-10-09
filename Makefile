@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels jev-hello mock-report report ai-labels
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels jev-hello mock-report report ai-labels gold-check
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -133,3 +133,8 @@ report: $(VENV)/.installed
 ## make ai-labels: convert the AI-labelled Main tab to signals/gold_set/labels_AI.csv (v0.1 only; Amendment 7)
 ai-labels: $(VENV)/.installed
 	$(PY) -m signals.gold_set.ai_labels
+
+## make gold-check: v0.1 model-to-model check — run Jev once on the gold set (resumes; never re-asks), then the report
+gold-check: $(VENV)/.installed
+	$(PY) -m signals.gold_set.jev_check
+	$(PY) -m signals.gold_set.check_report
