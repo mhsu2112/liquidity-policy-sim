@@ -1220,3 +1220,127 @@ known draw is read as distress" (section 5).
      file is unchanged.
 
   No M2.5 call had been made when this note was written.
+
+## 2026-10-09 — Clarification 31: the Jev reference on the trade-off chart, and every rule the v0.1 comparison run needs (session v0.1-C, before any stress run of B, B′, C, C′ or E)
+Release v0.1 (Amendment 7). Frozen settings fingerprint `05f9e763efc16772` (checked today). Frozen Jev files: the
+`signals/frozen/MANIFEST.json` hashes match all 7 files and all 6 inputs (checked today), model `jev-1.13.0`, tag `v0.1-signals`.
+
+**Part A. The Jev reference (owner's text).**
+1. The trade-off chart's market-stigma axis is the level before the routine-borrowing effect (contract 3a). One reference
+   marker goes on it: A's marker, 0.78 (spread 0.49–0.91), labelled "provisional Jev reference (v0.1, not validated
+   against human readers)". Per-policy markers are not placed on the axis, because B's and C's readings already include
+   the routine-borrowing effect the model applies through s.
+2. The per-policy markers go in a side table with the implied s for each policy against A:
+   s = −ln(marker_P / marker_A) / (r_P − r_A), using the contract's r values (C at its default uptake). Labelled exploratory.
+3. Reversal distance is measured from 0.78.
+4. Decided after seeing the Jev markers, before any simulation result.
+
+Implementation of Part A:
+- 0.78 is A's frozen marker (0.7787) rounded to two places, as the owner wrote it.
+- The implied s uses the unrounded frozen markers. r: A and C′ 0.1; B, B′ and E 1.0; C 0.75 × 2.5 = 1.875. C′ has
+  r_P = r_A, so its implied s is undefined (shown as such).
+- The label "at the marker" is the label at the grid point nearest 0.78, which is 0.70. Moving down (or up), the distance
+  is 0.78 minus (or plus) the first grid point whose label differs from it. It is blank if none differs.
+
+**Part B. Rules for the run (owner's choices in the session plan, fixed before any stress run).**
+1. **Lead / tie / trade-off** (contract 4).
+   - X leads Y in a cell when X's paired point differences are no worse on both survival (X − Y ≥ 0) and shortfall
+     (X − Y ≤ 0), and the 90% interval of at least one of them excludes zero in X's favour.
+   - Trade-off: X is significantly better on one of the two and Y significantly better on the other.
+   - Otherwise tie.
+   - Cost is shown in every cell and never sets a label (contract 4: no dollar value per failure).
+2. **Intervals.**
+   - Paired normal: the mean paired difference ± 1.645 standard errors. The unit is one (bank, run) pair: where several
+     cells are pooled, each unit's differences are first averaged over those cells, because every cell reuses the same
+     draws.
+   - Cost does not vary across runs, so its interval is over banks (mean ± 1.645 standard errors across the banks of the
+     type).
+3. **Seeds and pairing** (Clarification 14 item 2).
+   - Rows are bank × run. News noise and the information and testing draws come from seed 20261021 (S1) or 20261022 (S2)
+     over the 8,000 rows, the same for every policy, cell and sensitivity.
+   - Opt-in draws are the policy table's (seed 20261001, one per bank, Clarification 11 item 4), so the same banks opt in
+     in every run, as in `outputs/costs.csv`.
+   - Episodes stop once every row has ended (results unchanged: nothing after a row's end counts).
+4. **Scorecard metrics.** Scope: contract defaults; all 35 cells pooled; the 10 banks of a type × 200 runs.
+   - Survival: share of runs not failed within 30 days.
+   - Liquidity shortfall: `peak_uncovered_bn`.
+   - Official support: discount window only (Clarification 10 item 8, which outranks the PRD and schema wording that add
+     the Home Loan Bank). Peak = largest window balance; total = window lending agreed by the end, including cash on its
+     way. Window loans are not repaid within an episode, so the two are equal by construction. Both are shown, with this
+     note. The Home Loan Bank peak is reported in `scorecard_extra.csv`.
+   - Annual cost: the cost model at contract defaults (A = 0).
+   - Buffer gap: C and C′, in percentage points of LCR.
+   - Effective stigma: contract 3a.
+   - Routine borrowing per quarter: r.
+   - Hesitation gap: half-days from first seeing a shortfall to first borrowing, ÷ 2, over runs where both happened.
+   - False comfort: share of runs with reported LCR ≥ 100% (C including its credit) that fail by the end of day 7. Banks
+     with no LCR count as not comforted.
+   - Needless borrowing (S2): window support, $bn.
+   - Grace count: labelled "upper bound on timing-only failures (reported, not scored)" (Amendment 6).
+   - Timing bands: per Clarification 18 item 2.
+5. **Sensitivity overrides**, one at a time, on the mid-range cells unless the run plan says otherwise. Only the policies
+   the run plan names are rerun; the others reuse their main-grid runs.
+   - Leak probability and lag: `routes.leak`.
+   - C ceiling, uptake, HQLA released and stress trigger: `lcr_credit`. Uptake also sets C's r = uptake × 2.5, and its
+     cost.
+   - Collateral margins ±5 pp on every lendable value in `discount_window.margins`, capped at 100%.
+   - Depositor coordination × 0.5 and × 1.5 of the frozen value. The frozen file is unchanged; the multiple is applied in
+     the run.
+   - s: 0 and 0.7.
+   - Distress hit: 0.10 and 0.40.
+   - B full run: `five_day_ratio.runoff_uninsured` = 1.00 (B, B′ and E).
+   - SVB-like with no LCR: the SVB-like banks' LCR calibration removed (C and C′ only).
+   - Starting collateral split: the Fed or the Home Loan Bank share ±20 pp, with the unpledged share adjusting.
+   - Home Loan Bank line: 3% and 8%.
+   - Repo lines × 0.5 and × 1.5 for every bank type.
+
+   For each point, the report shows survival and shortfall against the default (paired, 90%) and, for each comparison,
+   how many of the 9 mid-range cells change label.
+6. **Feature attribution (M3.4).**
+   - Shapley values over the four switches, on the 9 mid-range cells, for survival and shortfall.
+   - Every one of the 16 switch combinations maps to its effective setup (the five-day ratio always prepositions), giving
+     12 distinct setups. The contributions sum to the effect of all four switches on against A.
+   - A combination's r: 1.0 if the testing mandate is on, plus uptake × 2.5 if LCR credit is on; 0.1 if neither. LCR
+     credit runs with C's settings (usage multiple 75).
+   - Each contribution is a fixed weighted sum of paired per-run outcomes, so its interval follows rule 2.
+7. **Hypotheses**, scored as `docs/hypotheses.md` and Clarifications 17–18 say. Where the text leaves room:
+   - **H1:** SVB-like, S1, the 9 mid-range cells, B vs C.
+   - **H3:** C vs A, SVB-like and Category III regional pooled (70 cells), S1, released 100%, uptake 50% (the uptake
+     sensitivity runs). "Majority" means more than half.
+   - **H4:** SVB-like, S1. (a) stigma 0 or 0.10, all supervision settings (10 cells); (b) uptake 100%, all 35 cells;
+     (c) encourages or strongly encourages, all stigma (14 cells).
+   - **H5:** SVB-like and GSIB (the "large-bank archetype"), S1, all 35 cells pooled.
+   - **H6:** median annual cost across the 40 banks at defaults. Supported only if B > E > A > C > C′ strictly.
+   - **H7:** SVB-like, S1, mid-range stigma (0.20, 0.35, 0.50), pre-registered policies A, B, C, C′ and E.
+     - Supervision swing: mean over policies and stigma of |survival at strongly encourages − at strongly penalizes|.
+     - Policy swing: mean over stigma of (highest − lowest survival across policies at neutral).
+     - The ratio is supervision ÷ policy. If the policy swing is zero, H7 is "untestable".
+   - **H8:** Clarifications 17–18 as written, over all 35 cells. "Borrows" means any window lending.
+     - The interval test runs on qualifying bank × cells: a unit's difference is averaged over that bank's qualifying
+       cells.
+     - H8 is "not supported" if the interval for B − A or for E − A excludes zero.
+   - **Verdicts:** supported / not supported / untestable (any hypothesis whose test cannot be computed) / reported (H2).
+8. **Episode replays (M3.5).**
+   - For each scenario, the "median run" is the (bank, run) whose policy-A outcome at the tuning cell (stigma 0.35,
+     neutral) is the middle one when sorted by end day, then peak uncovered amount, then bank and run.
+   - It is replayed under A, B, C, C′ and E with its own draws.
+   - Code writes each sentence from the run's log.
+   - Jev (`jev-1.13.0`) is asked one Noul question per sentence, with that half-day's log lines as state: "Is every fact
+     stated in this sentence supported by the log lines?" A sentence is flagged if P(yes) < 0.5.
+   - Flags are shown as they come out. A flagged sentence is never rewritten to clear its flag; if a flag reveals a
+     sentence-writing bug, the fix gets a test and a note here.
+9. **Report changes** (recorded under Clarification 28).
+   - The v0.1 banner (from `config/release.yaml`, carried in `meta.json`) is shown on every page and in every image,
+     without the mock watermark.
+   - The disclosure stays on every page.
+   - Results schema 1.1:
+     - `replay.json` holds a list of replays;
+     - `untestable` is allowed for any hypothesis;
+     - new files: `implied_s.csv` (shown beside the reversal table), `sensitivity.csv` and `sensitivity_labels.csv`
+       (a new Sensitivities page), and `scorecard_extra.csv`.
+   - Two limits are added: the provisional Jev reference, and official support peak = total.
+   - Layout fingerprint: `bbf29f46a63e0587`.
+- **Why:** the run needs every definition fixed before any policy result exists. The contract and hypotheses leave these
+  open, and Rule 6 forbids choosing them afterwards.
+- **Seen results before the change?** No simulation result under B, B′, C, C′ or E exists. The Jev markers (frozen in
+  `v0.1-signals`) have been seen.
