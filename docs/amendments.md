@@ -1344,3 +1344,20 @@ Implementation of Part A:
   open, and Rule 6 forbids choosing them afterwards.
 - **Seen results before the change?** No simulation result under B, B′, C, C′ or E exists. The Jev markers (frozen in
   `v0.1-signals`) have been seen.
+- **Note, 2026-10-09: implementation details, recorded after the full run finished and before any result was built or
+  read.** The run took 7.5 minutes for 25,832,000 episodes (8 workers); the 1% dry run had estimated 8 minutes.
+  1. **Hesitation gap.** When no run in a group both saw a shortfall and borrowed, the value is left blank. Schema 1.1
+     allows that for this metric only.
+  2. **Frontier.** Each point is the mean over runs, pooled over the 35 cells, with an interval across runs. Cost is
+     the mean across the banks of the type, with an interval across banks. The page text says "mean", not "median".
+  3. **Option C panel.** Every point on the cross shows survival against A on the 9 mid-range cells, the one grid every
+     point was run on.
+  4. **H8 with two comparisons.**
+     - "Untestable" if neither B − A nor E − A qualifies.
+     - "Not supported" if any comparison that qualifies has an interval that excludes zero.
+     - Otherwise "supported", with any comparison that does not qualify named in the result.
+  5. **Replays.**
+     - Sentences from the same half-day share one Jev call: one Noul question per sentence, with that half-day's log
+       lines as the state.
+     - Jev's answers are cached in `signals/replay_checks.csv`, so `make results` reproduces them without new calls.
+  6. **`make results`** deletes `outputs/raw`, `outputs/results` and `outputs/report`, then rebuilds them all.

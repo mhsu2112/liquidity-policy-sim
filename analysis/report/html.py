@@ -66,6 +66,7 @@ def disclosure():
 def page(layout, meta, page_id, title, body, prefix=""):
     """A complete HTML page. prefix points links back to the report root from a sub-folder."""
     banner = layout["mock_banner"] if meta["mock"] else ""
+    release = "" if meta["mock"] else meta.get("release", {}).get("banner", "")   # Clarification 31: v0.1 banner
     nav = "".join(f'<a href="{prefix}{p["file"]}"{" class=here" if p["id"] == page_id else ""}>{e(p["title"])}</a>'
                   for p in layout["pages"])
     s = meta["stamp"]
@@ -77,11 +78,12 @@ def page(layout, meta, page_id, title, body, prefix=""):
     return f"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}{" (MOCK)" if banner else ""} · Liquidity Policy Simulator</title><style>{CSS}</style></head>
-<body>{mock_bits}<main>
+<body>{mock_bits}{f'<div class="banner" style="background:{layout["release_banner_colour"]}">{e(release)}</div>' if release else ""}<main>
 <nav>{nav}</nav>
 <h1>{e(title)}</h1>
 <div class="disclosure">{disclosure()}</div>
 {body}
 <p class="stamp">{stamp}</p>
 {f'<div class="banner" style="position:static">{e(banner)}</div>' if banner else ""}
+{f'<div class="banner" style="position:static;background:{layout["release_banner_colour"]}">{e(release)}</div>' if release else ""}
 </main></body></html>"""

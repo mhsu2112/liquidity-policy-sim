@@ -127,7 +127,7 @@ def test_validator_rejects_broken_files(mock, tmp_path, breakage):
             w.writerows(rows)
     else:
         hy = json.loads((bad / "hypotheses.json").read_text())
-        hy[0]["parts"][0]["verdict"] = "untestable"        # only H8 may be untestable
+        hy[0]["parts"][0]["verdict"] = "reported"          # only H2 may be "reported" (Clarification 31 B7 allows untestable for any)
         (bad / "hypotheses.json").write_text(json.dumps(hy))
     assert validate(bad) != []
 

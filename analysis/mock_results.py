@@ -239,12 +239,18 @@ def write(folder, marker=True, seed=SEED):
     write_csv(folder / "frontier.csv", frontier(rng, v))
     write_csv(folder / "option_c.csv", option_c(rng, v))
     write_csv(folder / "attribution.csv", attribution(rng, v))
-    (folder / "replay.json").write_text(json.dumps(replay(rng, v), indent=2))
+    (folder / "replay.json").write_text(json.dumps([replay(rng, v)], indent=2))   # schema 1.1: a list
     hyps = [{"id": h, "parts": [{"part": p, "result": "pending", "verdict": "pending"} for p in parts]}
             for h, parts in HYPOTHESIS_PARTS.items()]
     (folder / "hypotheses.json").write_text(json.dumps(hyps, indent=2))
     # Last, so the marker and no-marker folders share every other number.
     write_csv(folder / "reversal.csv", reversal(rng, v, marker_at) if marker else [])
+    # Schema 1.1 files (Clarification 31), from their own random stream so nothing above changes.
+    extra = np.random.default_rng(seed + 1)
+    write_csv(folder / "implied_s.csv", [{"policy": p, "marker": fmt(extra.uniform(0.05, 0.85)), "spread_low": "",
+                                          "spread_high": "", "r": "", "implied_s": "", "note": "mock"} for p in v["policies"]])
+    for name in ("sensitivity.csv", "sensitivity_labels.csv", "scorecard_extra.csv"):
+        write_csv(folder / name, [])
     return folder
 
 

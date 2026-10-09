@@ -47,6 +47,15 @@ def recorded_layout_fingerprints(path=AMENDMENTS):
 
 # ---------- small formatting helpers ----------
 
+def chart_banner(meta, layout):
+    """What the charts stamp: the mock banner, or the release banner (Clarification 31: v0.1), or nothing."""
+    if meta["mock"]:
+        return layout["mock_banner"]
+    if meta.get("release"):
+        return {"text": meta["release"]["banner"], "colour": layout["release_banner_colour"]}
+    return ""
+
+
 def fmt_value(v, kind):
     if v is None:
         return ""
@@ -122,6 +131,8 @@ def scorecard_page(d, vocab, layout):
     bands = {(r["policy"], r["scenario"], r["bank_type"], r["band"]): r for r in d["timing_bands.csv"]}
     out = [f'<p class="note">Scope: {e(d["meta.json"]["scorecard_scope"])}. Each cell: the policy\'s own level, then the '
            'paired difference against A with its 90% interval. "—" means the metric does not apply. '
+           'Official support is the discount window only; window loans are not repaid within an episode, so peak equals '
+           'total. Home Loan Bank advances are in <a href="scorecard_extra.csv">scorecard_extra.csv</a> (Clarification 31). '
            '<a href="scorecard.csv">Download the scorecard CSV</a>.</p>', toc(vocab, layout)]
     for s, b, anchor, heading in groups(vocab, layout):
         head = "".join(f'<th{" class=grace" if c["metric"] == "timing_only_upper_bound" else ""}>{e(c["label"])}</th>' for c in cols)
@@ -165,7 +176,7 @@ def scorecard_page(d, vocab, layout):
 def tradeoff_page(d, vocab, layout, out, prefix=""):
     meta = d["meta.json"]
     marker = meta["jev_marker"] if meta["jev_marker"]["available"] else None
-    banner = layout["mock_banner"] if meta["mock"] else ""
+    banner = chart_banner(meta, layout)
     img_dir = out / "img"
     img_dir.mkdir(parents=True, exist_ok=True)
     parts = ['<p class="note">One panel per comparison. Rows: supervisory treatment of borrowing. Columns: market stigma. '
@@ -190,9 +201,10 @@ def tradeoff_page(d, vocab, layout, out, prefix=""):
 
 
 def frontier_page(d, vocab, layout, out):
-    banner = layout["mock_banner"] if d["meta.json"]["mock"] else ""
-    parts = ['<p class="note">Each point is a policy: median across the banks of that type, with its 90% interval on both '
-             'axes. Cost is relative to A, so A sits at zero. Up and left is better on survival; down and left on '
+    banner = chart_banner(d["meta.json"], layout)
+    parts = ['<p class="note">Each point is a policy: survival and shortfall are means over the runs of that bank type, '
+             'pooled over the 35 cells, with 90% intervals across runs; cost is the mean across the banks of that type, '
+             'with a 90% interval across banks (Clarification 31). Cost is relative to A, so A sits at zero. Up and left is better on survival; down and left on '
              'shortfall. No dollar value per failure is assumed, so the frontier is shown, not collapsed.</p>']
     for s in vocab["scenarios"]:
         path = out / "img" / f"frontier_{s}.png"
@@ -203,10 +215,11 @@ def frontier_page(d, vocab, layout, out):
 
 
 def option_c_page(d, vocab, layout, out):
-    banner = layout["mock_banner"] if d["meta.json"]["mock"] else ""
+    banner = chart_banner(d["meta.json"], layout)
     parts = [f'<p class="note">C and C′ across voluntary uptake and the share of HQLA released. Defaults: uptake '
              f'{OPTION_C_DEFAULTS["uptake"]:.0%}, released {OPTION_C_DEFAULTS["hqla_released"]:.0%} (contract 2d). '
-             f'Cells off the cross are {e(layout["option_c"]["not_run_note"])}. Under current LCR scope, C and C′ have no '
+             f'Cells off the cross are {e(layout["option_c"]["not_run_note"])}. Each run cell shows survival against A (paired, '
+             f'90% interval) on the 9 mid-range cells, the grid every point of the cross was run on. Under current LCR scope, C and C′ have no '
              'effect on the Category IV diversified regional bank by construction (contract 1c). C\'s cost saving and '
              'its buffer gap are the same money: see the scorecard, where they sit side by side.</p>']
     for s in vocab["scenarios"]:
@@ -236,7 +249,8 @@ def reversal_page(d, vocab, layout, prefix=""):
 
     parts = [f'<p class="note">For each comparison and supervision setting: the cell at the {e(meta["jev_marker"]["label"])} '
              f'(stigma {meta["jev_marker"]["stigma"]:g}), and how far market stigma must move down or up from it before '
-             'the cell changes, with what it changes to.</p>', toc(vocab, layout)]
+             'the cell changes, with what it changes to. The cell "at the marker" is the nearest grid point (Clarification 31).</p>',
+             implied_s_table(d, layout), toc(vocab, layout)]
     for s, b, anchor, heading in groups(vocab, layout):
         rows = ""
         for comp in COMPARISONS:
@@ -252,12 +266,63 @@ def reversal_page(d, vocab, layout, prefix=""):
     return page(layout, meta, "reversal", "Reversal distances", "\n".join(parts), prefix)
 
 
+def implied_s_table(d, layout):
+    """Clarification 31 A2: each policy's own Jev marker and the s it implies against A. Exploratory."""
+    rows = d.get("implied_s.csv", [])
+    if not rows:
+        return ""
+    body = "".join(f"<tr><td class=l><b>{e(layout['policy_labels'][r['policy']])}</b></td><td>{e(r['marker'])}</td>"
+                   f"<td>{e(r['spread_low'])}–{e(r['spread_high'])}</td><td>{e(r['r'])}</td>"
+                   f"<td>{e(r['implied_s']) or '—'}</td><td class=l>{e(r['note'])}</td></tr>" for r in rows)
+    return ('<h2>Side table: each policy\'s Jev marker and the s it implies (exploratory)</h2><p class="note">Only A\'s '
+            'marker is placed on the axis, which is market stigma before the routine-borrowing effect. B\'s and C\'s '
+            'readings already include that effect, which the model applies through s. Implied s = −ln(marker_P / marker_A) / '
+            '(r_P − r_A), with the contract\'s r (C at 75% uptake). Labelled exploratory (Clarification 31).</p>'
+            '<div class="scroll"><table><tr><th class=l>Policy</th><th>Marker</th><th>Spread</th><th>r (per quarter)</th>'
+            f'<th>Implied s</th><th class=l>Note</th></tr>{body}</table></div>')
+
+
+def sensitivity_page(d, vocab, layout):
+    """Clarification 31 B5: each one-at-a-time sensitivity against the default."""
+    pol, sl = layout["policy_labels"], layout["scenario_labels"]
+    rows = d.get("sensitivity.csv", [])
+    labs = d.get("sensitivity_labels.csv", [])
+    parts = ['<p class="note">One setting at a time, around the defaults (Clarification 14 item 3), on the 9 mid-range '
+             'cells (C uptake: all 35). For each rerun policy: its survival and shortfall at that point, and the paired '
+             'difference from the same policy at the default, with 90% intervals. Below each, how many of the 9 mid-range '
+             'cells change label for each comparison. Policies a setting cannot affect reuse their default runs.</p>']
+    if not rows:
+        parts.append("<p>No sensitivity results in this folder.</p>")
+    for name in dict.fromkeys(r["sensitivity"] for r in rows):
+        mine = [r for r in rows if r["sensitivity"] == name]
+        body = "".join(
+            f"<tr><td class=l>{e(r['point'])}</td><td class=l>{e(sl[r['scenario']])}</td><td class=l>"
+            f"{e(vocab['bank_labels'][r['bank_type']])}</td><td class=l>{e(pol[r['policy']])}</td>"
+            f"<td>{fmt_value(num(r['survival']), 'pct')}{with_ci(num(r['survival_diff']), num(r['survival_lo']), num(r['survival_hi']), 'pct', 'Δ vs default ')}</td>"
+            f"<td>{fmt_value(num(r['shortfall_bn']), 'num1')}{with_ci(num(r['shortfall_diff']), num(r['shortfall_lo']), num(r['shortfall_hi']), 'num1', 'Δ vs default ')}</td></tr>"
+            for r in mine)
+        ch = [r for r in labs if r["sensitivity"] == name]
+        chg = "".join(f"<tr><td class=l>{e(r['point'])}</td><td class=l>{e(sl[r['scenario']])}</td><td class=l>"
+                      f"{e(vocab['bank_labels'][r['bank_type']])}</td><td class=l>{e(' vs '.join(pol[k] for k in comparison_sides(r['comparison'])))}</td>"
+                      f"<td>{e(r['cells_changed'])} of {e(r['cells'])}</td></tr>" for r in ch if r["cells_changed"] != "0")
+        parts.append(f'<h2 id="{e(name)}">{e(name.replace("_", " "))}</h2><div class="scroll"><table><tr><th class=l>Point</th>'
+                     f"<th class=l>Scenario</th><th class=l>Bank type</th><th class=l>Policy</th><th>Survival</th>"
+                     f"<th>Shortfall ($bn)</th></tr>{body}</table></div>"
+                     + (f'<p class="note">Labels that change on the mid-range cells (comparisons with no change are omitted):</p>'
+                        f'<div class="scroll"><table><tr><th class=l>Point</th><th class=l>Scenario</th><th class=l>Bank type</th>'
+                        f"<th class=l>Comparison</th><th>Cells changed</th></tr>{chg}</table></div>" if chg
+                        else '<p class="note">No comparison changes label on any mid-range cell.</p>'))
+    return page(layout, d["meta.json"], "sensitivity", "Sensitivities", "\n".join(parts))
+
+
 def attribution_page(d, vocab, layout):
     at = {(r["feature"], r["scenario"], r["bank_type"], r["outcome"]): r for r in d["attribution.csv"]}
     kinds = {"survival_rate": "pct", "liquidity_shortfall_bn": "num1"}
     parts = ['<p class="note">What each switch contributes to survival and shortfall, with 90% intervals, from the '
              'feature-switch runs on the 9 mid-range cells (Clarification 14 item 5: 12 distinct setups, because the '
-             'five-day ratio always prepositions). <span class="slot">method: fixed in M3.4</span></p>']
+             'five-day ratio always prepositions). Method (Clarification 31 B6): Shapley values over the 16 switch combinations, '
+             'each mapped to the setup it builds; the four contributions add up to the effect of switching all four on, '
+             'against A. Survival in percentage points, shortfall in $bn.</p>']
     for s in vocab["scenarios"]:
         head1 = "".join(f"<th colspan={len(OUTCOMES)}>{e(vocab['bank_labels'][b])}</th>" for b in vocab["bank_types"])
         head2 = "".join(f"<th>{e(layout['outcome_labels'][o])}</th>" for _ in vocab["bank_types"] for o in OUTCOMES)
@@ -275,23 +340,34 @@ def attribution_page(d, vocab, layout):
 
 
 def replay_page(d, vocab, layout):
-    rp, pol = d["replay.json"], layout["policy_labels"]
+    """Schema 1.1: a list of replays (Clarification 31 B8), each with its own log; anchors are per replay."""
+    pol = layout["policy_labels"]
     checks = {None: "support check: not run", "supported": "support check: supported", "flagged": "support check: FLAGGED"}
-    parts = [f'<p><b>{e(layout["scenario_labels"][rp["scenario"]])}</b> under policy <b>{e(pol[rp["policy"]])}</b> · bank '
-             f'{e(rp["bank_id"])} · run {rp["run"]} · {e(rp["selection"])}</p>'
-             '<p class="note">Each sentence says what an actor saw (and through which information route), what it did, or '
-             'why. Each links to the log line it rests on. The slot after it holds M3.5\'s Jev support check.</p>']
-    for day in rp["days"]:
-        items = ""
-        for en in day["entries"]:
-            route = f" · via {e(en['route'])}" if en["route"] else ""
-            items += (f'<li><b>{e(en["actor"])}</b> <span class="note">({e(en["half"])}, {e(en["kind"])}{route})</span> '
-                      f'{e(en["text"])} <a href="#L{en["log_line"]}">log {en["log_line"]}</a> '
-                      f'<span class="slot">{checks[en["support_check"]]}</span></li>')
-        parts.append(f"<h2>Day {day['day']}</h2><ul>{items}</ul>")
-    log = "".join(f'<tr id="L{x["line"]}"><td>{x["line"]}</td><td class=l><code>{e(x["text"])}</code></td></tr>' for x in rp["log"])
-    parts.append(f'<h2>Log</h2><div class="scroll"><table><tr><th>Line</th><th class=l>Entry</th></tr>{log}</table></div>')
-    return page(layout, d["meta.json"], "replay", "Episode replay", "\n".join(parts))
+    reps = d["replay.json"]
+    parts = ['<p class="note">Each sentence says what an actor saw (and through which information route), what it did, or '
+             'why. Each links to the log line it rests on, and Jev was asked whether the log supports it (M3.5). Flags are '
+             'shown as they came out.</p>']
+    if not reps:
+        parts.append("<p>No replay in this folder.</p>")
+    parts.append('<div class="toc">' + "".join(f'<a href="#R{i}">{e(layout["scenario_labels"][rp["scenario"]])} — policy '
+                                                f'{e(pol[rp["policy"]])}</a>' for i, rp in enumerate(reps)) + "</div>")
+    for i, rp in enumerate(reps):
+        flags = sum(en["support_check"] == "flagged" for day in rp["days"] for en in day["entries"])
+        parts.append(f'<h2 id="R{i}">{e(layout["scenario_labels"][rp["scenario"]])} under policy {e(pol[rp["policy"]])}</h2>'
+                     f'<p>Bank {e(rp["bank_id"])} · run {rp["run"]} · {e(rp["selection"])} · flagged sentences: {flags}</p>')
+        for day in rp["days"]:
+            items = ""
+            for en in day["entries"]:
+                route = f" · via {e(en['route'])}" if en["route"] else ""
+                items += (f'<li><b>{e(en["actor"])}</b> <span class="note">({e(en["half"])}, {e(en["kind"])}{route})</span> '
+                          f'{e(en["text"])} <a href="#R{i}L{en["log_line"]}">log {en["log_line"]}</a> '
+                          f'<span class="slot">{checks[en["support_check"]]}</span></li>')
+            parts.append(f"<h3>Day {day['day']}</h3><ul>{items}</ul>")
+        log = "".join(f'<tr id="R{i}L{x["line"]}"><td>{x["line"]}</td><td class=l><code>{e(x["text"])}</code></td></tr>'
+                      for x in rp["log"])
+        parts.append(f'<details><summary>Log ({len(rp["log"])} lines)</summary><div class="scroll"><table><tr><th>Line</th>'
+                     f'<th class=l>Entry</th></tr>{log}</table></div></details>')
+    return page(layout, d["meta.json"], "replay", "Episode replays", "\n".join(parts))
 
 
 def parse_hypotheses(path=HYPOTHESES):
@@ -347,6 +423,7 @@ def build(results, out, no_marker_results=None):
         "frontier": frontier_page(d, vocab, layout, out),
         "option_c": option_c_page(d, vocab, layout, out),
         "reversal": reversal_page(d, vocab, layout),
+        "sensitivity": sensitivity_page(d, vocab, layout),
         "attribution": attribution_page(d, vocab, layout),
         "replay": replay_page(d, vocab, layout),
         "hypotheses": hypotheses_page(d, vocab, layout),
@@ -357,6 +434,9 @@ def build(results, out, no_marker_results=None):
         (out / p["file"]).write_text(pages[p["id"]])
         written.append(out / p["file"])
     shutil.copy(Path(results) / "scorecard.csv", out / "scorecard.csv")
+    for extra in ("scorecard_extra.csv", "hypotheses_memo.md"):
+        if (Path(results) / extra).exists():
+            shutil.copy(Path(results) / extra, out / extra)
     if no_marker_results:
         alt, dn = out / "no-marker", load(no_marker_results)
         (alt / "img").mkdir(parents=True)

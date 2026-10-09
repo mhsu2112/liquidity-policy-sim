@@ -18,7 +18,7 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 RUN_PLAN = ROOT / "config" / "run_plan.yaml"
 ARCHETYPES = ROOT / "config" / "banks" / "archetypes.yaml"
-SCHEMA_VERSION = "1.0"
+SCHEMA_VERSION = "1.1"   # Clarification 31: replay list, untestable for any hypothesis, four new files
 
 
 def vocabulary():
@@ -61,8 +61,8 @@ RELEASED = [0.0, 0.50, 1.00]                                 # contract 2d (R1-5
 OPTION_C_DEFAULTS = {"uptake": 0.75, "hqla_released": 1.00}  # contract 2d defaults
 HYPOTHESIS_PARTS = {"H1": ["main"], "H2": ["main"], "H3": ["main", "strong_form"], "H4": ["a", "b", "c"],
                     "H5": ["main"], "H6": ["main"], "H7": ["main"], "H8": ["main"]}
-VERDICTS = ["pending", "supported", "not supported"]
-EXTRA_VERDICTS = {"H8": ["untestable"], "H2": ["reported"]}  # Clarification 18; H2 has no prediction
+VERDICTS = ["pending", "supported", "not supported", "untestable"]   # Clarification 31 B7: untestable for any
+EXTRA_VERDICTS = {"H2": ["reported"]}                        # H2 has no prediction
 REPLAY_KINDS = ["saw", "did", "why"]
 SUPPORT_CHECKS = [None, "supported", "flagged"]
 
@@ -80,7 +80,14 @@ COLUMNS = {
     "option_c.csv": ["policy", "scenario", "bank_type", "uptake", "hqla_released", "run", "survival_diff",
                      "survival_lo", "survival_hi", "cost_m"],
     "attribution.csv": ["feature", "scenario", "bank_type", "outcome", "contribution", "lo", "hi"],
+    # Schema 1.1 (Clarification 31): the implied-s side table, the sensitivity page, the Home Loan Bank column.
+    "implied_s.csv": ["policy", "marker", "spread_low", "spread_high", "r", "implied_s", "note"],
+    "sensitivity.csv": ["sensitivity", "point", "policy", "scenario", "bank_type", "survival", "survival_diff",
+                        "survival_lo", "survival_hi", "shortfall_bn", "shortfall_diff", "shortfall_lo", "shortfall_hi"],
+    "sensitivity_labels.csv": ["sensitivity", "point", "comparison", "scenario", "bank_type", "cells", "cells_changed"],
+    "scorecard_extra.csv": ["policy", "scenario", "bank_type", "metric", "value", "diff_vs_a", "diff_lo", "diff_hi"],
 }
+MAY_BE_BLANK = {"hesitation_gap_days"}   # Clarification 31 B4: defined only for runs that both saw a shortfall and borrowed
 STAMP_FIELDS = ["git_commit", "config_hash", "params_fingerprint", "jev_estimate_version", "jev_model"]
 
 
@@ -163,10 +170,11 @@ def _check_tables(problems, d, v):
               [(p, s, b, m) for p in P for s in S for b in B for m in METRICS if metric_applies(m, p, s)])
     for r in sc:
         where = f"scorecard.csv {r['policy']}/{r['scenario']}/{r['bank_type']}/{r['metric']}"
-        if num(r["value"]) is None:
+        blank_ok = r["metric"] in MAY_BE_BLANK
+        if num(r["value"]) is None and not blank_ok:
             problems.append(f"{where}: value is blank")
         has_ci = METRICS.get(r["metric"], (0, 0, False))[2] and r["policy"] != "A"
-        if has_ci and num(r["diff_vs_a"]) is None:
+        if has_ci and num(r["diff_vs_a"]) is None and not blank_ok:
             problems.append(f"{where}: paired difference against A is blank")
         if not has_ci and any(r[k] for k in ("diff_vs_a", "diff_lo", "diff_hi")):
             problems.append(f"{where}: should have no paired difference")
@@ -239,7 +247,16 @@ def _check_tables(problems, d, v):
                   r["contribution"], r["lo"], r["hi"])
 
 
-def _check_replay(problems, rp, v):
+def _check_replay(problems, replays, v):
+    """Schema 1.1: a list of replays (Clarification 31 B8); an empty list means none was written."""
+    if not isinstance(replays, list):
+        problems.append("replay.json: must be a list of replays (schema 1.1)")
+        return
+    for rp in replays:
+        _check_one_replay(problems, rp, v)
+
+
+def _check_one_replay(problems, rp, v):
     if rp.get("scenario") not in v["scenarios"] or rp.get("policy") not in v["policies"]:
         problems.append("replay.json: scenario or policy not recognised")
     lines = {e.get("line") for e in rp.get("log", [])}

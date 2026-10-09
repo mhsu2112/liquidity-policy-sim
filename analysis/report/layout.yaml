@@ -6,6 +6,8 @@
 # fails until it is recorded.
 
 mock_banner: "MOCK DATA — LAYOUT ONLY — NOT RESULTS"
+# Clarification 31: a release banner (text from config/release.yaml, carried in meta.json) on every page and image.
+release_banner_colour: "#8A6100"
 
 # Pages in reading order: file, title, one-line purpose shown on the front page.
 pages:
@@ -15,8 +17,9 @@ pages:
   - {id: frontier, file: frontier.html, title: "Cost frontier", purpose: "Survival and shortfall against annual cost, by policy"}
   - {id: option_c, file: option_c.html, title: "Option C panel", purpose: "C and C′ across voluntary uptake x HQLA released"}
   - {id: reversal, file: reversal.html, title: "Reversal distances", purpose: "How far market stigma must move from the marker to change each cell"}
+  - {id: sensitivity, file: sensitivity.html, title: "Sensitivities", purpose: "Each one-at-a-time sensitivity: survival and shortfall against the default, and how many mid-range cells change label (Clarification 31)"}
   - {id: attribution, file: attribution.html, title: "Feature attribution", purpose: "What each of the four switches contributes to survival and shortfall"}
-  - {id: replay, file: replay.html, title: "Episode replay", purpose: "One run, day by day in plain English, each sentence linked to its log line"}
+  - {id: replay, file: replay.html, title: "Episode replay", purpose: "The median run of each scenario under A, B, C, C′ and E, day by day in plain English, each sentence linked to its log line and checked by Jev"}
   - {id: hypotheses, file: hypotheses.html, title: "Hypotheses", purpose: "H1–H8 as pre-registered, each with its test, result and verdict"}
   - {id: limits, file: limits.html, title: "Limits", purpose: "The v1 limits recorded so far"}
 
@@ -81,4 +84,4 @@ feature_labels:
   lcr_credit: "LCR credit"
 outcome_labels: {survival_rate: "Survival rate", liquidity_shortfall_bn: "Liquidity shortfall ($bn)"}
 
-verdict_slots: "supported · not supported · untestable (H8 only) · reported (H2 only, no prediction)"
+verdict_slots: "supported · not supported · untestable · reported (H2 only, no prediction)"

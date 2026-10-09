@@ -17,7 +17,17 @@ plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 9, "hatch.linewi
 
 
 def save(fig, path, banner):
-    """Write a figure. With a banner (mock results), stamp it on the image and in the PNG metadata."""
+    """Write a figure. With a banner (mock results), stamp it on the image and in the PNG metadata.
+
+    A release banner (Clarification 31: v0.1) comes as {"text", "colour"}: a band across the top and the same
+    PNG metadata, without the mock watermark.
+    """
+    if isinstance(banner, dict):
+        fig.text(0.5, 0.995, banner["text"], ha="center", va="top", fontsize=11, color="white", weight="bold",
+                 bbox={"facecolor": banner["colour"], "edgecolor": "none", "pad": 4}, zorder=101)
+        fig.savefig(path, dpi=130, metadata={"Description": banner["text"]})
+        plt.close(fig)
+        return
     if banner:
         fig.text(0.5, 0.5, banner, rotation=28, ha="center", va="center", fontsize=34, color="#C00000",
                  alpha=0.16, weight="bold", zorder=100)

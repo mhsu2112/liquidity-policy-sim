@@ -1,0 +1,38 @@
+# The v0.1 comparison run (session v0.1-C). Every value here is fixed by Clarification 31 (docs/amendments.md),
+# recorded before any stress run of B, B', C, C' or E. The run plan itself (grids, sensitivities, runs per cell)
+# is config/run_plan.yaml (Clarification 14); nothing there is repeated here.
+
+seeds:                        # Clarification 31 B3: news noise, information and testing draws, per scenario
+  S1: 20261021
+  S2: 20261022
+
+z_90: 1.6449                  # Clarification 31 B2: two-sided 90% normal interval (paired, per (bank, run) unit)
+
+workers: 8                    # parallel processes (this computer has 10 cores); results do not depend on it
+dry_run_share: 0.01           # M3.1: a 1% dry run (every 100th batch, full size) that prints a time estimate
+
+marker:                       # Clarification 31 A
+  policy: A                   # only A's marker goes on the axis
+  decimals: 2                 # 0.7787 -> 0.78, as the owner wrote it
+  label: "provisional Jev reference (v0.1, not validated against human readers)"
+  c_default_uptake: 0.75      # contract 2d default; C's r = uptake x 2.5 for the implied-s table
+
+false_comfort:                # Clarification 31 B4 and H5: reported LCR >= 100% but failure within 7 days
+  lcr_at_least: 1.0
+  fail_by_day: 7
+
+margins_cap: 1.0              # Clarification 31 B5: a lendable value can't exceed 100% after +5 pp
+
+collateral_split_pp: 0.20     # Clarification 4 item 1: Fed or Home Loan Bank share +/-20 pp, unpledged adjusts
+
+replay:                       # Clarification 31 B8
+  policies: [A, B, C, C_prime, E]
+  tuning_cell: {stigma: 0.35, supervision: neutral}
+  flag_below: 0.5             # a sentence is flagged if Jev's P(yes) < 0.5
+  question: "Is every fact stated in this sentence supported by the log lines?"
+  tag: "M3.5-v0.1"
+
+h7_policies: [A, B, C, C_prime, E]   # Clarification 31 B7: the pre-registered policies (B' was added later)
+h8_min_borrow_share: 0.05     # Clarification 18 item 1
+h8_min_qualifying_share: 0.10 # Clarification 18 item 1
+h8_min_a_survival: 0.90       # Clarification 17 item 3
