@@ -1,0 +1,772 @@
+corpus_id,stratum,source_type,weight,label,p1,p2,p3,p4,expected_score,model_version,source
+P868dec62ae,S-A,speech_testimony,1.0,2,0.01,0.67,0.32,0.0,2.32,jev-1.13.0,M2.6 call
+P9f9c4b4a5a,S-A,news,1.0,3,0.16,0.1,0.73,0.01,2.6,jev-1.13.0,M2.6 call
+P0ff6555168,S-A,speech_testimony,1.0,1,0.86,0.1,0.04,0.0,1.19,jev-1.13.0,M2.6 call
+Pc1f273acfb,S-A,news,1.0,3,0.2,0.13,0.67,0.0,2.46,jev-1.13.0,M2.4 answer reused
+P305de7b32c,S-A,news,1.0,4,0.02,0.0,0.24,0.74,3.7,jev-1.13.0,M2.4 answer reused
+Pd881a6f4a8,S-A,news,1.0,4,0.0,0.0,0.25,0.75,3.75,jev-1.13.0,M2.6 call
+P2b85449de7,S-A,news,1.0,4,0.05,0.05,0.17,0.73,3.58,jev-1.13.0,M2.4 answer reused
+P1694c1b175,S-A,news,1.0,4,0.0,0.0,0.22,0.78,3.78,jev-1.13.0,M2.4 answer reused
+P732ec20fff,S-A,news,1.0,4,0.0,0.0,0.04,0.96,3.96,jev-1.13.0,M2.4 answer reused
+P6f85533028,S-A,news,1.0,4,0.0,0.0,0.45,0.55,3.55,jev-1.13.0,M2.6 call
+Pe69299fdf3,S-A,news,1.0,4,0.0,0.0,0.01,0.99,3.99,jev-1.13.0,M2.4 answer reused
+P60917ad08b,S-A,news,1.0,4,0.0,0.0,0.03,0.97,3.97,jev-1.13.0,M2.4 answer reused
+Pfeafd6a7a7,S-A,news,1.0,4,0.0,0.0,0.02,0.98,3.98,jev-1.13.0,M2.4 answer reused
+P7bd40ed22b,S-A,speech_testimony,1.0,1,0.45,0.22,0.33,0.0,1.87,jev-1.13.0,M2.6 call
+P12e41cdc27,S-A,speech_testimony,1.0,2,0.05,0.75,0.17,0.03,2.19,jev-1.13.0,M2.4 answer reused
+Pce7e820ce8,S-A,news,1.0,3,0.0,0.0,0.52,0.48,3.48,jev-1.13.0,M2.4 answer reused
+P24c2532902,S-A,news,1.0,4,0.0,0.0,0.0,1.0,4.0,jev-1.13.0,M2.4 answer reused
+P8a0e7b75ba,S-A,news,1.0,4,0.0,0.0,0.0,1.0,4.0,jev-1.13.0,M2.6 call
+Pa4ccfc4d7f,S-A,news,1.0,4,0.0,0.0,0.0,1.0,4.0,jev-1.13.0,M2.4 answer reused
+P06faf27b26,S-A,speech_testimony,1.0,3,0.14,0.1,0.76,0.0,2.63,jev-1.13.0,M2.6 call
+P641ecaa889,S-A,speech_testimony,1.0,3,0.0,0.0,0.99,0.01,3.01,jev-1.13.0,M2.4 answer reused
+P48e4fa7a2d,S-A,news,1.0,3,0.02,0.11,0.81,0.06,2.9,jev-1.13.0,M2.6 call
+Pb9c0328fd4,S-A,news,1.0,3,0.05,0.08,0.8,0.07,2.88,jev-1.13.0,M2.4 answer reused
+P07d7c129dd,S-A,speech_testimony,1.0,1,0.52,0.46,0.02,0.0,1.5,jev-1.13.0,M2.4 answer reused
+P4bd5a10c15,S-A,speech_testimony,1.0,2,0.43,0.55,0.02,0.0,1.6,jev-1.13.0,M2.6 call
+Pc72473a1b1,S-A,speech_testimony,1.0,2,0.13,0.78,0.09,0.0,1.96,jev-1.13.0,M2.4 answer reused
+P06a31e6084,S-A,news,1.0,4,0.0,0.01,0.04,0.95,3.93,jev-1.13.0,M2.4 answer reused
+Pd3da68f0e5,S-A,news,1.0,4,0.0,0.0,0.0,1.0,4.0,jev-1.13.0,M2.6 call
+P99f37d2767,S-A,news,1.0,4,0.0,0.02,0.05,0.93,3.9,jev-1.13.0,M2.4 answer reused
+P774b32d5ce,S-A,news,1.0,3,0.0,0.0,0.86,0.14,3.13,jev-1.13.0,M2.6 call
+Pd706e6efdf,S-A,speech_testimony,1.0,1,0.41,0.25,0.34,0.0,1.94,jev-1.13.0,M2.4 answer reused
+Pd9a7e6bdc4,S-A,news,1.0,3,0.0,0.01,0.8,0.19,3.18,jev-1.13.0,M2.6 call
+P166576e420,S-A,news,1.0,3,0.0,0.05,0.9,0.05,3.0,jev-1.13.0,M2.6 call
+P61c24ee540,S-A,news,1.0,1,0.71,0.04,0.19,0.06,1.59,jev-1.13.0,M2.6 call
+P4f167fc722,S-A,news,1.0,2,0.15,0.46,0.35,0.04,2.28,jev-1.13.0,M2.6 call
+Pfc8702e6e5,S-A,news,1.0,3,0.0,0.03,0.81,0.16,3.12,jev-1.13.0,M2.6 call
+Pa3e72f6572,S-A,news,1.0,3,0.01,0.23,0.43,0.33,3.08,jev-1.13.0,M2.6 call
+P375a1de5aa,S-A,speech_testimony,1.0,1,0.65,0.09,0.26,0.0,1.62,jev-1.13.0,M2.6 call
+P65d103cb76,S-A,speech_testimony,1.0,2,0.02,0.92,0.06,0.0,2.04,jev-1.13.0,M2.6 call
+Pf31a98e324,S-A,news,1.0,1,0.51,0.02,0.47,0.0,1.96,jev-1.13.0,M2.6 call
+P24fd056500,S-A,filing,1.0,2,0.0,0.91,0.09,0.0,2.1,jev-1.13.0,M2.6 call
+P4aa5dba927,S-A,speech_testimony,1.0,3,0.36,0.12,0.51,0.01,2.17,jev-1.13.0,M2.6 call
+P4bcfc72a68,S-A,speech_testimony,1.0,3,0.0,0.0,0.98,0.02,3.02,jev-1.13.0,M2.4 answer reused
+P8e8814c458,S-A,speech_testimony,1.0,3,0.3,0.19,0.51,0.0,2.21,jev-1.13.0,M2.4 answer reused
+P79624b41ff,S-A,news,1.0,3,0.02,0.23,0.42,0.33,3.08,jev-1.13.0,M2.6 call
+P54eba583eb,S-A,speech_testimony,1.0,2,0.01,0.56,0.43,0.0,2.43,jev-1.13.0,M2.4 answer reused
+P764e2ab603,S-A,news,1.0,3,0.15,0.28,0.56,0.0,2.42,jev-1.13.0,M2.6 call
+Pd1317d4e2f,S-A,filing,1.0,2,0.03,0.97,0.0,0.0,1.97,jev-1.13.0,M2.4 answer reused
+P906a2dafb1,S-A,news,1.0,3,0.0,0.02,0.96,0.02,3.0,jev-1.13.0,M2.6 call
+Pcd242d5a72,S-A,news,1.0,3,0.0,0.14,0.68,0.18,3.03,jev-1.13.0,M2.4 answer reused
+P2b7b6aea2b,S-A,news,1.0,2,0.1,0.49,0.37,0.04,2.35,jev-1.13.0,M2.6 call
+P0091c3c544,S-A,speech_testimony,1.0,3,0.05,0.4,0.55,0.0,2.5,jev-1.13.0,M2.4 answer reused
+P3d38919466,S-A,speech_testimony,1.0,2,0.28,0.71,0.01,0.0,1.72,jev-1.13.0,M2.6 call
+P38d7da3210,S-A,news,1.0,3,0.0,0.09,0.85,0.06,2.97,jev-1.13.0,M2.4 answer reused
+P2a50faba9e,S-A,news,1.0,3,0.0,0.01,0.96,0.03,3.02,jev-1.13.0,M2.4 answer reused
+P039877e0b2,S-A,filing,1.0,1,0.99,0.01,0.0,0.0,1.01,jev-1.13.0,M2.6 call
+Pae14d618d8,S-A,speech_testimony,1.0,3,0.01,0.25,0.72,0.02,2.75,jev-1.13.0,M2.6 call
+P7482d7e49d,S-A,news,1.0,4,0.0,0.0,0.06,0.94,3.94,jev-1.13.0,M2.4 answer reused
+P130445bfc9,S-A,news,1.0,2,0.08,0.51,0.17,0.24,2.58,jev-1.13.0,M2.6 call
+P3701c70bfd,S-A,news,1.0,3,0.08,0.06,0.75,0.11,2.89,jev-1.13.0,M2.4 answer reused
+P4d24a6e192,S-A,news,1.0,3,0.01,0.11,0.85,0.03,2.9,jev-1.13.0,M2.6 call
+P63c62c15c7,S-A,news,1.0,2,0.29,0.33,0.26,0.12,2.22,jev-1.13.0,M2.6 call
+P9d92bffa05,S-A,news,1.0,3,0.02,0.05,0.58,0.35,3.24,jev-1.13.0,M2.6 call
+Pa07eddeb2b,S-A,news,1.0,1,0.69,0.18,0.13,0.0,1.44,jev-1.13.0,M2.6 call
+P33be26e4e3,S-A,speech_testimony,1.0,2,0.06,0.81,0.12,0.01,2.08,jev-1.13.0,M2.6 call
+P3167821cc8,S-A,speech_testimony,1.0,2,0.01,0.87,0.12,0.0,2.12,jev-1.13.0,M2.6 call
+Pa4cd9265fb,S-A,news,1.0,3,0.0,0.0,0.73,0.27,3.27,jev-1.13.0,M2.4 answer reused
+Pc8dde1dde7,S-A,news,1.0,2,0.04,0.64,0.31,0.01,2.28,jev-1.13.0,M2.6 call
+Pf2f4a18d24,S-A,news,1.0,3,0.03,0.37,0.54,0.06,2.64,jev-1.13.0,M2.4 answer reused
+P9de97e467c,S-A,filing,1.0,1,0.54,0.36,0.1,0.0,1.56,jev-1.13.0,M2.4 answer reused
+P3bf0691549,S-A,speech_testimony,1.0,2,0.01,0.87,0.12,0.0,2.12,jev-1.13.0,M2.4 answer reused
+Pc75b69661f,S-A,news,1.0,4,0.0,0.01,0.29,0.7,3.69,jev-1.13.0,M2.4 answer reused
+P0d05a2b666,S-A,speech_testimony,1.0,1,0.73,0.17,0.1,0.0,1.38,jev-1.13.0,M2.4 answer reused
+P795fa36af8,S-A,news,1.0,4,0.0,0.01,0.34,0.65,3.64,jev-1.13.0,M2.4 answer reused
+Pd3fedc6606,S-A,news,1.0,4,0.0,0.05,0.43,0.52,3.47,jev-1.13.0,M2.6 call
+Pb43d846e62,S-A,speech_testimony,1.0,4,0.01,0.13,0.4,0.46,3.3,jev-1.13.0,M2.6 call
+Pe8bcbc3874,S-A,news,1.0,2,0.0,0.53,0.46,0.01,2.48,jev-1.13.0,M2.4 answer reused
+Pbeeeea32fd,S-A,news,1.0,3,0.03,0.32,0.6,0.05,2.67,jev-1.13.0,M2.4 answer reused
+Pe23bfd7cb3,S-A,filing,1.0,2,0.31,0.64,0.05,0.0,1.74,jev-1.13.0,M2.4 answer reused
+Pb42a5f313f,S-A,news,1.0,2,0.0,0.55,0.42,0.03,2.47,jev-1.13.0,M2.4 answer reused
+P74798afb87,S-A,filing,1.0,2,0.03,0.95,0.02,0.0,1.99,jev-1.13.0,M2.4 answer reused
+P3761a3d685,S-A,news,1.0,4,0.0,0.06,0.32,0.62,3.56,jev-1.13.0,M2.4 answer reused
+P0ad828f6d9,S-A,filing,1.0,2,0.0,0.98,0.02,0.0,2.02,jev-1.13.0,M2.4 answer reused
+P726dc1a6c5,S-A,speech_testimony,1.0,3,0.0,0.01,0.99,0.0,2.99,jev-1.13.0,M2.6 call
+Pf32706fd61,S-A,speech_testimony,1.0,3,0.0,0.05,0.89,0.06,3.01,jev-1.13.0,M2.6 call
+Pfd34afac7c,S-A,speech_testimony,1.0,2,0.01,0.98,0.01,0.0,2.0,jev-1.13.0,M2.4 answer reused
+Pb57fbc3569,S-A,speech_testimony,1.0,3,0.09,0.11,0.69,0.11,2.82,jev-1.13.0,M2.6 call
+Pdc187c507a,S-A,speech_testimony,1.0,3,0.04,0.11,0.85,0.0,2.83,jev-1.13.0,M2.6 call
+P7598a8829d,S-A,filing,1.0,3,0.1,0.07,0.77,0.06,2.78,jev-1.13.0,M2.4 answer reused
+P410cc6fe98,S-A,filing,1.0,2,0.0,0.95,0.05,0.0,2.05,jev-1.13.0,M2.4 answer reused
+P8b09c7d2cd,S-A,filing,1.0,2,0.0,0.92,0.08,0.0,2.08,jev-1.13.0,M2.6 call
+Pea46ef30dc,S-A,speech_testimony,1.0,2,0.27,0.66,0.07,0.0,1.81,jev-1.13.0,M2.4 answer reused
+Padab702965,S-A,speech_testimony,1.0,2,0.27,0.46,0.26,0.01,2.0,jev-1.13.0,M2.4 answer reused
+P1464a30962,S-A,official_statement,1.0,2,0.15,0.67,0.18,0.0,2.04,jev-1.13.0,M2.4 answer reused
+P503cdbc175,S-A,official_statement,1.0,2,0.31,0.48,0.2,0.01,1.91,jev-1.13.0,M2.6 call
+Pb00a4eccc2,S-A,speech_testimony,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.4 answer reused
+Pf07278ebc5,S-A,filing,1.0,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+P247172ab83,S-A,filing,1.0,2,0.0,0.95,0.05,0.0,2.05,jev-1.13.0,M2.4 answer reused
+P7eea8aeec0,S-A,news,1.0,3,0.0,0.28,0.6,0.12,2.84,jev-1.13.0,M2.6 call
+P94f378d193,S-A,speech_testimony,1.0,3,0.02,0.05,0.93,0.0,2.91,jev-1.13.0,M2.4 answer reused
+Pe41cfd18d8,S-A,speech_testimony,1.0,2,0.13,0.45,0.42,0.0,2.29,jev-1.13.0,M2.6 call
+P52087b20aa,S-A,speech_testimony,1.0,3,0.12,0.31,0.56,0.01,2.47,jev-1.13.0,M2.6 call
+Pb0a137529e,S-A,speech_testimony,1.0,3,0.0,0.0,0.99,0.01,3.01,jev-1.13.0,M2.6 call
+P0bcdf7966d,S-A,speech_testimony,1.0,1,0.68,0.31,0.01,0.0,1.34,jev-1.13.0,M2.6 call
+Pc0e0411dfb,S-A,speech_testimony,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.4 answer reused
+P39d6e5f261,S-A,filing,1.0,2,0.0,0.95,0.05,0.0,2.05,jev-1.13.0,M2.6 call
+P3eadb89ada,S-A,speech_testimony,1.0,3,0.0,0.0,0.99,0.01,3.01,jev-1.13.0,M2.4 answer reused
+P971035292a,S-A,news,1.0,1,0.73,0.16,0.1,0.01,1.38,jev-1.13.0,M2.4 answer reused
+Pf8a4e44299,S-A,news,1.0,3,0.29,0.09,0.61,0.01,2.33,jev-1.13.0,M2.6 call
+P5d2c8f73a9,S-A,news,1.0,3,0.0,0.03,0.94,0.03,3.0,jev-1.13.0,M2.6 call
+P74da04ee2f,S-B,speech_testimony,1.0,1,0.64,0.22,0.14,0.0,1.51,jev-1.13.0,M2.4 answer reused
+Pd7a01052ae,S-B,speech_testimony,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.6 call
+P6633f56359,S-B,speech_testimony,1.0,1,0.54,0.34,0.11,0.0,1.58,jev-1.13.0,M2.4 answer reused
+Pf6eaacd838,S-B,speech_testimony,1.0,2,0.43,0.55,0.02,0.0,1.59,jev-1.13.0,M2.6 call
+Pfa8e6ceb7c,S-B,news,1.0,3,0.0,0.08,0.8,0.12,3.04,jev-1.13.0,M2.6 call
+Pfd54ad07d4,S-B,filing,3.04971,2,0.0,0.97,0.03,0.0,2.03,jev-1.13.0,M2.4 answer reused
+P6c418d4986,S-B,speech_testimony,1.0,3,0.0,0.0,0.99,0.01,3.01,jev-1.13.0,M2.6 call
+P83caef57f8,S-B,speech_testimony,1.0,3,0.01,0.04,0.73,0.22,3.16,jev-1.13.0,M2.4 answer reused
+P895489dcc2,S-B,speech_testimony,1.0,3,0.25,0.15,0.56,0.04,2.4,jev-1.13.0,M2.4 answer reused
+P72af1936bb,S-B,filing,3.04971,3,0.02,0.09,0.8,0.09,2.96,jev-1.13.0,M2.6 call
+P57948cb12a,S-B,news,1.0,3,0.0,0.2,0.79,0.01,2.8,jev-1.13.0,M2.4 answer reused
+P9d812eb5f2,S-B,news,1.0,3,0.0,0.0,0.59,0.41,3.41,jev-1.13.0,M2.6 call
+P8d1d61844f,S-B,speech_testimony,1.0,3,0.05,0.25,0.67,0.03,2.68,jev-1.13.0,M2.4 answer reused
+Pe9ade346a9,S-B,speech_testimony,1.0,2,0.36,0.62,0.02,0.0,1.67,jev-1.13.0,M2.4 answer reused
+Pb23f15ba64,S-B,filing,3.04971,2,0.33,0.61,0.06,0.0,1.73,jev-1.13.0,M2.6 call
+Pb46a363738,S-B,analyst_note,1.0,2,0.01,0.87,0.12,0.0,2.11,jev-1.13.0,M2.6 call
+Pf376b69f92,S-B,analyst_note,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.4 answer reused
+P1b9c9fbeeb,S-B,speech_testimony,1.0,3,0.0,0.0,0.96,0.04,3.04,jev-1.13.0,M2.4 answer reused
+P6c1c21b494,S-B,speech_testimony,1.0,3,0.0,0.0,0.99,0.01,3.0,jev-1.13.0,M2.6 call
+P38662e099e,S-B,news,1.0,3,0.0,0.03,0.93,0.04,3.01,jev-1.13.0,M2.6 call
+Pe242083a2b,S-B,speech_testimony,1.0,2,0.02,0.83,0.15,0.0,2.12,jev-1.13.0,M2.4 answer reused
+Pdb88eeb5a8,S-B,speech_testimony,1.0,3,0.0,0.08,0.84,0.08,3.0,jev-1.13.0,M2.4 answer reused
+Pabe797ac1b,S-B,filing,3.04971,4,0.0,0.0,0.0,1.0,4.0,jev-1.13.0,M2.4 answer reused
+P4b48d59536,S-B,filing,3.04971,2,0.13,0.83,0.04,0.0,1.91,jev-1.13.0,M2.4 answer reused
+Pacc190aa8d,S-B,official_statement,1.0,2,0.01,0.65,0.22,0.12,2.44,jev-1.13.0,M2.6 call
+P66ec477a1c,S-B,news,1.0,2,0.0,0.85,0.15,0.0,2.16,jev-1.13.0,M2.4 answer reused
+P193ab35932,S-B,news,1.0,3,0.0,0.05,0.88,0.07,3.01,jev-1.13.0,M2.6 call
+P2614c5bc56,S-B,filing,3.04971,2,0.2,0.7,0.1,0.0,1.91,jev-1.13.0,M2.4 answer reused
+Peae901c438,S-B,filing,3.04971,2,0.0,0.81,0.15,0.04,2.23,jev-1.13.0,M2.4 answer reused
+Pc2d6ebd47f,S-B,filing,3.04971,2,0.01,0.97,0.02,0.0,2.01,jev-1.13.0,M2.6 call
+P40c0249caf,S-B,analyst_note,1.0,3,0.11,0.07,0.82,0.0,2.71,jev-1.13.0,M2.6 call
+P96ee161100,S-B,analyst_note,1.0,1,0.92,0.05,0.03,0.0,1.11,jev-1.13.0,M2.6 call
+P05656bb8c5,S-B,news,1.0,3,0.0,0.0,0.75,0.25,3.25,jev-1.13.0,M2.4 answer reused
+P956ae14b6f,S-B,news,1.0,3,0.12,0.02,0.85,0.01,2.75,jev-1.13.0,M2.6 call
+Paeb17e8e72,S-B,news,1.0,4,0.0,0.0,0.03,0.97,3.97,jev-1.13.0,M2.6 call
+Pb58c17c399,S-B,news,1.0,3,0.0,0.03,0.97,0.0,2.97,jev-1.13.0,M2.6 call
+Pbdb2e75a5b,S-B,news,1.0,3,0.0,0.01,0.65,0.34,3.33,jev-1.13.0,M2.4 answer reused
+P71b43a1635,S-B,speech_testimony,1.0,2,0.29,0.62,0.09,0.0,1.8,jev-1.13.0,M2.6 call
+P69c4db1ed0,S-B,filing,3.04971,3,0.4,0.1,0.47,0.03,2.14,jev-1.13.0,M2.4 answer reused
+Pfefa0eee6b,S-B,news,1.0,3,0.0,0.39,0.61,0.0,2.61,jev-1.13.0,M2.6 call
+P93f8772b17,S-B,analyst_note,1.0,2,0.05,0.49,0.36,0.1,2.52,jev-1.13.0,M2.6 call
+P9d45df48ed,S-B,analyst_note,1.0,2,0.0,0.61,0.37,0.02,2.41,jev-1.13.0,M2.4 answer reused
+Pe84822dc15,S-B,filing,3.04971,2,0.05,0.88,0.07,0.0,2.03,jev-1.13.0,M2.6 call
+P9a4eb5cc90,S-B,analyst_note,1.0,2,0.4,0.5,0.1,0.0,1.7,jev-1.13.0,M2.4 answer reused
+Pfd34bce4b8,S-B,analyst_note,1.0,3,0.0,0.0,0.85,0.15,3.14,jev-1.13.0,M2.6 call
+P46cea322e6,S-B,analyst_note,1.0,3,0.02,0.11,0.86,0.01,2.85,jev-1.13.0,M2.4 answer reused
+Pec43ddb728,S-B,analyst_note,1.0,2,0.0,0.98,0.02,0.0,2.02,jev-1.13.0,M2.6 call
+Pcab6454439,S-B,news,1.0,2,0.02,0.56,0.42,0.0,2.4,jev-1.13.0,M2.6 call
+P5f8e8e74b8,S-B,filing,3.04971,2,0.08,0.92,0.0,0.0,1.93,jev-1.13.0,M2.6 call
+Pcd0ebe3f17,S-B,filing,3.04971,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+P255c714b5a,S-B,analyst_note,1.0,3,0.0,0.11,0.59,0.3,3.18,jev-1.13.0,M2.4 answer reused
+P5b7fbcd62a,S-B,analyst_note,1.0,3,0.0,0.24,0.41,0.35,3.11,jev-1.13.0,M2.6 call
+Pd5c757104c,S-B,news,1.0,3,0.05,0.36,0.59,0.0,2.55,jev-1.13.0,M2.4 answer reused
+P11a4957542,S-B,speech_testimony,1.0,3,0.04,0.16,0.79,0.01,2.77,jev-1.13.0,M2.4 answer reused
+Peda4a3bc71,S-B,speech_testimony,1.0,1,0.62,0.3,0.08,0.0,1.48,jev-1.13.0,M2.6 call
+P93c4e07bd9,S-B,filing,3.04971,2,0.01,0.98,0.01,0.0,2.0,jev-1.13.0,M2.6 call
+Pde930f25c2,S-B,filing,3.04971,2,0.0,0.97,0.02,0.01,2.03,jev-1.13.0,M2.4 answer reused
+Pd2ae485e56,S-B,filing,3.04971,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.4 answer reused
+Pb7b303c206,S-B,filing,3.04971,2,0.07,0.57,0.32,0.04,2.32,jev-1.13.0,M2.4 answer reused
+P8e2651dc21,S-B,speech_testimony,1.0,1,0.86,0.06,0.08,0.0,1.23,jev-1.13.0,M2.4 answer reused
+Pbb3d8f4a99,S-B,speech_testimony,1.0,2,0.02,0.73,0.25,0.0,2.24,jev-1.13.0,M2.4 answer reused
+Peba4fd76a3,S-B,filing,3.04971,3,0.01,0.05,0.9,0.04,2.98,jev-1.13.0,M2.6 call
+Pb6da8bbe0e,S-B,speech_testimony,1.0,2,0.01,0.96,0.03,0.0,2.02,jev-1.13.0,M2.6 call
+P3236b26d69,S-B,speech_testimony,1.0,4,0.01,0.23,0.37,0.39,3.12,jev-1.13.0,M2.4 answer reused
+P01ec9669cd,S-B,news,1.0,3,0.0,0.04,0.55,0.41,3.37,jev-1.13.0,M2.4 answer reused
+Pd19d03be4b,S-B,speech_testimony,1.0,1,0.85,0.13,0.02,0.0,1.17,jev-1.13.0,M2.4 answer reused
+P3827664e01,S-B,filing,3.04971,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P00e97134ce,S-B,speech_testimony,1.0,2,0.16,0.75,0.09,0.0,1.92,jev-1.13.0,M2.6 call
+P9a758e3665,S-B,speech_testimony,1.0,3,0.31,0.05,0.48,0.16,2.5,jev-1.13.0,M2.6 call
+P3059ab3146,S-B,news,1.0,3,0.0,0.0,0.65,0.35,3.35,jev-1.13.0,M2.6 call
+Pe4e5f9e4e8,S-B,speech_testimony,1.0,3,0.01,0.24,0.71,0.04,2.78,jev-1.13.0,M2.6 call
+P0f567edfc3,S-B,analyst_note,1.0,2,0.0,0.9,0.1,0.0,2.1,jev-1.13.0,M2.4 answer reused
+Pd38e82170d,S-B,analyst_note,1.0,3,0.04,0.33,0.63,0.0,2.58,jev-1.13.0,M2.6 call
+Pe0a8ca1604,S-B,analyst_note,1.0,3,0.0,0.06,0.58,0.36,3.3,jev-1.13.0,M2.4 answer reused
+P1e1536dad9,S-B,analyst_note,1.0,3,0.0,0.12,0.65,0.23,3.11,jev-1.13.0,M2.6 call
+Pcde888522a,S-B,analyst_note,1.0,3,0.0,0.23,0.48,0.29,3.05,jev-1.13.0,M2.4 answer reused
+Pb6a9dd5988,S-B,speech_testimony,1.0,2,0.05,0.56,0.39,0.0,2.35,jev-1.13.0,M2.6 call
+Pa55cbe5f09,S-B,speech_testimony,1.0,3,0.09,0.08,0.83,0.0,2.76,jev-1.13.0,M2.4 answer reused
+P9d2b35a8cc,S-B,news,1.0,3,0.0,0.0,0.85,0.15,3.14,jev-1.13.0,M2.4 answer reused
+P6d7b6229d7,S-B,speech_testimony,1.0,2,0.0,0.55,0.38,0.07,2.53,jev-1.13.0,M2.4 answer reused
+P877f724140,S-B,speech_testimony,1.0,1,0.38,0.24,0.37,0.01,2.01,jev-1.13.0,M2.6 call
+P46b1c95f8b,S-B,speech_testimony,1.0,1,0.93,0.05,0.02,0.0,1.09,jev-1.13.0,M2.4 answer reused
+P9636a5bcba,S-B,speech_testimony,1.0,1,0.6,0.16,0.23,0.01,1.67,jev-1.13.0,M2.4 answer reused
+P1a0f623a24,S-B,speech_testimony,1.0,3,0.27,0.18,0.53,0.02,2.29,jev-1.13.0,M2.4 answer reused
+P52ef7bab52,S-B,speech_testimony,1.0,3,0.02,0.18,0.5,0.3,3.09,jev-1.13.0,M2.6 call
+P2bcd622f34,S-B,filing,3.04971,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+P5140d748ef,S-B,filing,3.04971,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pd0ade003da,S-B,news,1.0,4,0.0,0.0,0.12,0.88,3.88,jev-1.13.0,M2.6 call
+Pe294822761,S-B,news,1.0,4,0.0,0.0,0.05,0.95,3.95,jev-1.13.0,M2.6 call
+Pf65671859e,S-B,official_statement,1.0,4,0.01,0.04,0.4,0.55,3.49,jev-1.13.0,M2.6 call
+Pfea345f241,S-B,filing,3.04971,2,0.01,0.96,0.02,0.01,2.02,jev-1.13.0,M2.6 call
+P1542fb0f60,S-B,speech_testimony,1.0,1,0.47,0.18,0.34,0.01,1.9,jev-1.13.0,M2.6 call
+P2f6269737e,S-B,speech_testimony,1.0,4,0.0,0.0,0.01,0.99,3.99,jev-1.13.0,M2.6 call
+P3a74b00eaf,S-B,speech_testimony,1.0,4,0.0,0.0,0.1,0.9,3.9,jev-1.13.0,M2.4 answer reused
+P98a2485d4d,S-B,speech_testimony,1.0,1,0.67,0.28,0.05,0.0,1.38,jev-1.13.0,M2.4 answer reused
+Pc355ecb029,S-B,speech_testimony,1.0,2,0.17,0.81,0.02,0.0,1.85,jev-1.13.0,M2.6 call
+Pfbaebe4c90,S-B,speech_testimony,1.0,2,0.06,0.66,0.27,0.01,2.23,jev-1.13.0,M2.6 call
+P7f3fcefcfa,S-B,filing,3.04971,1,0.89,0.02,0.09,0.0,1.19,jev-1.13.0,M2.6 call
+Pb3510528af,S-B,speech_testimony,1.0,1,0.74,0.21,0.05,0.0,1.32,jev-1.13.0,M2.4 answer reused
+Paf9d13b0f9,S-B,speech_testimony,1.0,2,0.38,0.59,0.03,0.0,1.65,jev-1.13.0,M2.4 answer reused
+P1017777ac2,S-B,filing,3.04971,1,0.77,0.23,0.0,0.0,1.24,jev-1.13.0,M2.6 call
+P3137cf7abf,S-B,speech_testimony,1.0,3,0.2,0.19,0.5,0.11,2.51,jev-1.13.0,M2.6 call
+P16ac645071,S-B,speech_testimony,1.0,1,0.74,0.23,0.03,0.0,1.29,jev-1.13.0,M2.6 call
+P66dafcfd3a,S-B,speech_testimony,1.0,2,0.03,0.94,0.03,0.0,2.0,jev-1.13.0,M2.4 answer reused
+Pc174db57c1,S-B,speech_testimony,1.0,1,0.7,0.09,0.2,0.01,1.51,jev-1.13.0,M2.4 answer reused
+P7d2cedb6bb,S-B,speech_testimony,1.0,3,0.41,0.12,0.45,0.02,2.09,jev-1.13.0,M2.4 answer reused
+P7491093f2b,S-B,analyst_note,1.0,3,0.0,0.08,0.91,0.01,2.93,jev-1.13.0,M2.4 answer reused
+Pdfe0e1a23d,S-B,analyst_note,1.0,3,0.01,0.47,0.48,0.04,2.56,jev-1.13.0,M2.6 call
+P045cc8308f,S-B,analyst_note,1.0,3,0.0,0.0,0.99,0.01,3.01,jev-1.13.0,M2.4 answer reused
+Pcc0e3e9cd9,S-B,analyst_note,1.0,3,0.0,0.01,0.96,0.03,3.02,jev-1.13.0,M2.6 call
+P2279d84c1c,S-B,speech_testimony,1.0,3,0.0,0.33,0.36,0.31,2.97,jev-1.13.0,M2.4 answer reused
+Pc6a0add768,S-B,speech_testimony,1.0,3,0.0,0.0,0.69,0.31,3.3,jev-1.13.0,M2.6 call
+P03c32fa3e7,S-B,speech_testimony,1.0,3,0.02,0.33,0.62,0.03,2.66,jev-1.13.0,M2.6 call
+P8cb68819a5,S-B,speech_testimony,1.0,1,0.73,0.19,0.08,0.0,1.35,jev-1.13.0,M2.6 call
+P63ef494101,S-B,filing,3.04971,1,0.61,0.32,0.07,0.0,1.47,jev-1.13.0,M2.6 call
+P1ddd43305c,S-B,speech_testimony,1.0,1,0.47,0.25,0.27,0.01,1.83,jev-1.13.0,M2.4 answer reused
+Pcb63d5f4ff,S-B,speech_testimony,1.0,2,0.07,0.61,0.32,0.0,2.25,jev-1.13.0,M2.4 answer reused
+P47fa878835,S-B,news,1.0,3,0.0,0.0,0.67,0.33,3.32,jev-1.13.0,M2.4 answer reused
+P6f808fa2ef,S-B,news,1.0,3,0.01,0.02,0.5,0.47,3.44,jev-1.13.0,M2.4 answer reused
+Paa38abf2b0,S-B,news,1.0,3,0.01,0.31,0.49,0.19,2.87,jev-1.13.0,M2.4 answer reused
+Pa0152ebc66,S-B,news,1.0,3,0.0,0.06,0.7,0.24,3.18,jev-1.13.0,M2.6 call
+Pdeb3f05471,S-B,analyst_note,1.0,2,0.0,0.9,0.1,0.0,2.1,jev-1.13.0,M2.6 call
+P227927659b,S-B,official_statement,1.0,2,0.02,0.64,0.33,0.01,2.33,jev-1.13.0,M2.4 answer reused
+P0373800b03,S-B,analyst_note,1.0,2,0.0,0.85,0.15,0.0,2.15,jev-1.13.0,M2.6 call
+P30bdbdc1a5,S-B,speech_testimony,1.0,2,0.13,0.7,0.16,0.01,2.05,jev-1.13.0,M2.4 answer reused
+P8155e8dd4e,S-B,official_statement,1.0,3,0.16,0.35,0.48,0.01,2.34,jev-1.13.0,M2.6 call
+Pc644b0c14c,S-B,speech_testimony,1.0,3,0.0,0.01,0.99,0.0,2.99,jev-1.13.0,M2.4 answer reused
+Pd738f74652,S-B,speech_testimony,1.0,2,0.03,0.95,0.02,0.0,2.0,jev-1.13.0,M2.4 answer reused
+Pb580718bcc,S-B,filing,3.04971,1,0.53,0.35,0.12,0.0,1.59,jev-1.13.0,M2.6 call
+Pa7ca839830,S-B,speech_testimony,1.0,2,0.16,0.52,0.13,0.19,2.36,jev-1.13.0,M2.4 answer reused
+P8d690b6137,S-B,news,1.0,4,0.0,0.0,0.15,0.85,3.85,jev-1.13.0,M2.6 call
+P000a3c9eef,S-B,filing,3.04971,2,0.04,0.91,0.05,0.0,2.01,jev-1.13.0,M2.4 answer reused
+Pde9af35d47,S-B,official_statement,1.0,2,0.02,0.97,0.01,0.0,1.99,jev-1.13.0,M2.4 answer reused
+P5006ae5ea2,S-B,speech_testimony,1.0,2,0.01,0.82,0.17,0.0,2.16,jev-1.13.0,M2.6 call
+Pbd4c414210,S-B,speech_testimony,1.0,4,0.0,0.0,0.3,0.7,3.7,jev-1.13.0,M2.6 call
+Pf1f6a981d6,S-B,filing,3.04971,1,0.75,0.19,0.06,0.0,1.32,jev-1.13.0,M2.6 call
+P1a5928fce2,S-B,filing,3.04971,1,0.69,0.19,0.11,0.01,1.44,jev-1.13.0,M2.4 answer reused
+P10c0208ab1,S-B,news,1.0,4,0.0,0.01,0.2,0.79,3.76,jev-1.13.0,M2.6 call
+P6ca63dbaf5,S-B,speech_testimony,1.0,3,0.03,0.16,0.7,0.11,2.89,jev-1.13.0,M2.4 answer reused
+P7ab4a6d224,S-B,news,1.0,4,0.0,0.0,0.14,0.86,3.86,jev-1.13.0,M2.6 call
+Pa8f976ad40,S-B,news,1.0,3,0.0,0.03,0.72,0.25,3.22,jev-1.13.0,M2.6 call
+P2b181b85cd,S-B,news,1.0,4,0.0,0.0,0.02,0.98,3.98,jev-1.13.0,M2.4 answer reused
+P718bdc1ad9,S-B,news,1.0,4,0.0,0.0,0.07,0.93,3.93,jev-1.13.0,M2.6 call
+P23c9783e4e,S-B,news,1.0,4,0.0,0.01,0.38,0.61,3.59,jev-1.13.0,M2.6 call
+P52bba9793a,S-B,official_statement,1.0,3,0.0,0.06,0.53,0.41,3.34,jev-1.13.0,M2.6 call
+Pfc32ac6ca0,S-B,news,1.0,4,0.0,0.0,0.03,0.97,3.97,jev-1.13.0,M2.4 answer reused
+P49b9a4f8d0,S-B,speech_testimony,1.0,1,0.83,0.16,0.01,0.0,1.17,jev-1.13.0,M2.6 call
+P7f3b4ff08a,S-B,speech_testimony,1.0,4,0.0,0.0,0.0,1.0,4.0,jev-1.13.0,M2.4 answer reused
+Pdc6494967c,S-B,speech_testimony,1.0,4,0.0,0.0,0.21,0.79,3.78,jev-1.13.0,M2.4 answer reused
+Pe4ca70b9d0,S-B,speech_testimony,1.0,4,0.0,0.0,0.07,0.93,3.93,jev-1.13.0,M2.6 call
+P038696a0a6,S-B,speech_testimony,1.0,3,0.0,0.12,0.51,0.37,3.24,jev-1.13.0,M2.4 answer reused
+P324d4c60ac,S-B,speech_testimony,1.0,1,0.67,0.3,0.03,0.0,1.35,jev-1.13.0,M2.6 call
+P5c55a0d7d6,S-B,speech_testimony,1.0,3,0.0,0.03,0.97,0.0,2.96,jev-1.13.0,M2.4 answer reused
+Pc35f092131,S-B,speech_testimony,1.0,3,0.01,0.01,0.84,0.14,3.11,jev-1.13.0,M2.6 call
+Paa0e72d1fa,S-B,filing,3.04971,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+P530aa2dc92,S-B,filing,3.04971,2,0.07,0.92,0.01,0.0,1.94,jev-1.13.0,M2.6 call
+Pd6b40d9d37,S-B,filing,3.04971,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P00544edd39,S-B,analyst_note,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.6 call
+P259c040d05,S-B,analyst_note,1.0,3,0.06,0.22,0.72,0.0,2.67,jev-1.13.0,M2.4 answer reused
+P92699b7743,S-B,news,1.0,4,0.06,0.02,0.17,0.75,3.62,jev-1.13.0,M2.4 answer reused
+P27a9ab0638,S-B,filing,3.04971,2,0.05,0.95,0.0,0.0,1.95,jev-1.13.0,M2.6 call
+P0775b5eb1b,S-B,official_statement,1.0,1,0.41,0.09,0.39,0.11,2.21,jev-1.13.0,M2.4 answer reused
+Pb0d5f4329a,S-B,analyst_note,1.0,2,0.0,0.55,0.43,0.02,2.48,jev-1.13.0,M2.6 call
+Pd9c9765919,S-B,analyst_note,1.0,2,0.0,0.71,0.25,0.04,2.33,jev-1.13.0,M2.4 answer reused
+P36912b5887,S-B,official_statement,1.0,4,0.01,0.04,0.05,0.9,3.84,jev-1.13.0,M2.4 answer reused
+P8fe6bba45e,S-B,analyst_note,1.0,1,0.94,0.03,0.03,0.0,1.08,jev-1.13.0,M2.6 call
+P9520db2fb9,S-B,analyst_note,1.0,3,0.01,0.1,0.88,0.01,2.9,jev-1.13.0,M2.6 call
+P4b2963c35b,S-B,analyst_note,1.0,3,0.0,0.0,0.99,0.01,3.01,jev-1.13.0,M2.6 call
+P98c5eda39e,S-B,analyst_note,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.6 call
+Pb1a640fb4a,S-B,analyst_note,1.0,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+Pe7f25aa169,S-B,analyst_note,1.0,2,0.0,0.88,0.12,0.0,2.13,jev-1.13.0,M2.4 answer reused
+Pba7b9a9ba6,S-B,filing,3.04971,2,0.01,0.59,0.4,0.0,2.39,jev-1.13.0,M2.6 call
+Pbbb1ea5766,S-B,analyst_note,1.0,3,0.0,0.0,0.99,0.01,3.01,jev-1.13.0,M2.6 call
+Pfea311520d,S-B,analyst_note,1.0,2,0.11,0.68,0.2,0.0,2.09,jev-1.13.0,M2.4 answer reused
+Pf29138dd70,S-B,analyst_note,1.0,3,0.05,0.24,0.69,0.02,2.68,jev-1.13.0,M2.6 call
+Pc9081e3c3b,S-B,filing,3.04971,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P5ccce6a278,S-C,analyst_note,1.0,3,0.0,0.11,0.86,0.03,2.92,jev-1.13.0,M2.4 answer reused
+Pb0a29aa26e,S-C,analyst_note,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.6 call
+P397a78324c,S-C,speech_testimony,1.0,1,0.43,0.22,0.35,0.0,1.93,jev-1.13.0,M2.4 answer reused
+P1a532ac085,S-C,filing,1.0,2,0.05,0.95,0.0,0.0,1.96,jev-1.13.0,M2.6 call
+P1df4dfff19,S-C,analyst_note,1.0,3,0.0,0.0,0.99,0.01,3.01,jev-1.13.0,M2.4 answer reused
+P8959825f22,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pc3d945e192,S-C,analyst_note,1.0,4,0.0,0.12,0.18,0.7,3.58,jev-1.13.0,M2.6 call
+P851e9ec729,S-C,analyst_note,1.0,4,0.0,0.0,0.32,0.68,3.68,jev-1.13.0,M2.4 answer reused
+Pbbb7cd19ba,S-C,analyst_note,1.0,3,0.18,0.09,0.72,0.01,2.55,jev-1.13.0,M2.6 call
+P71cbbc0046,S-C,news,1.0,3,0.0,0.0,0.97,0.03,3.03,jev-1.13.0,M2.4 answer reused
+P77ff72d25e,S-C,news,1.0,1,0.57,0.01,0.42,0.0,1.87,jev-1.13.0,M2.4 answer reused
+Pc3c6a4b3c0,S-C,news,1.0,3,0.08,0.0,0.92,0.0,2.85,jev-1.13.0,M2.4 answer reused
+Pd59e1b59f0,S-C,news,1.0,2,0.03,0.69,0.27,0.01,2.26,jev-1.13.0,M2.4 answer reused
+Pd532b37c16,S-C,official_statement,1.0,1,0.98,0.01,0.01,0.0,1.03,jev-1.13.0,M2.4 answer reused
+P301f57772e,S-C,analyst_note,1.0,3,0.04,0.01,0.95,0.0,2.91,jev-1.13.0,M2.6 call
+P83003eb6a9,S-C,analyst_note,1.0,3,0.01,0.0,0.99,0.0,2.99,jev-1.13.0,M2.4 answer reused
+P8d76b5d983,S-C,news,1.0,1,0.98,0.01,0.01,0.0,1.02,jev-1.13.0,M2.4 answer reused
+P4210af5e3a,S-C,news,1.0,3,0.05,0.0,0.95,0.0,2.9,jev-1.13.0,M2.4 answer reused
+Pf0cee991ef,S-C,news,1.0,3,0.06,0.04,0.83,0.07,2.92,jev-1.13.0,M2.6 call
+P1e73b26750,S-C,analyst_note,1.0,2,0.0,0.7,0.25,0.05,2.34,jev-1.13.0,M2.6 call
+P7bc167a1c7,S-C,analyst_note,1.0,4,0.01,0.01,0.1,0.88,3.87,jev-1.13.0,M2.4 answer reused
+P8961a2d5bb,S-C,analyst_note,1.0,2,0.03,0.84,0.11,0.02,2.13,jev-1.13.0,M2.4 answer reused
+Pfefc6e264a,S-C,filing,1.0,1,0.6,0.34,0.06,0.0,1.47,jev-1.13.0,M2.4 answer reused
+P1096887d4e,S-C,analyst_note,1.0,2,0.0,0.75,0.22,0.03,2.26,jev-1.13.0,M2.4 answer reused
+Pba3d9ee22f,S-C,filing,1.0,2,0.29,0.71,0.0,0.0,1.71,jev-1.13.0,M2.4 answer reused
+Pd5c0c5d6db,S-C,filing,1.0,1,0.82,0.02,0.16,0.0,1.34,jev-1.13.0,M2.6 call
+Pd7ae488669,S-C,filing,1.0,2,0.08,0.91,0.01,0.0,1.93,jev-1.13.0,M2.6 call
+P4852f8288a,S-C,analyst_note,1.0,3,0.0,0.42,0.5,0.08,2.66,jev-1.13.0,M2.6 call
+P48c63f0481,S-C,analyst_note,1.0,3,0.0,0.13,0.66,0.21,3.07,jev-1.13.0,M2.4 answer reused
+Pc75927db3d,S-C,filing,1.0,2,0.22,0.77,0.01,0.0,1.79,jev-1.13.0,M2.4 answer reused
+P1b26daebea,S-C,filing,1.0,1,1.0,0.0,0.0,0.0,1.0,jev-1.13.0,M2.4 answer reused
+P607d26bbc0,S-C,filing,1.0,2,0.06,0.84,0.1,0.0,2.05,jev-1.13.0,M2.6 call
+P2b128a21e0,S-C,filing,1.0,2,0.0,0.87,0.13,0.0,2.14,jev-1.13.0,M2.4 answer reused
+P3e06a6a0a5,S-C,filing,1.0,2,0.37,0.63,0.0,0.0,1.63,jev-1.13.0,M2.4 answer reused
+Pa403e8e8ba,S-C,filing,1.0,1,0.85,0.09,0.06,0.0,1.22,jev-1.13.0,M2.6 call
+Pbd059d46d1,S-C,filing,1.0,1,0.69,0.28,0.03,0.0,1.33,jev-1.13.0,M2.6 call
+P1edc441559,S-C,filing,1.0,2,0.25,0.72,0.03,0.0,1.79,jev-1.13.0,M2.6 call
+P94c8aa4288,S-C,filing,1.0,2,0.44,0.56,0.0,0.0,1.56,jev-1.13.0,M2.6 call
+Pe0de05fcbd,S-C,filing,1.0,2,0.04,0.9,0.06,0.0,2.03,jev-1.13.0,M2.6 call
+P1c6cec5089,S-C,filing,1.0,1,0.95,0.01,0.04,0.0,1.08,jev-1.13.0,M2.6 call
+P33cf18c8c4,S-C,filing,1.0,2,0.09,0.86,0.05,0.0,1.96,jev-1.13.0,M2.6 call
+P6c7825d18f,S-C,filing,1.0,2,0.04,0.96,0.0,0.0,1.96,jev-1.13.0,M2.6 call
+P9b91979ed7,S-C,filing,1.0,2,0.14,0.83,0.03,0.0,1.89,jev-1.13.0,M2.6 call
+Pcf95f7f17f,S-C,filing,1.0,2,0.31,0.68,0.01,0.0,1.7,jev-1.13.0,M2.6 call
+P27a9157c20,S-C,filing,1.0,2,0.24,0.71,0.05,0.0,1.82,jev-1.13.0,M2.6 call
+P7f09b9a7aa,S-C,filing,1.0,2,0.01,0.91,0.08,0.0,2.07,jev-1.13.0,M2.6 call
+P0304a32d20,S-C,filing,1.0,2,0.07,0.92,0.01,0.0,1.94,jev-1.13.0,M2.6 call
+P2241e93fc4,S-C,filing,1.0,2,0.26,0.72,0.02,0.0,1.76,jev-1.13.0,M2.6 call
+P60cc740db1,S-C,filing,1.0,2,0.01,0.96,0.03,0.0,2.01,jev-1.13.0,M2.6 call
+P8534ec7e3e,S-C,filing,1.0,1,0.79,0.15,0.06,0.0,1.27,jev-1.13.0,M2.6 call
+P919b919ef9,S-C,filing,1.0,2,0.0,0.97,0.03,0.0,2.03,jev-1.13.0,M2.6 call
+P144818c05e,S-C,filing,1.0,2,0.25,0.74,0.01,0.0,1.76,jev-1.13.0,M2.4 answer reused
+P2acb569ad2,S-C,filing,1.0,1,0.64,0.23,0.13,0.0,1.5,jev-1.13.0,M2.4 answer reused
+P4e5acdfc2d,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+P99dfadff89,S-C,filing,1.0,1,0.92,0.05,0.03,0.0,1.12,jev-1.13.0,M2.6 call
+Pa214aed84d,S-C,filing,1.0,2,0.23,0.76,0.01,0.0,1.78,jev-1.13.0,M2.6 call
+Pba61bd1bbc,S-C,news,1.0,2,0.01,0.96,0.03,0.0,2.02,jev-1.13.0,M2.4 answer reused
+Pbc7ab403b9,S-C,filing,1.0,2,0.02,0.96,0.02,0.0,2.0,jev-1.13.0,M2.4 answer reused
+Pc04b979831,S-C,filing,1.0,1,0.77,0.2,0.03,0.0,1.26,jev-1.13.0,M2.6 call
+Pc1b6803cde,S-C,filing,1.0,2,0.31,0.49,0.2,0.0,1.89,jev-1.13.0,M2.6 call
+Pfd952d2592,S-C,filing,1.0,2,0.31,0.62,0.07,0.0,1.76,jev-1.13.0,M2.4 answer reused
+Pfe28f9580c,S-C,filing,1.0,2,0.4,0.6,0.0,0.0,1.6,jev-1.13.0,M2.6 call
+P2ef1c385b4,S-C,filing,1.0,2,0.04,0.94,0.02,0.0,1.99,jev-1.13.0,M2.4 answer reused
+P50332d84e0,S-C,filing,1.0,2,0.02,0.97,0.01,0.0,1.99,jev-1.13.0,M2.6 call
+P745f891dcb,S-C,filing,1.0,2,0.13,0.84,0.03,0.0,1.9,jev-1.13.0,M2.6 call
+P9031f1811c,S-C,filing,1.0,1,0.93,0.04,0.02,0.0,1.09,jev-1.13.0,M2.4 answer reused
+P98703f4638,S-C,filing,1.0,2,0.09,0.73,0.18,0.0,2.08,jev-1.13.0,M2.6 call
+P98c88dafd8,S-C,filing,1.0,2,0.45,0.54,0.01,0.0,1.56,jev-1.13.0,M2.6 call
+Pd6483dfa1d,S-C,analyst_note,1.0,2,0.01,0.83,0.16,0.0,2.16,jev-1.13.0,M2.4 answer reused
+Pe3c417ec97,S-C,filing,1.0,2,0.13,0.83,0.04,0.0,1.91,jev-1.13.0,M2.6 call
+Pfe49d21619,S-C,filing,1.0,2,0.01,0.96,0.03,0.0,2.02,jev-1.13.0,M2.4 answer reused
+Pe8298daf45,S-C,filing,1.0,2,0.03,0.95,0.02,0.0,1.99,jev-1.13.0,M2.6 call
+P5d23a61fea,S-C,analyst_note,1.0,2,0.16,0.82,0.02,0.0,1.87,jev-1.13.0,M2.6 call
+P78acf68689,S-C,analyst_note,1.0,2,0.01,0.7,0.28,0.01,2.28,jev-1.13.0,M2.6 call
+P80d6a9d084,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+Pe9b1fd4178,S-C,analyst_note,1.0,2,0.01,0.86,0.11,0.02,2.14,jev-1.13.0,M2.6 call
+Pe5656f31eb,S-C,analyst_note,1.0,3,0.0,0.0,0.54,0.46,3.45,jev-1.13.0,M2.4 answer reused
+P259eb1d93f,S-C,filing,1.0,2,0.02,0.77,0.18,0.03,2.22,jev-1.13.0,M2.6 call
+Pbe9754dee1,S-C,speech_testimony,1.0,2,0.02,0.98,0.0,0.0,1.98,jev-1.13.0,M2.4 answer reused
+Pc3d3ca44c8,S-C,speech_testimony,1.0,2,0.15,0.81,0.04,0.0,1.9,jev-1.13.0,M2.6 call
+P052c918e27,S-C,filing,1.0,2,0.0,0.96,0.04,0.0,2.05,jev-1.13.0,M2.4 answer reused
+P6798852262,S-C,filing,1.0,2,0.04,0.94,0.02,0.0,1.98,jev-1.13.0,M2.6 call
+P08222076e1,S-C,analyst_note,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P20936beeb8,S-C,filing,1.0,1,0.85,0.09,0.06,0.0,1.21,jev-1.13.0,M2.4 answer reused
+P5cccde8c2e,S-C,filing,1.0,2,0.04,0.93,0.03,0.0,2.0,jev-1.13.0,M2.6 call
+P64b77173f7,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,2.0,jev-1.13.0,M2.4 answer reused
+Pa3e88dbfa9,S-C,filing,1.0,2,0.02,0.98,0.0,0.0,1.98,jev-1.13.0,M2.4 answer reused
+Pd82ce25233,S-C,analyst_note,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.4 answer reused
+P3e7cde3c5c,S-C,filing,1.0,2,0.04,0.96,0.0,0.0,1.96,jev-1.13.0,M2.6 call
+P7f93a449c6,S-C,filing,1.0,1,0.71,0.23,0.06,0.0,1.36,jev-1.13.0,M2.4 answer reused
+P8e2b500f9f,S-C,filing,1.0,2,0.01,0.94,0.05,0.0,2.03,jev-1.13.0,M2.4 answer reused
+Pac9e82196d,S-C,filing,1.0,1,0.8,0.08,0.12,0.0,1.32,jev-1.13.0,M2.6 call
+Pca45e9fd25,S-C,filing,1.0,2,0.22,0.78,0.0,0.0,1.78,jev-1.13.0,M2.4 answer reused
+P3b09c0f8ff,S-C,filing,1.0,2,0.02,0.97,0.01,0.0,1.99,jev-1.13.0,M2.4 answer reused
+Pb3c58fe1bb,S-C,filing,1.0,2,0.07,0.92,0.01,0.0,1.94,jev-1.13.0,M2.6 call
+Pd168eccaee,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P1ec0628c21,S-C,filing,1.0,1,0.51,0.38,0.11,0.0,1.6,jev-1.13.0,M2.6 call
+P673f646494,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P48323eab7e,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+Pa3dac649df,S-C,filing,1.0,2,0.32,0.68,0.0,0.0,1.68,jev-1.13.0,M2.6 call
+Pe4728315d0,S-C,filing,1.0,2,0.44,0.55,0.01,0.0,1.56,jev-1.13.0,M2.4 answer reused
+P8cb2b41184,S-C,filing,1.0,2,0.01,0.98,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+P4ee0667cf4,S-C,filing,1.0,2,0.12,0.88,0.0,0.0,1.89,jev-1.13.0,M2.4 answer reused
+Pfae56391ab,S-C,filing,1.0,2,0.2,0.8,0.0,0.0,1.8,jev-1.13.0,M2.6 call
+P149e338a1b,S-C,filing,1.0,2,0.02,0.98,0.0,0.0,1.98,jev-1.13.0,M2.4 answer reused
+P3d3fda57db,S-C,filing,1.0,2,0.05,0.95,0.0,0.0,1.95,jev-1.13.0,M2.6 call
+P54c1847b2b,S-C,filing,1.0,1,0.72,0.18,0.1,0.0,1.38,jev-1.13.0,M2.4 answer reused
+P65dc2efa7a,S-C,filing,1.0,1,0.95,0.01,0.04,0.0,1.1,jev-1.13.0,M2.6 call
+P893264a4eb,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+P916ff62ab8,S-C,filing,1.0,2,0.1,0.89,0.01,0.0,1.91,jev-1.13.0,M2.6 call
+Pb1f5560c07,S-C,filing,1.0,1,0.96,0.03,0.01,0.0,1.05,jev-1.13.0,M2.6 call
+Pe0664e221e,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.4 answer reused
+Pfec01ab1a0,S-C,filing,1.0,1,0.76,0.23,0.01,0.0,1.26,jev-1.13.0,M2.6 call
+P0cf0e73627,S-C,filing,1.0,2,0.49,0.51,0.0,0.0,1.52,jev-1.13.0,M2.4 answer reused
+P5d6fd9e676,S-C,filing,1.0,2,0.0,0.97,0.03,0.0,2.03,jev-1.13.0,M2.6 call
+P73a4342f2a,S-C,filing,1.0,2,0.0,0.97,0.03,0.0,2.02,jev-1.13.0,M2.6 call
+P914708d348,S-C,filing,1.0,2,0.04,0.94,0.02,0.0,1.98,jev-1.13.0,M2.6 call
+Paa8af19070,S-C,filing,1.0,2,0.02,0.97,0.01,0.0,1.99,jev-1.13.0,M2.4 answer reused
+Pdd0931d2e5,S-C,filing,1.0,2,0.07,0.92,0.01,0.0,1.94,jev-1.13.0,M2.6 call
+Pd7f5239524,S-C,filing,1.0,2,0.31,0.69,0.0,0.0,1.7,jev-1.13.0,M2.6 call
+P31737573ea,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P1057f81b49,S-C,filing,1.0,2,0.03,0.97,0.0,0.0,1.97,jev-1.13.0,M2.6 call
+Pc0b1fdd00b,S-C,filing,1.0,2,0.09,0.89,0.02,0.0,1.93,jev-1.13.0,M2.4 answer reused
+Pea322192be,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.4 answer reused
+P44fc0b29d3,S-C,analyst_note,1.0,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.4 answer reused
+Pc2348a64fa,S-C,speech_testimony,1.0,2,0.08,0.89,0.03,0.0,1.96,jev-1.13.0,M2.4 answer reused
+P07cd4c7bdf,S-C,filing,1.0,2,0.13,0.82,0.05,0.0,1.92,jev-1.13.0,M2.6 call
+Pe9520d34e2,S-C,filing,1.0,2,0.0,0.97,0.03,0.0,2.03,jev-1.13.0,M2.4 answer reused
+P1963f1274f,S-C,filing,1.0,2,0.02,0.9,0.08,0.0,2.06,jev-1.13.0,M2.6 call
+Pcee34f6bfc,S-C,analyst_note,1.0,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.4 answer reused
+Pdad7cce77a,S-C,filing,1.0,1,0.72,0.26,0.02,0.0,1.3,jev-1.13.0,M2.6 call
+Pa546b1b948,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.4 answer reused
+Paa522b1170,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pd66526de1c,S-C,filing,1.0,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+Pcab8590d8c,S-C,filing,1.0,2,0.02,0.98,0.0,0.0,1.98,jev-1.13.0,M2.4 answer reused
+Pf2d0d97882,S-C,speech_testimony,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P62b97b8a7d,S-C,filing,1.0,2,0.04,0.96,0.0,0.0,1.96,jev-1.13.0,M2.6 call
+P655d8e3b25,S-C,analyst_note,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P7aac16d1b3,S-C,analyst_note,1.0,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.4 answer reused
+Pb693dc81cd,S-C,filing,1.0,2,0.02,0.98,0.0,0.0,1.98,jev-1.13.0,M2.4 answer reused
+P2248c5e9a7,S-C,analyst_note,1.0,2,0.0,0.75,0.24,0.01,2.25,jev-1.13.0,M2.6 call
+P4bf7f44431,S-C,analyst_note,1.0,2,0.0,0.92,0.08,0.0,2.08,jev-1.13.0,M2.6 call
+Pb8a9e03f0f,S-C,analyst_note,1.0,2,0.0,0.98,0.02,0.0,2.02,jev-1.13.0,M2.6 call
+Pd11b5cb594,S-C,analyst_note,1.0,2,0.0,1.0,0.0,0.0,2.01,jev-1.13.0,M2.4 answer reused
+P6868e00a0a,S-C,filing,1.0,1,0.84,0.1,0.06,0.0,1.22,jev-1.13.0,M2.4 answer reused
+P7beaaabd62,S-C,filing,1.0,2,0.33,0.66,0.01,0.0,1.68,jev-1.13.0,M2.4 answer reused
+P87a4003824,S-C,filing,1.0,1,0.77,0.21,0.02,0.0,1.26,jev-1.13.0,M2.6 call
+P9fbc254c6d,S-C,filing,1.0,2,0.08,0.9,0.02,0.0,1.94,jev-1.13.0,M2.6 call
+Pb2715b05d1,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P86640dbafb,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+Pa46c774148,S-C,filing,1.0,2,0.04,0.94,0.02,0.0,1.99,jev-1.13.0,M2.4 answer reused
+Pe3a8e662b1,S-C,filing,1.0,2,0.01,0.98,0.01,0.0,2.0,jev-1.13.0,M2.4 answer reused
+P443e959bd8,S-C,filing,1.0,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.4 answer reused
+P4d90cf9e8e,S-C,filing,1.0,2,0.05,0.95,0.0,0.0,1.95,jev-1.13.0,M2.6 call
+P8afd6d40c2,S-C,filing,1.0,2,0.01,0.87,0.12,0.0,2.12,jev-1.13.0,M2.4 answer reused
+Pd83f74fc3a,S-C,filing,1.0,2,0.08,0.86,0.06,0.0,1.99,jev-1.13.0,M2.6 call
+Pa1741e1354,S-C,filing,1.0,2,0.36,0.59,0.05,0.0,1.69,jev-1.13.0,M2.6 call
+P9f9d8a8cca,S-C,filing,1.0,2,0.01,0.97,0.02,0.0,2.01,jev-1.13.0,M2.6 call
+Pabb7270ae6,S-C,filing,1.0,1,0.71,0.29,0.0,0.0,1.3,jev-1.13.0,M2.6 call
+Pe859a03f83,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P2d1fbc55a7,S-C,filing,1.0,1,0.67,0.3,0.03,0.0,1.37,jev-1.13.0,M2.6 call
+Pb29f7b26c0,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P6a27735198,S-C,filing,1.0,2,0.0,0.92,0.07,0.01,2.09,jev-1.13.0,M2.6 call
+Pfa8aa20e91,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P7a3d41bb7d,S-C,filing,1.0,2,0.04,0.92,0.04,0.0,2.0,jev-1.13.0,M2.6 call
+Pe9709153d8,S-C,filing,1.0,1,0.87,0.12,0.01,0.0,1.14,jev-1.13.0,M2.6 call
+P4cfbe5a4f4,S-C,analyst_note,1.0,3,0.01,0.44,0.54,0.01,2.55,jev-1.13.0,M2.4 answer reused
+P7a11f14190,S-C,analyst_note,1.0,2,0.09,0.84,0.07,0.0,1.98,jev-1.13.0,M2.6 call
+P0fcaf06cef,S-C,filing,1.0,1,0.57,0.41,0.02,0.0,1.46,jev-1.13.0,M2.6 call
+Pc992dbb48c,S-C,filing,1.0,2,0.0,0.99,0.01,0.0,2.0,jev-1.13.0,M2.6 call
+P93fe8fe830,S-C,filing,1.0,2,0.14,0.86,0.0,0.0,1.86,jev-1.13.0,M2.4 answer reused
+Pbab6f4795e,S-C,filing,1.0,1,0.5,0.49,0.01,0.0,1.5,jev-1.13.0,M2.6 call
+P58491c9224,S-C,filing,1.0,2,0.09,0.89,0.02,0.0,1.93,jev-1.13.0,M2.4 answer reused
+Pb9b70619ef,S-C,filing,1.0,2,0.1,0.9,0.0,0.0,1.9,jev-1.13.0,M2.6 call
+P0b95ec2c3d,S-C,filing,1.0,1,0.71,0.24,0.05,0.0,1.35,jev-1.13.0,M2.6 call
+P52873949b6,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P94df3478b2,S-C,filing,1.0,3,0.21,0.32,0.47,0.0,2.26,jev-1.13.0,M2.4 answer reused
+Pac44d2c3d8,S-C,filing,1.0,1,0.53,0.45,0.02,0.0,1.49,jev-1.13.0,M2.6 call
+P04c6880398,S-C,filing,1.0,2,0.01,0.98,0.01,0.0,2.0,jev-1.13.0,M2.6 call
+Pb2298d26cd,S-C,filing,1.0,2,0.08,0.91,0.01,0.0,1.93,jev-1.13.0,M2.6 call
+P06efe0fde3,S-C,filing,1.0,1,0.84,0.13,0.03,0.0,1.18,jev-1.13.0,M2.6 call
+P56739c2de9,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.4 answer reused
+P60cd279527,S-C,filing,1.0,2,0.0,0.8,0.2,0.0,2.2,jev-1.13.0,M2.6 call
+P67131ac64c,S-C,filing,1.0,1,0.97,0.03,0.0,0.0,1.04,jev-1.13.0,M2.6 call
+Pcabc85e47e,S-C,filing,1.0,2,0.01,0.98,0.01,0.0,2.0,jev-1.13.0,M2.6 call
+Pd375018cf5,S-C,filing,1.0,2,0.27,0.72,0.01,0.0,1.74,jev-1.13.0,M2.6 call
+Pfc272210f7,S-C,filing,1.0,2,0.09,0.9,0.01,0.0,1.92,jev-1.13.0,M2.6 call
+P3bb33af9e8,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pe44fc07325,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.4 answer reused
+P007f5f9a9a,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P29803e3fc5,S-C,filing,1.0,2,0.02,0.97,0.01,0.0,1.99,jev-1.13.0,M2.4 answer reused
+P68bbfd1b15,S-C,filing,1.0,1,0.7,0.26,0.04,0.0,1.34,jev-1.13.0,M2.6 call
+P93c7ce08b8,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P0ad59101e1,S-C,filing,1.0,2,0.0,0.98,0.02,0.0,2.02,jev-1.13.0,M2.6 call
+Pc1ff4aec41,S-C,filing,1.0,2,0.0,0.98,0.02,0.0,2.02,jev-1.13.0,M2.4 answer reused
+Pec3c8b17e0,S-C,filing,1.0,2,0.09,0.9,0.01,0.0,1.92,jev-1.13.0,M2.6 call
+P78f4d1328a,S-C,filing,1.0,1,0.64,0.23,0.12,0.01,1.5,jev-1.13.0,M2.6 call
+P42f41ec10a,S-C,filing,1.0,1,0.52,0.46,0.02,0.0,1.49,jev-1.13.0,M2.6 call
+Pd0b1a0160c,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pe7882c37d8,S-C,filing,1.0,2,0.1,0.9,0.0,0.0,1.91,jev-1.13.0,M2.6 call
+Pea23a9efc6,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+Pe1006373bd,S-C,filing,1.0,2,0.02,0.97,0.01,0.0,2.0,jev-1.13.0,M2.4 answer reused
+P2149203c59,S-C,speech_testimony,1.0,3,0.0,0.0,0.8,0.2,3.2,jev-1.13.0,M2.4 answer reused
+P073f2ba270,S-C,filing,1.0,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P11cfa3bd99,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P3f84cecbe2,S-C,filing,1.0,2,0.02,0.93,0.05,0.0,2.03,jev-1.13.0,M2.4 answer reused
+Pacda719639,S-C,filing,1.0,2,0.04,0.94,0.02,0.0,1.99,jev-1.13.0,M2.6 call
+Pd386211bda,S-C,analyst_note,1.0,4,0.0,0.0,0.42,0.58,3.58,jev-1.13.0,M2.6 call
+Pfe9e215e69,S-C,analyst_note,1.0,3,0.16,0.04,0.8,0.0,2.64,jev-1.13.0,M2.4 answer reused
+Pd29033889a,S-C,filing,1.0,2,0.05,0.93,0.02,0.0,1.97,jev-1.13.0,M2.6 call
+Pd3b05f3f1f,S-C,filing,1.0,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.4 answer reused
+P50bc565e61,S-C,speech_testimony,1.0,2,0.08,0.87,0.05,0.0,1.98,jev-1.13.0,M2.6 call
+Pe541377bfe,S-C,speech_testimony,1.0,1,0.92,0.07,0.01,0.0,1.09,jev-1.13.0,M2.6 call
+P60af6786d0,S-C,filing,1.0,2,0.0,0.99,0.01,0.0,2.0,jev-1.13.0,M2.6 call
+P374ce94ec5,S-D,speech_testimony,1.0,3,0.01,0.1,0.72,0.17,3.06,jev-1.13.0,M2.6 call
+P5a20ed9b7f,S-D,filing,1.25502,2,0.12,0.88,0.0,0.0,1.88,jev-1.13.0,M2.6 call
+P44acaa6fd8,S-D,filing,1.25502,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P554f657f5b,S-D,filing,1.25502,2,0.02,0.97,0.01,0.0,1.99,jev-1.13.0,M2.6 call
+Pd70ae4e240,S-D,filing,1.25502,2,0.03,0.96,0.01,0.0,1.98,jev-1.13.0,M2.4 answer reused
+P08fa1928fc,S-D,filing,1.25502,2,0.09,0.9,0.01,0.0,1.93,jev-1.13.0,M2.6 call
+P4bf9070af1,S-D,filing,1.25502,1,0.5,0.5,0.0,0.0,1.51,jev-1.13.0,M2.6 call
+Pc4a6b6c428,S-D,filing,1.25502,2,0.02,0.98,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+Pead629d9fc,S-D,filing,1.25502,2,0.03,0.9,0.07,0.0,2.05,jev-1.13.0,M2.6 call
+Pfe0a325354,S-D,filing,1.25502,1,0.7,0.26,0.04,0.0,1.33,jev-1.13.0,M2.6 call
+Pcead99dffa,S-D,filing,1.25502,2,0.36,0.64,0.0,0.0,1.64,jev-1.13.0,M2.6 call
+P5c4c1aa317,S-D,filing,1.25502,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P1054df217d,S-D,filing,1.25502,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P71bed073e7,S-D,filing,1.25502,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pb368e0e5ae,S-D,filing,1.25502,2,0.29,0.71,0.0,0.0,1.71,jev-1.13.0,M2.4 answer reused
+P6fdde0d8bb,S-D,filing,1.25502,2,0.07,0.89,0.04,0.0,1.97,jev-1.13.0,M2.6 call
+P30e8eb2701,S-D,filing,1.25502,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P2db5a69def,S-D,speech_testimony,1.0,1,0.9,0.1,0.0,0.0,1.11,jev-1.13.0,M2.6 call
+P9cc5041f34,S-D,filing,1.25502,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+P8961ead50b,S-D,filing,1.25502,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+P269a6ba50d,S-D,filing,1.25502,2,0.01,0.67,0.32,0.0,2.32,jev-1.13.0,M2.6 call
+P49e5e1dbdc,S-D,filing,1.25502,2,0.49,0.5,0.01,0.0,1.52,jev-1.13.0,M2.6 call
+P9b62e177ca,S-D,filing,1.25502,2,0.0,0.98,0.02,0.0,2.01,jev-1.13.0,M2.6 call
+P6a15754493,S-D,filing,1.25502,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+P325cb8b16d,S-D,filing,1.25502,2,0.19,0.78,0.03,0.0,1.83,jev-1.13.0,M2.6 call
+P7134598f89,S-D,filing,1.25502,2,0.02,0.97,0.01,0.0,1.99,jev-1.13.0,M2.6 call
+Pab2b3b27c7,S-D,filing,1.25502,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pda10dc6611,S-D,filing,1.25502,2,0.05,0.94,0.01,0.0,1.96,jev-1.13.0,M2.6 call
+P9c57f59ceb,S-D,filing,1.25502,2,0.24,0.76,0.0,0.0,1.76,jev-1.13.0,M2.6 call
+P26b68731b3,S-D,filing,1.25502,2,0.1,0.88,0.02,0.0,1.92,jev-1.13.0,M2.6 call
+P62366f9413,S-D,filing,1.25502,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pd90ca6882d,S-D,filing,1.25502,1,0.94,0.06,0.0,0.0,1.07,jev-1.13.0,M2.6 call
+P66be5a4b9d,S-D,filing,1.25502,2,0.04,0.88,0.08,0.0,2.04,jev-1.13.0,M2.6 call
+Pbe6430f0fb,S-D,filing,1.25502,2,0.01,0.96,0.03,0.0,2.02,jev-1.13.0,M2.6 call
+P5eea3ca37a,S-D,filing,1.25502,2,0.03,0.97,0.0,0.0,1.97,jev-1.13.0,M2.6 call
+P3a3e422c42,S-D,analyst_note,1.0,3,0.0,0.49,0.51,0.0,2.51,jev-1.13.0,M2.6 call
+P4fb9b3a333,S-D,analyst_note,1.0,2,0.03,0.87,0.1,0.0,2.07,jev-1.13.0,M2.4 answer reused
+P6ea05bb13e,S-D,filing,1.25502,2,0.01,0.92,0.07,0.0,2.07,jev-1.13.0,M2.6 call
+P7507440917,S-D,filing,1.25502,2,0.03,0.96,0.01,0.0,1.98,jev-1.13.0,M2.6 call
+Pec9478efea,S-D,official_statement,1.0,1,0.94,0.05,0.01,0.0,1.07,jev-1.13.0,M2.6 call
+Pf367503666,S-D,analyst_note,1.0,1,0.44,0.12,0.35,0.09,2.09,jev-1.13.0,M2.6 call
+Pf139fea773,S-D,filing,1.25502,2,0.04,0.62,0.34,0.0,2.31,jev-1.13.0,M2.6 call
+P2b3dd256a6,S-D,news,1.0,4,0.0,0.0,0.45,0.55,3.54,jev-1.13.0,M2.4 answer reused
+P74db997f4f,S-D,analyst_note,1.0,2,0.01,0.65,0.21,0.13,2.46,jev-1.13.0,M2.6 call
+P8f7d7a2cb2,S-D,news,1.0,4,0.0,0.09,0.25,0.66,3.57,jev-1.13.0,M2.6 call
+P9083b83cd2,S-D,analyst_note,1.0,3,0.0,0.12,0.51,0.37,3.25,jev-1.13.0,M2.4 answer reused
+P91da4c4160,S-D,news,1.0,3,0.0,0.08,0.87,0.05,2.97,jev-1.13.0,M2.4 answer reused
+P9ff63a3092,S-D,news,1.0,3,0.0,0.16,0.83,0.01,2.85,jev-1.13.0,M2.4 answer reused
+P077d85e583,S-D,filing,1.25502,2,0.04,0.69,0.27,0.0,2.23,jev-1.13.0,M2.6 call
+P25beb866c7,S-D,news,1.0,2,0.01,0.87,0.12,0.0,2.12,jev-1.13.0,M2.6 call
+P5af74165f7,S-D,analyst_note,1.0,3,0.01,0.12,0.53,0.34,3.2,jev-1.13.0,M2.4 answer reused
+P61bbfe515a,S-D,analyst_note,1.0,3,0.0,0.01,0.76,0.23,3.22,jev-1.13.0,M2.6 call
+P699dbaa862,S-D,news,1.0,4,0.0,0.0,0.14,0.86,3.86,jev-1.13.0,M2.4 answer reused
+P7814979bbe,S-D,news,1.0,3,0.0,0.02,0.94,0.04,3.01,jev-1.13.0,M2.4 answer reused
+P7c8505b7d6,S-D,news,1.0,3,0.0,0.29,0.7,0.01,2.71,jev-1.13.0,M2.6 call
+Pbd5f35fa9d,S-D,news,1.0,3,0.0,0.17,0.74,0.09,2.92,jev-1.13.0,M2.4 answer reused
+Pe15778d76a,S-D,news,1.0,3,0.0,0.05,0.81,0.13,3.08,jev-1.13.0,M2.4 answer reused
+Pb4702b3368,S-D,news,1.0,4,0.0,0.01,0.24,0.75,3.75,jev-1.13.0,M2.6 call
+P7d5ed06739,S-D,news,1.0,3,0.0,0.0,0.69,0.31,3.3,jev-1.13.0,M2.6 call
+P8e5b741a08,S-D,news,1.0,3,0.0,0.01,0.98,0.01,3.0,jev-1.13.0,M2.4 answer reused
+Pd6605fb3fd,S-D,news,1.0,1,0.8,0.02,0.17,0.01,1.4,jev-1.13.0,M2.4 answer reused
+Pd6d3e0f5d0,S-D,news,1.0,1,0.71,0.09,0.2,0.0,1.48,jev-1.13.0,M2.6 call
+Pfe6ee82d5c,S-D,news,1.0,1,0.43,0.24,0.32,0.01,1.91,jev-1.13.0,M2.4 answer reused
+P107e91011c,S-D,news,1.0,1,0.79,0.05,0.15,0.01,1.38,jev-1.13.0,M2.4 answer reused
+P3d8ca50be0,S-D,news,1.0,3,0.28,0.03,0.52,0.17,2.58,jev-1.13.0,M2.4 answer reused
+P2f314a484f,S-D,news,1.0,3,0.0,0.02,0.96,0.02,3.01,jev-1.13.0,M2.4 answer reused
+P4b511ed0e0,S-D,news,1.0,4,0.0,0.03,0.45,0.52,3.49,jev-1.13.0,M2.4 answer reused
+P4d905e909d,S-D,news,1.0,2,0.47,0.52,0.01,0.0,1.54,jev-1.13.0,M2.6 call
+P5f8c458cf1,S-D,news,1.0,3,0.0,0.25,0.67,0.08,2.83,jev-1.13.0,M2.4 answer reused
+P63b829786e,S-D,news,1.0,4,0.0,0.02,0.27,0.71,3.69,jev-1.13.0,M2.6 call
+P8a9edeb570,S-D,analyst_note,1.0,2,0.12,0.48,0.4,0.0,2.28,jev-1.13.0,M2.6 call
+Pc8a46b9134,S-D,analyst_note,1.0,3,0.08,0.33,0.53,0.06,2.57,jev-1.13.0,M2.4 answer reused
+P4e5fb5f5d2,S-D,news,1.0,2,0.01,0.63,0.36,0.0,2.36,jev-1.13.0,M2.4 answer reused
+P6ec942d543,S-D,filing,1.25502,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pc128d0146f,S-D,news,1.0,2,0.01,0.53,0.45,0.01,2.46,jev-1.13.0,M2.6 call
+P2ff717cda0,S-D,news,1.0,2,0.0,0.61,0.38,0.01,2.4,jev-1.13.0,M2.4 answer reused
+P135820cb7f,S-D,speech_testimony,1.0,3,0.09,0.29,0.62,0.0,2.52,jev-1.13.0,M2.6 call
+P6f49b51780,S-D,news,1.0,3,0.02,0.03,0.73,0.22,3.16,jev-1.13.0,M2.4 answer reused
+Pd7b08d0a50,S-D,speech_testimony,1.0,3,0.0,0.0,0.88,0.12,3.12,jev-1.13.0,M2.4 answer reused
+P948ffdafc1,S-D,speech_testimony,1.0,1,0.68,0.25,0.07,0.0,1.39,jev-1.13.0,M2.6 call
+Paa57a4a6a3,S-D,news,1.0,4,0.0,0.0,0.0,1.0,4.0,jev-1.13.0,M2.4 answer reused
+Ped5a8de9c3,S-D,speech_testimony,1.0,1,0.83,0.05,0.12,0.0,1.29,jev-1.13.0,M2.4 answer reused
+Pa320bdb7dc,S-D,speech_testimony,1.0,4,0.02,0.16,0.16,0.66,3.45,jev-1.13.0,M2.6 call
+Pdf06ddb908,S-D,speech_testimony,1.0,4,0.0,0.02,0.1,0.88,3.86,jev-1.13.0,M2.4 answer reused
+P1b1942610c,S-D,news,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.6 call
+Pd502f20a93,S-D,news,1.0,3,0.03,0.1,0.85,0.02,2.87,jev-1.13.0,M2.4 answer reused
+P3218667b40,S-D,filing,1.25502,2,0.01,0.99,0.0,0.0,1.99,jev-1.13.0,M2.6 call
+P710006d258,S-D,analyst_note,1.0,2,0.01,0.52,0.07,0.4,2.85,jev-1.13.0,M2.4 answer reused
+Pc761901d12,S-D,analyst_note,1.0,2,0.13,0.69,0.18,0.0,2.06,jev-1.13.0,M2.6 call
+P349ea8d06a,S-D,news,1.0,3,0.0,0.0,0.66,0.34,3.33,jev-1.13.0,M2.6 call
+P3991272901,S-D,news,1.0,3,0.16,0.02,0.81,0.01,2.68,jev-1.13.0,M2.4 answer reused
+P082e50124b,S-D,news,1.0,3,0.0,0.16,0.79,0.05,2.88,jev-1.13.0,M2.4 answer reused
+P566441a1dd,S-D,news,1.0,4,0.0,0.0,0.22,0.78,3.78,jev-1.13.0,M2.6 call
+P99655d0a1f,S-D,speech_testimony,1.0,1,0.89,0.1,0.01,0.0,1.13,jev-1.13.0,M2.4 answer reused
+Pd52196f527,S-D,filing,1.25502,2,0.34,0.65,0.01,0.0,1.66,jev-1.13.0,M2.6 call
+P86d8e8cc1a,S-D,filing,1.25502,1,0.69,0.17,0.13,0.01,1.44,jev-1.13.0,M2.4 answer reused
+Pf573d58889,S-D,filing,1.25502,1,0.91,0.06,0.03,0.0,1.12,jev-1.13.0,M2.6 call
+P3c67f4a680,S-D,filing,1.25502,1,0.53,0.41,0.06,0.0,1.54,jev-1.13.0,M2.6 call
+P76f4ad48bb,S-D,filing,1.25502,1,0.92,0.05,0.03,0.0,1.11,jev-1.13.0,M2.6 call
+P1197829164,S-D,filing,1.25502,3,0.24,0.28,0.48,0.0,2.25,jev-1.13.0,M2.6 call
+P5c0256e08d,S-D,filing,1.25502,1,0.86,0.11,0.03,0.0,1.16,jev-1.13.0,M2.6 call
+P5e1415b497,S-D,filing,1.25502,1,0.84,0.1,0.06,0.0,1.22,jev-1.13.0,M2.6 call
+P020c1a07f6,S-D,filing,1.25502,1,0.82,0.17,0.01,0.0,1.2,jev-1.13.0,M2.6 call
+P20d975a3c4,S-D,filing,1.25502,2,0.23,0.77,0.0,0.0,1.78,jev-1.13.0,M2.6 call
+P0253ac2628,S-D,filing,1.25502,1,0.89,0.08,0.03,0.0,1.15,jev-1.13.0,M2.6 call
+P8e3bd8db48,S-D,filing,1.25502,2,0.27,0.58,0.15,0.0,1.87,jev-1.13.0,M2.6 call
+P8ab8eb361d,S-D,analyst_note,1.0,4,0.0,0.0,0.18,0.82,3.82,jev-1.13.0,M2.6 call
+Paaaaf9f79d,S-D,analyst_note,1.0,2,0.0,0.48,0.4,0.12,2.63,jev-1.13.0,M2.4 answer reused
+P827b91e4bd,S-D,news,1.0,4,0.0,0.0,0.02,0.98,3.97,jev-1.13.0,M2.4 answer reused
+Pd027aa1c98,S-D,filing,1.25502,1,0.94,0.04,0.02,0.0,1.08,jev-1.13.0,M2.6 call
+P979c5f18b9,S-D,filing,1.25502,3,0.02,0.26,0.71,0.01,2.71,jev-1.13.0,M2.6 call
+P99e273456d,S-D,filing,1.25502,1,0.93,0.05,0.02,0.0,1.1,jev-1.13.0,M2.6 call
+Pa595609509,S-D,news,1.0,3,0.0,0.0,0.96,0.04,3.03,jev-1.13.0,M2.6 call
+Pcc60da2b76,S-D,news,1.0,2,0.0,0.51,0.38,0.11,2.6,jev-1.13.0,M2.4 answer reused
+P3ddfa91805,S-D,news,1.0,3,0.06,0.18,0.64,0.12,2.83,jev-1.13.0,M2.6 call
+P4444b26de9,S-D,filing,1.25502,3,0.3,0.33,0.36,0.01,2.09,jev-1.13.0,M2.6 call
+P467a5bdd52,S-D,filing,1.25502,2,0.05,0.92,0.03,0.0,1.99,jev-1.13.0,M2.6 call
+P6cb21456b7,S-D,filing,1.25502,2,0.04,0.68,0.27,0.01,2.25,jev-1.13.0,M2.6 call
+P7d599d9431,S-D,news,1.0,3,0.0,0.19,0.54,0.27,3.08,jev-1.13.0,M2.4 answer reused
+Pee9e4dd29c,S-D,filing,1.25502,1,0.46,0.46,0.08,0.0,1.62,jev-1.13.0,M2.6 call
+P1f8f32bc1a,S-D,filing,1.25502,2,0.01,0.91,0.08,0.0,2.07,jev-1.13.0,M2.6 call
+P44c141e95b,S-D,filing,1.25502,2,0.0,1.0,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pf0a3be8247,S-D,filing,1.25502,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+Pebf66f264b,S-D,filing,1.25502,2,0.04,0.89,0.07,0.0,2.04,jev-1.13.0,M2.6 call
+Pc45ce617f9,S-D,analyst_note,1.0,3,0.01,0.02,0.84,0.13,3.08,jev-1.13.0,M2.4 answer reused
+Pa98f90e81b,S-D,filing,1.25502,2,0.01,0.97,0.02,0.0,2.01,jev-1.13.0,M2.6 call
+P325e759643,S-D,filing,1.25502,2,0.01,0.96,0.03,0.0,2.02,jev-1.13.0,M2.6 call
+P359a51b58a,S-D,filing,1.25502,1,0.86,0.12,0.02,0.0,1.17,jev-1.13.0,M2.6 call
+P6cb1ff6eef,S-D,filing,1.25502,1,0.93,0.04,0.03,0.0,1.1,jev-1.13.0,M2.6 call
+P88d90230e3,S-D,filing,1.25502,2,0.09,0.91,0.0,0.0,1.91,jev-1.13.0,M2.6 call
+Pa262e12337,S-D,filing,1.25502,2,0.01,0.96,0.03,0.0,2.02,jev-1.13.0,M2.6 call
+P17ad8ce54c,S-D,speech_testimony,1.0,3,0.0,0.1,0.87,0.03,2.93,jev-1.13.0,M2.4 answer reused
+P5c4ce88c7a,S-D,speech_testimony,1.0,3,0.01,0.07,0.84,0.08,2.99,jev-1.13.0,M2.6 call
+P5c053dd3f1,S-D,speech_testimony,1.0,1,0.82,0.03,0.15,0.0,1.34,jev-1.13.0,M2.4 answer reused
+Pae6751516d,S-D,speech_testimony,1.0,2,0.13,0.58,0.24,0.05,2.22,jev-1.13.0,M2.6 call
+Pbeb260ab18,S-D,news,1.0,2,0.09,0.73,0.18,0.0,2.1,jev-1.13.0,M2.4 answer reused
+P1cddd7039c,S-D,speech_testimony,1.0,3,0.4,0.02,0.58,0.0,2.18,jev-1.13.0,M2.4 answer reused
+P94395ca2c3,S-D,speech_testimony,1.0,3,0.06,0.05,0.89,0.0,2.82,jev-1.13.0,M2.6 call
+P11af751ed4,S-D,analyst_note,1.0,2,0.02,0.51,0.4,0.07,2.53,jev-1.13.0,M2.4 answer reused
+P7af8771d5b,S-D,analyst_note,1.0,3,0.09,0.41,0.48,0.02,2.42,jev-1.13.0,M2.6 call
+P7c5da7b27d,S-D,filing,1.25502,2,0.0,0.96,0.04,0.0,2.04,jev-1.13.0,M2.6 call
+Pe9cea89a4f,S-D,filing,1.25502,3,0.0,0.06,0.8,0.14,3.06,jev-1.13.0,M2.6 call
+P9da0fc7ad4,S-D,filing,1.25502,2,0.02,0.89,0.09,0.0,2.09,jev-1.13.0,M2.6 call
+Peb228bbb31,S-D,filing,1.25502,2,0.0,0.96,0.04,0.0,2.04,jev-1.13.0,M2.6 call
+Pafaa9906b2,S-D,filing,1.25502,2,0.14,0.81,0.05,0.0,1.91,jev-1.13.0,M2.6 call
+Pa7ad1fc708,S-D,filing,1.25502,1,0.61,0.34,0.05,0.0,1.44,jev-1.13.0,M2.6 call
+P235b180caa,S-D,filing,1.25502,1,0.98,0.02,0.0,0.0,1.02,jev-1.13.0,M2.6 call
+P50fcae962b,S-D,filing,1.25502,2,0.03,0.91,0.05,0.01,2.03,jev-1.13.0,M2.6 call
+P63adffb4a2,S-D,filing,1.25502,1,0.96,0.0,0.04,0.0,1.09,jev-1.13.0,M2.6 call
+P32a392586e,S-D,filing,1.25502,1,0.72,0.06,0.22,0.0,1.51,jev-1.13.0,M2.6 call
+Pbdd646e532,S-D,filing,1.25502,2,0.01,0.97,0.02,0.0,2.02,jev-1.13.0,M2.6 call
+Pe6cdcdff92,S-D,filing,1.25502,2,0.03,0.96,0.01,0.0,1.98,jev-1.13.0,M2.4 answer reused
+P7af76882b1,S-D,filing,1.25502,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+Pe06da8a388,S-D,filing,1.25502,2,0.0,0.99,0.01,0.0,2.0,jev-1.13.0,M2.6 call
+P954b491ac8,S-D,news,1.0,4,0.02,0.0,0.0,0.98,3.95,jev-1.13.0,M2.4 answer reused
+Pff4dead3dc,S-D,news,1.0,4,0.0,0.0,0.01,0.99,3.98,jev-1.13.0,M2.6 call
+P36a883f9b1,S-D,news,1.0,4,0.03,0.08,0.07,0.82,3.68,jev-1.13.0,M2.4 answer reused
+P00106daf2d,S-D,analyst_note,1.0,4,0.02,0.24,0.26,0.48,3.2,jev-1.13.0,M2.6 call
+P26f6c13ed7,S-D,analyst_note,1.0,4,0.0,0.12,0.04,0.84,3.7,jev-1.13.0,M2.6 call
+P8dd0e2db6e,S-D,analyst_note,1.0,3,0.38,0.04,0.58,0.0,2.22,jev-1.13.0,M2.4 answer reused
+Pcc1c117082,S-D,filing,1.25502,2,0.0,0.96,0.04,0.0,2.05,jev-1.13.0,M2.6 call
+P675c84a8f7,S-D,filing,1.25502,2,0.0,0.92,0.07,0.01,2.09,jev-1.13.0,M2.6 call
+P54f7481c83,S-D,filing,1.25502,2,0.4,0.54,0.05,0.0,1.65,jev-1.13.0,M2.6 call
+P8898f76d4a,S-D,filing,1.25502,2,0.08,0.6,0.3,0.02,2.25,jev-1.13.0,M2.6 call
+P7012fb7ba3,S-D,filing,1.25502,2,0.02,0.97,0.01,0.0,2.0,jev-1.13.0,M2.6 call
+P03da493d25,S-D,speech_testimony,1.0,3,0.07,0.03,0.9,0.0,2.83,jev-1.13.0,M2.4 answer reused
+P0f326f6d20,S-D,speech_testimony,1.0,1,0.68,0.03,0.21,0.08,1.69,jev-1.13.0,M2.6 call
+Pddc59fe44a,S-D,filing,1.25502,2,0.03,0.91,0.06,0.0,2.03,jev-1.13.0,M2.6 call
+P41ae76418f,S-D,filing,1.25502,2,0.0,0.89,0.11,0.0,2.11,jev-1.13.0,M2.6 call
+P9b511448f2,S-D,speech_testimony,1.0,1,0.71,0.09,0.2,0.0,1.49,jev-1.13.0,M2.6 call
+Pabb49d2134,S-D,speech_testimony,1.0,4,0.2,0.17,0.17,0.46,2.88,jev-1.13.0,M2.6 call
+P7c83b31329,S-D,speech_testimony,1.0,4,0.09,0.17,0.28,0.46,3.11,jev-1.13.0,M2.6 call
+Pf643bdaf54,S-D,speech_testimony,1.0,3,0.25,0.02,0.73,0.0,2.49,jev-1.13.0,M2.4 answer reused
+P0751ba420e,S-D,analyst_note,1.0,1,0.72,0.27,0.01,0.0,1.28,jev-1.13.0,M2.6 call
+Pbb827a06ec,S-D,analyst_note,1.0,3,0.03,0.28,0.66,0.03,2.68,jev-1.13.0,M2.4 answer reused
+Pd9758c5b86,S-D,analyst_note,1.0,3,0.01,0.0,0.99,0.0,2.99,jev-1.13.0,M2.4 answer reused
+Pcd9d254171,S-D,filing,1.25502,1,0.51,0.18,0.3,0.01,1.81,jev-1.13.0,M2.6 call
+P31fa130cb3,S-D,filing,1.25502,2,0.19,0.78,0.03,0.0,1.84,jev-1.13.0,M2.4 answer reused
+P71371ad606,S-D,filing,1.25502,3,0.06,0.12,0.75,0.07,2.83,jev-1.13.0,M2.6 call
+P145b344717,S-D,filing,1.25502,2,0.0,0.98,0.02,0.0,2.03,jev-1.13.0,M2.6 call
+P3bf9f65067,S-D,analyst_note,1.0,2,0.01,0.63,0.35,0.01,2.35,jev-1.13.0,M2.4 answer reused
+P726704c6aa,S-D,filing,1.25502,1,0.79,0.14,0.07,0.0,1.29,jev-1.13.0,M2.6 call
+Pec1e33cfdf,S-D,analyst_note,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.6 call
+P59df8d76f0,S-D,filing,1.25502,1,0.98,0.02,0.0,0.0,1.02,jev-1.13.0,M2.4 answer reused
+P95db0ae7fe,S-D,filing,1.25502,1,0.89,0.09,0.02,0.0,1.13,jev-1.13.0,M2.6 call
+P1e12669b2d,S-D,filing,1.25502,2,0.01,0.96,0.03,0.0,2.02,jev-1.13.0,M2.6 call
+P7c58915897,S-D,filing,1.25502,2,0.0,0.72,0.27,0.01,2.29,jev-1.13.0,M2.6 call
+P80702353e3,S-D,filing,1.25502,2,0.47,0.52,0.01,0.0,1.53,jev-1.13.0,M2.6 call
+P9d641b1cae,S-D,filing,1.25502,2,0.25,0.74,0.01,0.0,1.76,jev-1.13.0,M2.6 call
+P38326519b0,S-D,speech_testimony,1.0,1,0.57,0.38,0.05,0.0,1.49,jev-1.13.0,M2.6 call
+Pbb44ab826e,S-D,filing,1.25502,2,0.0,0.96,0.03,0.01,2.05,jev-1.13.0,M2.6 call
+Pf33fb3b675,S-D,speech_testimony,1.0,3,0.01,0.03,0.96,0.0,2.96,jev-1.13.0,M2.4 answer reused
+P218dc35f86,S-D,filing,1.25502,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+Pdc519d0d04,S-D,filing,1.25502,2,0.21,0.6,0.16,0.03,2.02,jev-1.13.0,M2.6 call
+P87835bc547,S-D,filing,1.25502,2,0.02,0.85,0.12,0.01,2.12,jev-1.13.0,M2.6 call
+P419581b4f5,S-D,analyst_note,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.6 call
+P5c55a82c5c,S-D,speech_testimony,1.0,4,0.03,0.14,0.23,0.6,3.4,jev-1.13.0,M2.6 call
+P69eee9218d,S-D,analyst_note,1.0,3,0.0,0.0,0.98,0.02,3.01,jev-1.13.0,M2.4 answer reused
+P3878649b67,S-D,filing,1.25502,2,0.0,0.9,0.09,0.01,2.1,jev-1.13.0,M2.6 call
+P4c6e779564,S-D,filing,1.25502,1,0.78,0.14,0.07,0.01,1.29,jev-1.13.0,M2.6 call
+Ped42e8a082,S-D,filing,1.25502,2,0.0,0.87,0.09,0.04,2.16,jev-1.13.0,M2.6 call
+P8840fc208b,S-D,filing,1.25502,1,0.97,0.03,0.0,0.0,1.04,jev-1.13.0,M2.6 call
+Pbf9dae71a4,S-D,filing,1.25502,2,0.21,0.66,0.13,0.0,1.92,jev-1.13.0,M2.6 call
+Pe773255908,S-D,filing,1.25502,2,0.0,0.97,0.03,0.0,2.03,jev-1.13.0,M2.6 call
+P081033a194,S-D,filing,1.25502,2,0.02,0.97,0.01,0.0,1.99,jev-1.13.0,M2.6 call
+Pb2768dd656,S-D,filing,1.25502,2,0.06,0.83,0.11,0.0,2.05,jev-1.13.0,M2.4 answer reused
+P44585459a3,S-D,filing,1.25502,2,0.0,0.95,0.05,0.0,2.05,jev-1.13.0,M2.4 answer reused
+P56936a998e,S-D,filing,1.25502,2,0.0,0.98,0.02,0.0,2.02,jev-1.13.0,M2.6 call
+P7c94e1b308,S-D,filing,1.25502,2,0.14,0.82,0.04,0.0,1.9,jev-1.13.0,M2.6 call
+P87e52af7bf,S-D,filing,1.25502,1,0.74,0.26,0.0,0.0,1.27,jev-1.13.0,M2.4 answer reused
+P7d3990b0cd,S-D,filing,1.25502,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+P27e20626df,S-D,filing,1.25502,1,0.68,0.31,0.01,0.0,1.34,jev-1.13.0,M2.6 call
+P045106e9c3,S-D,filing,1.25502,1,0.87,0.03,0.1,0.0,1.23,jev-1.13.0,M2.6 call
+P74680d744c,S-D,filing,1.25502,2,0.01,0.81,0.15,0.03,2.21,jev-1.13.0,M2.6 call
+P7ee555f267,S-D,filing,1.25502,2,0.02,0.94,0.04,0.0,2.03,jev-1.13.0,M2.6 call
+P8ce9c6398b,S-D,filing,1.25502,2,0.36,0.63,0.01,0.0,1.65,jev-1.13.0,M2.4 answer reused
+P46912b7325,S-D,filing,1.25502,1,0.69,0.3,0.01,0.0,1.32,jev-1.13.0,M2.4 answer reused
+P60db1b9bf3,S-D,filing,1.25502,1,0.71,0.25,0.04,0.0,1.32,jev-1.13.0,M2.4 answer reused
+P9d88ce9220,S-D,filing,1.25502,2,0.26,0.73,0.01,0.0,1.75,jev-1.13.0,M2.6 call
+Pc58d2da70d,S-D,filing,1.25502,2,0.01,0.93,0.06,0.0,2.06,jev-1.13.0,M2.6 call
+Pde4ec4d34d,S-D,filing,1.25502,3,0.21,0.14,0.57,0.08,2.52,jev-1.13.0,M2.4 answer reused
+Pf5cc47a06e,S-D,filing,1.25502,2,0.25,0.71,0.04,0.0,1.8,jev-1.13.0,M2.6 call
+P549d2273e7,S-D,filing,1.25502,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+P9de2483493,S-D,filing,1.25502,2,0.06,0.91,0.03,0.0,1.97,jev-1.13.0,M2.6 call
+Pf64d3c69f9,S-D,filing,1.25502,2,0.01,0.96,0.03,0.0,2.03,jev-1.13.0,M2.6 call
+P2f6fbccb72,S-D,filing,1.25502,2,0.0,0.97,0.03,0.0,2.03,jev-1.13.0,M2.6 call
+Pabe0cfe874,S-D,filing,1.25502,2,0.01,0.76,0.22,0.01,2.24,jev-1.13.0,M2.6 call
+Pcee1932a5e,S-D,filing,1.25502,2,0.04,0.94,0.02,0.0,1.99,jev-1.13.0,M2.4 answer reused
+P48d180e6fd,S-D,speech_testimony,1.0,4,0.0,0.05,0.15,0.8,3.74,jev-1.13.0,M2.6 call
+Pc0e458245d,S-D,filing,1.25502,3,0.06,0.16,0.76,0.02,2.72,jev-1.13.0,M2.4 answer reused
+Pa5def87c42,S-D,filing,1.25502,2,0.01,0.95,0.03,0.01,2.06,jev-1.13.0,M2.6 call
+Pe7a33207a0,S-D,filing,1.25502,2,0.01,0.87,0.12,0.0,2.12,jev-1.13.0,M2.6 call
+P02edfb336e,S-D,filing,1.25502,2,0.05,0.93,0.01,0.0,1.96,jev-1.13.0,M2.6 call
+P6e1474a9ff,S-D,filing,1.25502,2,0.01,0.76,0.2,0.03,2.26,jev-1.13.0,M2.6 call
+P8f49bf8558,S-D,filing,1.25502,2,0.01,0.98,0.01,0.0,2.0,jev-1.13.0,M2.4 answer reused
+P1ec940c50b,S-D,speech_testimony,1.0,3,0.05,0.1,0.48,0.37,3.17,jev-1.13.0,M2.4 answer reused
+P9091e9d558,S-D,filing,1.25502,2,0.0,0.97,0.03,0.0,2.03,jev-1.13.0,M2.6 call
+Pceb0be079c,S-D,filing,1.25502,2,0.0,0.99,0.01,0.0,2.01,jev-1.13.0,M2.6 call
+Pf7bd8e3f66,S-D,speech_testimony,1.0,1,0.46,0.35,0.18,0.01,1.74,jev-1.13.0,M2.6 call
+P1c54ff930c,S-D,speech_testimony,1.0,1,0.67,0.32,0.01,0.0,1.34,jev-1.13.0,M2.4 answer reused
+Pdc72f2e3cb,S-D,speech_testimony,1.0,1,0.53,0.12,0.32,0.03,1.86,jev-1.13.0,M2.6 call
+P7438afc1f1,S-D,analyst_note,1.0,3,0.0,0.0,1.0,0.0,3.0,jev-1.13.0,M2.4 answer reused
+Pb6476d1c1d,S-D,analyst_note,1.0,2,0.29,0.36,0.35,0.0,2.07,jev-1.13.0,M2.6 call
+P70b4d9360d,S-D,speech_testimony,1.0,3,0.04,0.05,0.91,0.0,2.86,jev-1.13.0,M2.4 answer reused
+Pc9717e9876,S-D,speech_testimony,1.0,3,0.03,0.0,0.95,0.02,2.96,jev-1.13.0,M2.6 call
+P5e9867dad0,S-D,speech_testimony,1.0,3,0.44,0.04,0.51,0.01,2.08,jev-1.13.0,M2.6 call
+Pcb4ffed467,S-D,speech_testimony,1.0,3,0.03,0.03,0.94,0.0,2.92,jev-1.13.0,M2.4 answer reused
+P86244afb55,S-D,filing,1.25502,2,0.01,0.99,0.0,0.0,2.0,jev-1.13.0,M2.6 call
+Pff1b4ec089,S-D,speech_testimony,1.0,4,0.03,0.06,0.33,0.58,3.44,jev-1.13.0,M2.6 call
+P0ad00a810a,S-D,speech_testimony,1.0,2,0.4,0.56,0.03,0.0,1.63,jev-1.13.0,M2.6 call
+Pd0d2d0c48b,S-D,filing,1.25502,2,0.1,0.88,0.02,0.0,1.93,jev-1.13.0,M2.6 call
+Pa240152874,S-D,filing,1.25502,2,0.1,0.9,0.0,0.0,1.91,jev-1.13.0,M2.6 call
+Pb59610ff1e,S-D,filing,1.25502,2,0.11,0.89,0.0,0.0,1.89,jev-1.13.0,M2.6 call
+Pd79fc0d46d,S-D,filing,1.25502,2,0.02,0.97,0.01,0.0,2.0,jev-1.13.0,M2.4 answer reused
+P16ce59a4d5,S-D,filing,1.25502,2,0.0,0.96,0.04,0.0,2.04,jev-1.13.0,M2.6 call
+Pbe8d1e4880,S-D,filing,1.25502,2,0.01,0.97,0.02,0.0,2.02,jev-1.13.0,M2.6 call
+P86d6d82b82,S-D,filing,1.25502,2,0.0,0.96,0.04,0.0,2.04,jev-1.13.0,M2.6 call
+P92902570ba,S-D,speech_testimony,1.0,3,0.02,0.15,0.76,0.07,2.89,jev-1.13.0,M2.4 answer reused
+P54610da42e,S-D,analyst_note,1.0,3,0.03,0.37,0.51,0.09,2.67,jev-1.13.0,M2.6 call
+P7f9287478b,S-D,analyst_note,1.0,3,0.0,0.0,0.98,0.02,3.02,jev-1.13.0,M2.4 answer reused
+Pf284aafcf6,S-D,filing,1.25502,1,0.94,0.04,0.02,0.0,1.07,jev-1.13.0,M2.6 call
+P8330cc51cf,S-D,analyst_note,1.0,2,0.03,0.37,0.34,0.26,2.84,jev-1.13.0,M2.4 answer reused
+Pc2e4253429,S-D,analyst_note,1.0,2,0.01,0.64,0.09,0.26,2.6,jev-1.13.0,M2.6 call
+P2bee3ff654,S-D,speech_testimony,1.0,1,0.89,0.1,0.01,0.0,1.12,jev-1.13.0,M2.4 answer reused
+P3f8057f17d,S-D,filing,1.25502,2,0.03,0.95,0.02,0.0,1.99,jev-1.13.0,M2.6 call
+P3ea3a137c8,S-D,speech_testimony,1.0,4,0.0,0.0,0.04,0.96,3.96,jev-1.13.0,M2.4 answer reused
+P70cade3807,S-D,speech_testimony,1.0,3,0.0,0.0,0.75,0.25,3.25,jev-1.13.0,M2.6 call
+P3dbd2e9cb2,S-D,speech_testimony,1.0,4,0.0,0.0,0.03,0.97,3.97,jev-1.13.0,M2.4 answer reused
+P3ee9815918,S-D,speech_testimony,1.0,3,0.07,0.09,0.84,0.0,2.77,jev-1.13.0,M2.6 call
+P562786ac03,S-D,analyst_note,1.0,4,0.01,0.0,0.08,0.91,3.9,jev-1.13.0,M2.6 call
+P87158f6f2e,S-D,analyst_note,1.0,4,0.01,0.01,0.21,0.77,3.75,jev-1.13.0,M2.6 call

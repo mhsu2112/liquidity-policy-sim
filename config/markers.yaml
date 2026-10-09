@@ -1,0 +1,18 @@
+# M2.5 market-stigma marker rule (docs/amendments.md, Clarification 30 Part B, and its 2026-10-08 note).
+# Release v0.1 (Amendment 7): the marker is provisional. Every value here is fixed in that clarification
+# except sibling_flag, which is the owner's 0.15 rule from session v0.1-B2 (a reporting flag only).
+
+draw_templates: [W1, W2, W3, W4, AN1, AN3, AN5, AN6, L1, L2, L3, L4, L5]   # reveal a draw; feed the marker
+vantage_points:
+  depositor: "an uninsured depositor of the bank"
+  lender: "a wholesale lender to the bank"
+  analyst: "a bank equity analyst"
+questions:
+  distress: "Reading only this text, would {vantage} most likely take it as a sign that the bank or banks borrowing are in financial distress?"
+  sound: "Reading only this text, would {vantage} most likely take it as a sign that the bank or banks borrowing are financially sound?"
+pair_flag: 0.25         # flag when |P(distress) - (1 - P(sound))| exceeds this (C30 Part B item 4)
+sibling_flag: 0.15      # flag a wording whose reading differs from its siblings' mean by more than this (owner, v0.1-B2)
+policies: [A, B, B′, C, C′, E]
+variants:               # C30 Part B item 5: B′ uses B's templates; C′ uses C's without the usage-conditioned ones
+  B′: {base: B, drop: []}
+  C′: {base: C, drop: [L3, P5]}

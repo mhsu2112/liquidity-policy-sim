@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels jev-hello mock-report report ai-labels gold-check
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels jev-hello mock-report report ai-labels gold-check markers corpus-scores freeze
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -138,3 +138,15 @@ ai-labels: $(VENV)/.installed
 gold-check: $(VENV)/.installed
 	$(PY) -m signals.gold_set.jev_check
 	$(PY) -m signals.gold_set.check_report
+
+## make markers: M2.5 provisional market-stigma marker per policy (Clarification 30 Part B; v0.1)
+markers: $(VENV)/.installed
+	$(PY) -m signals.markers
+
+## make corpus-scores: M2.6 score the corpus with the M2.4 question; historical range by period and type (v0.1)
+corpus-scores: $(VENV)/.installed
+	$(PY) -m signals.corpus_scores
+
+## make freeze: copy every v0.1 Jev output into signals/frozen/ with the banner and a manifest of fingerprints
+freeze: $(VENV)/.installed
+	$(PY) -m signals.freeze
