@@ -212,7 +212,7 @@ The coding was done by AI coding agents, directed by the sponsor, who does not w
 
 - liquidity shortfall (cash no source could cover);
 
-- official support drawn (window and Home Loan Bank);
+- official support drawn from the discount window (Home Loan Bank lending is reported separately);
 
 - annual cost;
 
@@ -324,11 +324,11 @@ The full list, with the record entry for each, is on the report's Limits page (o
 
 The whole comparison reruns from the published code, configuration and frozen Jev files in about ten minutes on a laptop, with no calls to Jev.
 
-1.  Clone the public repository and check out tag v0.1.1 (or v0.1 for the original run).
+1.  Clone the public repository and check out tag v0.1.2 (or v0.1 for the original run).
 
-2.  Run make results. It runs the full grid and rebuilds every page of the report in outputs/v0.1/report/.
+2.  Run make results. It runs the full grid and writes the results to `outputs/results/` and the report to `outputs/report/`. The copies in `outputs/v0.1/` are the published snapshot to compare against.
 
-3.  Open outputs/v0.1/report/index.html.
+3.  Open `outputs/report/index.html`.
 
 A rebuild from scratch matches the published outputs byte for byte, apart from timestamps and the commit stamp. Every output page carries a stamp with the code version, a fingerprint of the configuration, the frozen-parameter fingerprint (05f9e763efc16772) and the Jev file version (v0.1-signals).
 

@@ -1456,3 +1456,10 @@ Implementation of Part A:
     - official support is scored on the window only (Clarification 31), not "window and Home Loan Bank";
     - `make results` writes to `outputs/results/` and `outputs/report/`, not to `outputs/v0.1/report/`;
     - the reproduction steps name tag `v0.1.1`; the current published state is `v0.1.2`.
+- **Note, 2026-10-09 (session v0.1-G, continued): three statements in `docs/methodology.md` corrected at the owner's
+  request (wording only; no result changes).**
+  - The list of measures now reads "official support drawn from the discount window (Home Loan Bank lending is
+    reported separately)", matching Clarification 31.
+  - "Reproducing the results" now names tag `v0.1.2` (or `v0.1` for the original run).
+  - It also says `make results` writes to `outputs/results/` and `outputs/report/`, with `outputs/v0.1/` as the
+    published snapshot to compare against, and to open `outputs/report/index.html`.
