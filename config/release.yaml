@@ -1,0 +1,14 @@
+# Which release this branch builds (docs/amendments.md, Amendment 7, 2026-10-08).
+#
+# v0.1 is a proof of concept: gold-set labels come from an AI model, and the Jev reference is not
+# validated against human readers. Every v0.1 output carries the banner below, word for word.
+# The v1 protocol (contract, hypotheses, Clarifications 19-28) is paused, not withdrawn; switching
+# back to it means release: v1, under which AI labels open nothing.
+
+release: v0.1
+banner: "v0.1 proof of concept. Jev reference not validated against human readers. Not a v1 result."
+
+ai_labels:                     # Amendment 7, item 2
+  labeler: "AI:GPT-6.1 Sol (high)"
+  source: "signals/gold_set/sheets/gold_set_L1_AI_initial_pass_repaired.xlsx"   # Main tab; git-ignored workbook
+  output: "signals/gold_set/labels_AI.csv"

@@ -6,6 +6,10 @@ Currency. The comparison rules and hypotheses are published before any results a
 Option C's specification is reviewed by an outside supporter of LCR recognition, and results
 are reported whether or not they match the hypotheses.
 
+> **v0.1 proof of concept. Jev reference not validated against human readers. Not a v1 result.**
+> The pre-registered v1 protocol is paused, not withdrawn; gold-set labels in this release come from an
+> AI model (`docs/amendments.md`, Amendment 7).
+
 ## What this is
 
 A small, open simulator that shows how a bank run plays out under different discount window

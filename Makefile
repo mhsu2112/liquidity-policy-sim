@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels jev-hello mock-report report
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels jev-hello mock-report report ai-labels
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -129,3 +129,7 @@ mock-report: $(VENV)/.installed
 ## make report: the same pages from real M3 results in outputs/results/ (same schema, same layout; M3 calls this)
 report: $(VENV)/.installed
 	$(PY) -m analysis.report.build outputs/results outputs/report
+
+## make ai-labels: convert the AI-labelled Main tab to signals/gold_set/labels_AI.csv (v0.1 only; Amendment 7)
+ai-labels: $(VENV)/.installed
+	$(PY) -m signals.gold_set.ai_labels

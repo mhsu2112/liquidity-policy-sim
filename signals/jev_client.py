@@ -11,7 +11,8 @@ Rules (CLAUDE.md, "Rules for Jev"):
 - Every M2 call uses the pinned model version in config/jev.yaml (Clarification 27). If TypeSafe ever
   answers with a different version, ask() records the call and then stops with a clear message.
 - No gold-set passage goes to Jev before both main-round label sets are locked (Clarification 19):
-  ask() refuses such text.
+  ask() refuses such text. In release v0.1 only (config/release.yaml; Amendment 7), a locked and
+  unchanged labels_AI.csv opens the guard instead.
 
 Adapted from ~/Work/03-builders-lab/jev-supervision-lab/jevlab/client.py, using plain HTTP instead of
 the SDK, and without the OpenRouter route.
@@ -73,9 +74,11 @@ def _state_text(state):
 
 def gold_guard(state):
     """Refuse text containing a gold-set or practice passage until both main-round sets are locked."""
-    from signals.gold_set.labels import locks
+    from signals.gold_set.labels import ai_lock_holds, locks
     held = {(l[0], l[1]) for l in locks()}
-    if {("L1", "main"), ("L2", "main")} <= held:
+    if {("L1", "main"), ("L2", "main")} <= held:      # the v1 protocol: both human main rounds locked
+        return
+    if ai_lock_holds():                                 # Amendment 7, release v0.1 only: AI labels locked and unchanged
         return
     text = _state_text(state)
     key_path = ROOT / "signals" / "gold_set" / "key.csv"
@@ -91,8 +94,8 @@ def gold_guard(state):
             hashes = {r["excerpt_sha256"] for r in csv.DictReader(f) if r["gold_set_eligible"] == "Y"}
         hit = hashlib.sha256(text.encode("utf-8")).hexdigest() in hashes
     if hit:
-        raise JevError("refused: the text contains a gold-set passage, and both main-round labels are not yet "
-                       "locked (Clarification 19)")
+        raise JevError("refused: the text contains a gold-set passage, and neither both human main-round labels "
+                       "(Clarification 19) nor, in release v0.1, the AI labels (Amendment 7) are locked")
 
 
 # ---------- the call ----------

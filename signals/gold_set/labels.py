@@ -111,7 +111,57 @@ def locks():
     return out
 
 
+def release():
+    import yaml
+    with open(HERE.parents[1] / "config" / "release.yaml") as f:
+        return yaml.safe_load(f)
+
+
+def lock_ai(path):
+    """Amendment 7 (v0.1 only): lock labels_AI.csv as labeler AI, main round, by fingerprint.
+
+    Refused unless config/release.yaml says release: v0.1. Every row is re-checked: exact IDs, one
+    of the five words, the matching Clarification 19 code, Unsure Y or blank, and the configured
+    labeler. labels_AI.csv and locks.md are committed together and pushed. Answers are never printed."""
+    cfg = release()
+    if cfg.get("release") != "v0.1":
+        raise Refused("AI labels can be locked only in release v0.1 (Amendment 7)")
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        rows = list(csv.DictReader(f))
+    if not rows or list(rows[0]) != ["ID", "Answer", "Code", "Unsure", "Note", "Labeler"]:
+        raise Refused("labels_AI.csv needs the columns ID, Answer, Code, Unsure, Note, Labeler")
+    ids = [r["ID"] for r in rows]
+    if len(ids) != len(set(ids)) or set(ids) != expected_ids("main"):
+        raise Refused("the IDs do not match the main round exactly")
+    bad = [r["ID"] for r in rows if to_word(r["Answer"]) != r["Answer"] or WORD_TO_CODE.get(r["Answer"]) != r["Code"]
+           or r["Unsure"] not in ("", "Y") or r["Labeler"] != cfg["ai_labels"]["labeler"]]
+    if bad:
+        raise Refused(f"{len(bad)} row(s) fail the checks: {', '.join(sorted(bad)[:10])}")
+    if any(l[0] == "AI" and l[1] == "main" for l in locks()):
+        raise Refused("AI main is already locked; a locked set is never replaced")
+    digest = sha256(path)
+    if not LOCKS_PATH.exists():
+        LOCKS_PATH.write_text(LOCK_HEADER)
+    with open(LOCKS_PATH, "a") as f:
+        f.write(f"| {datetime.date.today().isoformat()} | AI | main | {Path(path).name} | {len(rows)} | {digest} |\n")
+    git("add", str(LOCKS_PATH), str(path))
+    git("commit", "-m", "Lock AI main labels (Amendment 7; fingerprint and labels_AI.csv)", "--", str(LOCKS_PATH), str(path))
+    git("push")
+    print(f"Locked AI main: {len(rows)} rows, SHA-256 {digest}. labels_AI.csv and locks.md committed and pushed.")
+
+
+def ai_lock_holds(labels_path=None):
+    """True if release is v0.1 and locks.md holds an AI main lock that still matches labels_AI.csv (Amendment 7)."""
+    if release().get("release") != "v0.1":
+        return False
+    labels_path = Path(labels_path or HERE / "labels_AI.csv")
+    held = [l for l in locks() if l[0] == "AI" and l[1] == "main"]
+    return bool(held) and labels_path.exists() and sha256(labels_path) == held[-1][4]
+
+
 def lock(path):
+    if Path(path).name == "labels_AI.csv":          # Amendment 7: the AI label set (v0.1 only)
+        return lock_ai(path)
     labeler, round_, rows = check(path)
     if any(l[0] == labeler and l[1] == round_ for l in locks()):
         raise Refused(f"{labeler} {round_} is already locked; a locked set is never replaced")
