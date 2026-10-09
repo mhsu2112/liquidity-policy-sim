@@ -6,8 +6,8 @@ Liquidity Policy Simulator · Draft v0.9 · 2026-10-01 (becomes v1.0 after the p
 
 You'll read 293 short public passages about banks borrowing from a central bank and answer one question about each. The passages come from 2007 to 2024: news, analyst notes, official statements, speeches and testimony, and filings. Your answers test whether an AI text-reading model (Jev) reads these passages the way people do. You never see Jev's answers, and it never sees yours.
 
-- **Practice round:** 15 passages, about 15 minutes. Not scored.
-- **Main round:** 278 passages, about 4–5 hours. Do it in several sittings, ideally over 2–3 days.
+- **Practice round:** 15 passages. Not scored.
+- **Main round:** 278 passages. Do it in several sittings.
 - **Two labelers:** you and one other person, working alone.
 - **No technical skills needed:** one spreadsheet, one column to fill in, one file to send back.
 
@@ -36,7 +36,7 @@ Pick one answer per passage from the dropdown. The answers run from least to mos
 5. **Don't look anything up.** Don't search for the article, the bank or the date.
 6. **No AI help.** Don't use ChatGPT, Claude or any other AI tool while labeling. The whole point is to compare people with an AI.
 7. **Work alone.** Don't discuss main-round passages with anyone, including the other labeler, until both sets have been returned.
-8. **Go with your first considered reading.** About a minute per passage is right. Fix obvious slips, but don't go back and re-label earlier passages for consistency.
+8. **Go with your first considered reading.** Fix obvious slips, but don't go back and re-label earlier passages for consistency.
 9. **Take breaks.** Long sittings blur judgment. Batches of about 50 work well.
 
 ## Step by step
@@ -53,7 +53,7 @@ The passages show no source or date, on purpose. Don't change any other column.
 
 **Practice round**
 
-1. Read this guide once. It takes about 10 minutes.
+1. Read this guide once.
 2. Open the file and click the **Practice** tab.
 3. Answer all 15 passages.
 4. Save and send it back (see "Saving and sending" below). Name it `gold_set_L2_practice.csv`.
