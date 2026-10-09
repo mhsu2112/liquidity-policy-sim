@@ -284,7 +284,43 @@ def implied_s_table(d, layout):
             f'<th>Implied s</th><th class=l>Note</th></tr>{body}</table></div>')
 
 
-def sensitivity_page(d, vocab, layout):
+DIAGNOSTICS = [   # Amendment 9: the session v0.1-D diagnostics, shown as sensitivities (file, heading)
+    ("1_grace_survival.csv", "Sensitivity 1 — grace count (upper bound): survival under the strict rule and counting "
+                             "timing-only failures as survivals"),
+    ("1_grace_labels.csv", "Sensitivity 1 — grace count (upper bound): label counts over the 35 cells"),
+    ("2_s0_labels.csv", "Sensitivity 2 — no routine-borrowing effect (s = 0): label counts over the 9 mid-range cells"),
+    ("3_hesitation.csv", "Sensitivity 3 — hesitation gap: share of runs borrowing a day or more after first seeing a shortfall"),
+    ("4_owed_levels_S1.csv", "Sensitivity 4 — S1 shortfall as the largest amount still owed (alternative definition, not "
+                             "the scored one)"),
+    ("4_owed_labels_S1.csv", "Sensitivity 4 — S1 label counts with the largest amount still owed (alternative definition, "
+                             "not the scored one)"),
+]
+
+
+def diagnostics_section(folder):
+    """Amendment 9: the v0.1-D diagnostics as labelled sensitivities, read from their CSVs; empty if absent."""
+    if folder is None or not Path(folder).exists():
+        return ""
+    import csv
+    parts = ['<h2 id="diagnostics">Diagnostic sensitivities (session v0.1-D)</h2><p class="note">Sensitivities, not scored. '
+             'Computed from the saved v0.1 runs; no scored result changes (Amendment 9). Sensitivity 1 is an upper bound: a '
+             'run that fails for timing alone stops there, so whether it would have failed later is never seen. '
+             'Sensitivity 2 covers the 9 mid-range cells, where s was varied. Sensitivity 4 uses a re-run of the S1 main '
+             'grid that reproduced every saved field exactly.</p>']
+    for name, heading in DIAGNOSTICS:
+        path = Path(folder) / name
+        if not path.exists():
+            continue
+        rows = list(csv.reader(open(path, newline="")))
+        head = "".join(f"<th>{e(h)}</th>" for h in rows[0])
+        body = "".join("<tr>" + "".join(f"<td{' class=l' if i < 3 else ''}>{e(c)}</td>" for i, c in enumerate(r)) + "</tr>"
+                       for r in rows[1:])
+        parts.append(f'<h3>{e(heading)}</h3><p class="note"><a href="diagnostics/{e(name)}">{e(name)}</a></p>'
+                     f'<div class="scroll"><table><tr>{head}</tr>{body}</table></div>')
+    return "\n".join(parts)
+
+
+def sensitivity_page(d, vocab, layout, diagnostics=None):
     """Clarification 31 B5: each one-at-a-time sensitivity against the default."""
     pol, sl = layout["policy_labels"], layout["scenario_labels"]
     rows = d.get("sensitivity.csv", [])
@@ -293,6 +329,9 @@ def sensitivity_page(d, vocab, layout):
              'cells (C uptake: all 35). For each rerun policy: its survival and shortfall at that point, and the paired '
              'difference from the same policy at the default, with 90% intervals. Below each, how many of the 9 mid-range '
              'cells change label for each comparison. Policies a setting cannot affect reuse their default runs.</p>']
+    extra = diagnostics_section(diagnostics)
+    if extra:
+        parts = [extra, '<h2 id="one-at-a-time">One-at-a-time sensitivities (run plan)</h2>'] + parts
     if not rows:
         parts.append("<p>No sensitivity results in this folder.</p>")
     for name in dict.fromkeys(r["sensitivity"] for r in rows):
@@ -418,6 +457,8 @@ def build(results, out, no_marker_results=None):
         shutil.rmtree(out)
     (out / "img").mkdir(parents=True)
     layout, vocab, d = load_layout(), vocabulary(), load(results)
+    diagnostics = Path(results).parent / "diagnostics"          # Amendment 9: e.g. outputs/v0.1/diagnostics
+    diagnostics = diagnostics if (diagnostics / "1_grace_survival.csv").exists() else None
     pages = {
         "index": front_page(d, vocab, layout, bool(no_marker_results)),
         "scorecard": scorecard_page(d, vocab, layout),
@@ -425,7 +466,7 @@ def build(results, out, no_marker_results=None):
         "frontier": frontier_page(d, vocab, layout, out),
         "option_c": option_c_page(d, vocab, layout, out),
         "reversal": reversal_page(d, vocab, layout),
-        "sensitivity": sensitivity_page(d, vocab, layout),
+        "sensitivity": sensitivity_page(d, vocab, layout, diagnostics),
         "attribution": attribution_page(d, vocab, layout),
         "replay": replay_page(d, vocab, layout),
         "hypotheses": hypotheses_page(d, vocab, layout),
@@ -436,6 +477,8 @@ def build(results, out, no_marker_results=None):
         (out / p["file"]).write_text(pages[p["id"]])
         written.append(out / p["file"])
     shutil.copy(Path(results) / "scorecard.csv", out / "scorecard.csv")
+    if diagnostics:
+        shutil.copytree(diagnostics, out / "diagnostics", ignore=shutil.ignore_patterns("*.html"))
     for extra in ("scorecard_extra.csv", "hypotheses_memo.md"):
         if (Path(results) / extra).exists():
             shutil.copy(Path(results) / extra, out / extra)

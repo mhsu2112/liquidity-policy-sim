@@ -1392,3 +1392,31 @@ Implementation of Part A:
        unchanged. Every saved field came out identical (checked before writing), and `peak_owed_bn` was added.
      - "Late" borrowing means 2 or more half-days after the bank first saw a shortfall (owner's choice).
      - The s = 0 comparison covers the 9 mid-range cells, the grid that sensitivity was run on.
+
+## 2026-10-09 — Amendment 9: the v0.1-D diagnostics and three limits added to the v0.1 report (after results; no scored result changes)
+- **What changed:**
+  - The Sensitivities page opens with a new section, "Diagnostic sensitivities (session v0.1-D)". It shows the four
+    diagnostics in `outputs/v0.1/diagnostics/`, each labelled as a sensitivity:
+    - the grace count (upper bound);
+    - no routine-borrowing effect (s = 0, 9 mid-range cells);
+    - the hesitation gap;
+    - shortfall as the largest amount still owed (alternative definition, not the scored one).
+
+    The report copies those CSVs into its `diagnostics/` folder. The section appears only when that folder sits next to
+    the results folder.
+  - The Limits page gains three entries:
+    - (a) the results depend on the strict failure rule; under the grace count, B's advantage disappears;
+    - (b) model banks never hesitate to borrow, so the stigma-and-hesitation channel isn't tested;
+    - (c) C's gains for banks without LCR credit depend on the routine-borrowing assumption, and Jev's reading implies
+      s ≈ 0 for C (0.003).
+  - No page was added, and `layout.yaml` is unchanged (layout fingerprint `bbf29f46a63e0587`).
+- **Why:** the owner asked for the v0.1-D diagnostics to be read beside the scored results, with their limits stated.
+- **Evidence:**
+  - The report was rebuilt from the unchanged `outputs/v0.1/results`. Only `sensitivity.html` and `limits.html`
+    differ, plus the copied diagnostics CSVs. Every other page and image is byte-identical, and no results file
+    changed.
+  - Test: `tests/test_m3_diagnostics.py::test_report_shows_diagnostics_as_sensitivities_and_new_limits`.
+- **Seen results before the change?** Yes. This entry adds reading aids after the results and the diagnostics were
+  seen. No scored number, label or hypothesis verdict changes.
+- **Session v0.1-E also explained the grace gap, read-only:** why SVB-like S1 survival on the grace count is lower under
+  B/E than under A. That explanation is reported in the session readout; no file in the repository holds its numbers.

@@ -51,3 +51,22 @@ def test_page_carries_banner_disclosure_and_labels(tiny):
     assert html.count("v0.1 proof of concept. Jev reference not validated against human readers.") >= 2
     assert "publicly advocated a version of Option B" in html
     assert "sensitivity, upper bound" in html and "alternative definition, not the scored one" in html
+
+
+def test_report_shows_diagnostics_as_sensitivities_and_new_limits(tmp_path):
+    """Amendment 9: the diagnostics appear on the Sensitivities page, labelled as sensitivities; three new limits."""
+    import shutil
+    from analysis import mock_results
+    from analysis.report import build as report
+    mock_results.write(tmp_path / "results")
+    shutil.copytree(D.OUT, tmp_path / "diagnostics")
+    report.build(tmp_path / "results", tmp_path / "report")
+    html = (tmp_path / "report" / "sensitivity.html").read_text()
+    for _, heading in report.DIAGNOSTICS:
+        assert heading.split(" — ")[0] in html
+    assert "Diagnostic sensitivities" in html and "upper bound" in html and "alternative definition, not the scored one" in html
+    assert (tmp_path / "report" / "diagnostics" / "1_grace_survival.csv").exists()
+    limits = (tmp_path / "report" / "limits.html").read_text()
+    for title in ("The results depend on the strict failure rule", "Model banks never hesitate to borrow",
+                  "rest on the routine-borrowing assumption"):
+        assert title in limits
