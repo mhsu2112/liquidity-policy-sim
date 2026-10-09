@@ -1101,3 +1101,39 @@ Format for each entry:
   - the banner, watermark and README disclosure are on every page, and the banner is on every image;
   - the validator accepts the mock files and rejects broken ones;
   - the layout matches the fingerprint recorded above.
+
+## 2026-10-08 — Amendment 7: v0.1 proof of concept (the v1 protocol paused, not withdrawn)
+- **What changed:**
+  1. **v0.1, not v1.** The pre-registered v1 protocol (contract, hypotheses, Clarifications 19–28) is paused, not withdrawn.
+     This release is v0.1, a proof of concept. Every v0.1 output carries the banner: "v0.1 proof of concept. Jev reference
+     not validated against human readers. Not a v1 result."
+  2. **AI labels.**
+     - The second labeler is unavailable. Gold-set labels come from an AI model, GPT-6.1 Sol (high), filled in by the
+       owner and reviewed by eye.
+     - Source: `signals/gold_set/sheets/gold_set_L1_AI_initial_pass_repaired.xlsx` (Main tab), converted to
+       `signals/gold_set/labels_AI.csv` and locked by fingerprint in `signals/gold_set/locks.md` before Jev sees any gold
+       passage.
+     - Before conversion the Main tab was checked: 278 rows, IDs G001–G278 exactly, every answer one of the five word
+       labels (Clarification 26), and passages word for word the drawn text.
+     - The owner's human labels exist for the 15 practice passages only.
+  3. **M2.4 becomes a model-to-model check.**
+     - Jev is checked against the AI labels, with the same agreement measures and intervals as Clarifications 19
+       and 25.
+     - It is reported, not a gate, and makes no claim of human validation.
+     - The Jev marker is shown, labelled "provisional".
+     - The Jev client's gold-set guard opens on the AI lock only while `config/release.yaml` says `release: v0.1` (this
+       amendment). Under the v1 protocol it still needs both human main-round locks.
+  4. **Unchanged:**
+     - frozen parameters (fingerprint `05f9e763efc16772`);
+     - the run plan;
+     - the lead, tie and trade-off rule;
+     - reporting results as they come out;
+     - the disclosure;
+     - the comparison with H1–H8.
+  5. **Path to v1.** The owner has seen AI labels for these 278 passages. So v1 human labeling uses a fresh gold-set draw
+     from unused eligible passages, with independent labelers.
+  6. **Tags.** v0.1-signals and v0.1 are used. M2-complete, M3-complete and v1.0 stay reserved for the full protocol.
+- **Why:** the second labeler is unavailable, and the owner wants a working, inspectable proof of concept rather than a
+  stalled protocol.
+- **Seen results before the change?** No Jev reading of any gold-set passage exists. The only Jev calls so far are two checks
+  on a made-up sentence. No policy comparison under stress has been run. The AI labels exist and the owner has seen them.
