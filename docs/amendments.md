@@ -1066,3 +1066,38 @@ Format for each entry:
   for one fixed model.
 - **Seen results before the change?** No. The only Jev calls so far are two `make jev-hello` checks on a made-up
   sentence. No corpus or gold-set passage has been sent to Jev.
+
+## 2026-10-05 — Clarification 28: the M3 report layout is fixed on mock data before any policy comparison exists (session M3.0)
+- **What changed:** the layout of the M3 report (its pages, charts, metrics, their order and colours) is fixed now,
+  on mock numbers, before any policy comparison runs. No value or range in the contract changes, no run is added
+  (Clarification 14 unchanged) and no frozen value changes (params_frozen fingerprint `05f9e763efc16772`).
+  1. **The layout** lives in `analysis/report/layout.yaml`: ten pages in this order: front page, scorecard,
+     trade-off chart, cost frontier, Option C panel, reversal distances, feature attribution, episode replay,
+     hypotheses, limits. It also fixes the scorecard's columns and their order, the seven trade-off comparisons
+     (B vs C, B vs E, C vs A, B vs A, E vs A, C′ vs C, B′ vs B) and the colour-blind-safe palette.
+     Layout fingerprint: `741e107248e87736`.
+  2. **Any later layout change is logged here with its reason** and the new layout fingerprint. This includes
+     pages, charts, metrics, order or colours. `tests/test_report_shells.py` fails if `layout.yaml` no longer
+     matches the latest recorded fingerprint. A change to the drawing code that alters what a reader sees is
+     logged the same way.
+  3. **One results schema.** The report reads only a folder of files described in `analysis/results_schema.md` and
+     checked by `analysis/results_schema.py`. M3 writes real results in that schema to `outputs/results/`, and
+     `make report` draws them with the same code and layout. The only visible difference is that the mock banner
+     goes away.
+  4. **The mock** (`analysis/mock_results.py`, seed 20261005) is random numbers only:
+     - it never imports the engine, runs an episode or reads `outputs/`;
+     - labels and values are drawn the same way for every policy;
+     - every hypothesis verdict is "pending";
+     - every mock page and image carries "MOCK DATA — LAYOUT ONLY — NOT RESULTS";
+     - mock files go to `outputs/mock/` (git-ignored); only code and templates are committed.
+- **Why:** if the layout were chosen after seeing results, the choice of what to show, in what order and in what
+  colours could lean toward one answer, even without anyone meaning it to. Fixing the layout first removes that
+  room. It complements the pre-registered contract and hypotheses.
+- **Seen results before the change?** No. No policy comparison exists. Only policy-A stress runs have been made
+  (M1.10–M1.12), and the mock reads none of them.
+- **Evidence:** `make mock-report` → `outputs/mock/report/index.html`. `tests/test_report_shells.py`:
+  - the mock script imports no simulation code, and a fresh run of it loads no simulation module and opens no file
+    in `outputs/`;
+  - the banner, watermark and README disclosure are on every page, and the banner is on every image;
+  - the validator accepts the mock files and rejects broken ones;
+  - the layout matches the fingerprint recorded above.
