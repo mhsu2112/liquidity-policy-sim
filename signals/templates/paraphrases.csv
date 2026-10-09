@@ -1,0 +1,81 @@
+template,policy,paraphrase_id,text
+W1,A C,W1-p1,"Primary credit outstanding climbed to ${total_bn} billion from ${prior_bn} billion on the Federal Reserve's weekly balance sheet, the biggest one-week rise since {period}. Borrowers are not named by the Fed."
+W1,A C,W1-p2,"According to the Fed's weekly balance sheet, primary credit outstanding went from ${prior_bn} billion to ${total_bn} billion, its largest weekly increase since {period}. The Fed does not disclose which banks borrowed."
+W1,A C,W1-p3,"The weekly Federal Reserve balance sheet put primary credit outstanding at ${total_bn} billion, up from ${prior_bn} billion and the largest weekly gain since {period}. The borrowers are not identified."
+W1,A C,W1-p4,"Primary credit outstanding increased to ${total_bn} billion from ${prior_bn} billion, the Federal Reserve's weekly balance sheet showed, the largest weekly increase since {period}. The Fed does not name borrowers."
+W2,B E,W2-p1,"In the week ended {date}, primary credit outstanding increased to ${total_bn} billion, consistent with the quarter-end pattern seen since large banks started required test borrowing."
+W2,B E,W2-p2,"Primary credit outstanding reached ${total_bn} billion in the week ended {date}, matching the quarter-end pattern since large banks began their required test borrowing."
+W2,B E,W2-p3,The rise in primary credit outstanding to ${total_bn} billion in the week ended {date} follows the quarter-end pattern that has held since large banks began required test borrowing.
+W2,B E,W2-p4,"Primary credit outstanding climbed to ${total_bn} billion for the week ended {date}, in keeping with the quarter-end pattern since required test borrowing by large banks began."
+W3,A B C E,W3-p1,"Several banks tapped the discount window this week amid market turmoil, pushing borrowing up sharply to ${total_bn} billion."
+W3,A B C E,W3-p2,"Amid market turmoil, discount window borrowing jumped to ${total_bn} billion this week as several banks drew on the facility."
+W3,A B C E,W3-p3,"Borrowing at the discount window leapt to ${total_bn} billion this week, with several banks using the facility during market turmoil."
+W3,A B C E,W3-p4,"This week, as markets were in turmoil, several banks turned to the discount window, and borrowing there jumped to ${total_bn} billion."
+W4,A C,W4-p1,"This week, discount window loans at the Federal Reserve Bank of {district} increased by ${delta_bn} billion. {bank} is among the few large banks in that district."
+W4,A C,W4-p2,"The Federal Reserve Bank of {district} reported a ${delta_bn} billion rise in discount window loans this week. The district has only a handful of large banks, {bank} among them."
+W4,A C,W4-p3,Discount window lending by the Federal Reserve Bank of {district} went up ${delta_bn} billion this week. {bank} is one of the district's few large banks.
+W4,A C,W4-p4,Loans from the discount window at the Federal Reserve Bank of {district} grew by ${delta_bn} billion this week; {bank} is one of a small number of large banks in the district.
+AN1,B E,AN1-p1,"The Bank completed its quarterly test borrowing of $50 million, as the Federal Reserve's discount window readiness rule requires, and repaid it the next day. Its collateral prepositioned at the Federal Reserve supports ${capacity_bn} billion of borrowing capacity."
+AN1,B E,AN1-p2,"In line with the Federal Reserve's discount window readiness rule, the Bank made its required quarterly test borrowing of $50 million and repaid it the following day. Prepositioned collateral at the Federal Reserve gives it borrowing capacity of ${capacity_bn} billion."
+AN1,B E,AN1-p3,The Bank carried out the quarterly $50 million test borrowing required by the Federal Reserve's discount window readiness rule and repaid it the next day. Collateral it has prepositioned at the Federal Reserve supports ${capacity_bn} billion in borrowing capacity.
+AN1,B E,AN1-p4,"Under the Federal Reserve's discount window readiness rule, the Bank completed its required quarterly test: it borrowed $50 million and repaid it the next day. Borrowing capacity of ${capacity_bn} billion is backed by collateral prepositioned at the Federal Reserve."
+AN2,C,AN2-p1,"At quarter-end our liquidity coverage ratio stood at {lcr_pct}%, including ${credit_bn} billion of recognized discount window capacity backed by prepositioned loans and within the regulatory cap."
+AN2,C,AN2-p2,"Our quarter-end liquidity coverage ratio was {lcr_pct}%. That figure includes ${credit_bn} billion of discount window capacity, backed by prepositioned loans, recognized within the regulatory cap."
+AN2,C,AN2-p3,"We ended the quarter with a liquidity coverage ratio of {lcr_pct}%, which counts ${credit_bn} billion of recognized discount window capacity backed by prepositioned loans, within the regulatory cap."
+AN2,C,AN2-p4,"Our liquidity coverage ratio at quarter-end was {lcr_pct}%; it includes, within the regulatory cap, ${credit_bn} billion of recognized discount window capacity supported by prepositioned loans."
+AN3,A B C E,AN3-p1,The Bank has borrowed ${dw_bn} billion from the Federal Reserve discount window and ${fhlb_bn} billion from the Federal Home Loan Bank to strengthen its liquidity position. Its total available liquidity is now ${liquidity_bn} billion.
+AN3,A B C E,AN3-p2,"To bolster its liquidity, the Bank has taken ${dw_bn} billion from the Federal Reserve discount window and ${fhlb_bn} billion from the Federal Home Loan Bank, bringing total available liquidity to ${liquidity_bn} billion."
+AN3,A B C E,AN3-p3,The Bank has strengthened its liquidity position by borrowing ${dw_bn} billion from the Federal Reserve discount window and ${fhlb_bn} billion from the Federal Home Loan Bank. Total available liquidity now stands at ${liquidity_bn} billion.
+AN3,A B C E,AN3-p4,"Total available liquidity is now ${liquidity_bn} billion after the Bank, to strengthen its liquidity position, borrowed ${dw_bn} billion from the Federal Reserve discount window and ${fhlb_bn} billion from the Federal Home Loan Bank."
+AN4,A B C E,AN4-p1,"The Bank has ${liquidity_bn} billion of available liquidity, discount window capacity included, and has not had to draw on it. Deposit flows remain within normal ranges."
+AN4,A B C E,AN4-p2,"Available liquidity at the Bank is ${liquidity_bn} billion, including discount window capacity, and the Bank has not needed to draw on it. Deposit flows are within normal ranges."
+AN4,A B C E,AN4-p3,"With ${liquidity_bn} billion of available liquidity, including discount window capacity, the Bank has not needed to draw on it, and deposit flows are within normal ranges."
+AN4,A B C E,AN4-p4,"The Bank has not needed to draw on its ${liquidity_bn} billion of available liquidity, which includes discount window capacity. Its deposit flows are within normal ranges."
+AN5,A B C E,AN5-p1,"The Bank borrowed ${dw_bn} billion from the Federal Reserve Bank of {district} on {date}, secured by loans and securities, and expects to repay it as conditions normalize."
+AN5,A B C E,AN5-p2,"On {date}, the Bank took a ${dw_bn} billion loan from the Federal Reserve Bank of {district}, secured by loans and securities. It expects to repay the loan as conditions return to normal."
+AN5,A B C E,AN5-p3,"Secured by loans and securities, the Bank borrowed ${dw_bn} billion from the Federal Reserve Bank of {district} on {date}. The Bank expects to repay the borrowing once conditions normalize."
+AN5,A B C E,AN5-p4,"The Bank expects to repay, as conditions normalize, the ${dw_bn} billion it borrowed on {date} from the Federal Reserve Bank of {district}, secured by loans and securities."
+AN6,B E,AN6-p1,"Using collateral it already keeps at the Federal Reserve for its required quarterly tests, the Bank drew ${dw_bn} billion from the discount window. The draw, larger than its routine tests, meets this week's deposit outflows."
+AN6,B E,AN6-p2,The Bank drew ${dw_bn} billion from the discount window against collateral already held at the Federal Reserve for its required quarterly tests. This draw is larger than its routine tests and meets deposit outflows this week.
+AN6,B E,AN6-p3,"The Bank has drawn ${dw_bn} billion from the discount window, using the collateral it keeps at the Federal Reserve for its required quarterly tests. The amount exceeds its routine tests and meets deposit outflows this week."
+AN6,B E,AN6-p4,"To meet deposit outflows this week, the Bank drew ${dw_bn} billion from the discount window, more than its routine tests, using collateral it already keeps at the Federal Reserve for its required quarterly tests."
+L1,A C,L1-p1,"{bank} drew on the Federal Reserve's discount window this week, people familiar with the matter said. The bank declined to comment."
+L1,A C,L1-p2,"According to people familiar with the matter, {bank} tapped the Federal Reserve's discount window this week. The bank declined to comment."
+L1,A C,L1-p3,"{bank} used the Federal Reserve's discount window this week, according to people familiar with the matter; the bank declined to comment."
+L1,A C,L1-p4,"This week {bank} tapped the discount window at the Federal Reserve, according to people familiar with the matter. The bank declined a request for comment."
+L2,B E,L2-p1,"{bank} borrowed from the Federal Reserve's discount window last week, people familiar with the matter said. A spokesperson said the borrowing was a scheduled test that all large banks must conduct each quarter."
+L2,B E,L2-p2,"According to people familiar with the matter, {bank} borrowed from the Fed's discount window last week. A spokesperson described it as a scheduled quarterly test that all large banks are required to conduct."
+L2,B E,L2-p3,"Last week {bank} borrowed from the Federal Reserve's discount window, according to people familiar with the matter. It was a scheduled test that every large bank must conduct each quarter, a spokesperson said."
+L2,B E,L2-p4,"{bank} drew on the Federal Reserve's discount window last week, according to people familiar with the matter; a spokesperson said it was the scheduled quarterly test all large banks must conduct."
+L3,C,L3-p1,"{bank} has borrowed from the discount window several times this year, people familiar with the matter said. New rules let recent borrowing increase the discount window capacity a bank can count toward its liquidity ratio."
+L3,C,L3-p2,"According to people familiar with the matter, {bank} has drawn on the discount window several times this year. Under new rules, recent borrowing raises how much discount window capacity a bank can count toward its liquidity ratio."
+L3,C,L3-p3,"Several times this year {bank} has borrowed from the discount window, according to people familiar with the matter. Under the new rules, a bank's recent borrowing increases the discount window capacity it may count toward its liquidity ratio."
+L3,C,L3-p4,"{bank} has used the discount window several times this year, according to people familiar with the matter. Under new rules, recent borrowing raises the amount of discount window capacity a bank can count toward its liquidity ratio."
+L4,A B C E,L4-p1,"Several regional banks, {bank} among them, have drawn on the Federal Reserve's discount window in recent days, people familiar with the matter said."
+L4,A B C E,L4-p2,"According to people familiar with the matter, several regional banks, including {bank}, have tapped the Federal Reserve's discount window in recent days."
+L4,A B C E,L4-p3,"In recent days several regional banks, including {bank}, have borrowed from the Federal Reserve's discount window, according to people familiar with the matter."
+L4,A B C E,L4-p4,"{bank} is one of several regional banks that have drawn on the Federal Reserve's discount window in recent days, according to people familiar with the matter."
+L5,A B C E,L5-p1,"{bank} has borrowed about ${dw_bn} billion from the Federal Reserve as deposits leave and is exploring options including a capital raise, people familiar with the matter said."
+L5,A B C E,L5-p2,"According to people familiar with the matter, {bank} has borrowed roughly ${dw_bn} billion from the Federal Reserve as deposits flow out, and is exploring options that include raising capital."
+L5,A B C E,L5-p3,"As deposits leave, {bank} has borrowed about ${dw_bn} billion from the Federal Reserve and is exploring options including a capital raise, according to people familiar with the matter."
+L5,A B C E,L5-p4,"{bank} is exploring options including a capital raise and has borrowed about ${dw_bn} billion from the Federal Reserve as deposits leave, according to people familiar with the matter."
+P1,A E,P1-p1,Liquidity coverage ratio (quarterly average): {lcr_pct}%.
+P1,A E,P1-p2,Average liquidity coverage ratio for the quarter: {lcr_pct}%.
+P1,A E,P1-p3,The liquidity coverage ratio averaged {lcr_pct}% for the quarter.
+P1,A E,P1-p4,"Liquidity coverage ratio, averaged over the quarter: {lcr_pct}%."
+P2,B,P2-p1,Five-day readiness ratio: {ratio_pct}% against a 100% requirement. Reserves: ${reserves_bn} billion. Prepositioned discount window capacity: ${capacity_bn} billion. Liquidity coverage ratio: {lcr_pct}%.
+P2,B,P2-p2,"The five-day readiness ratio was {ratio_pct}% (required: 100%), with reserves of ${reserves_bn} billion and prepositioned discount window capacity of ${capacity_bn} billion. The liquidity coverage ratio was {lcr_pct}%."
+P2,B,P2-p3,Five-day readiness ratio of {ratio_pct}%; the requirement is 100%. Reserves stand at ${reserves_bn} billion and prepositioned discount window capacity at ${capacity_bn} billion. Liquidity coverage ratio: {lcr_pct}%.
+P2,B,P2-p4,"Liquidity coverage ratio: {lcr_pct}%. Five-day readiness ratio: {ratio_pct}% (requirement: 100%), with reserves of ${reserves_bn} billion and prepositioned discount window capacity of ${capacity_bn} billion."
+P3,B,P3-p1,"Five-day readiness ratio: {ratio_pct}% (requirement: 100%), down from {prior_ratio_pct}% last quarter. Liquidity coverage ratio: {lcr_pct}%."
+P3,B,P3-p2,"The five-day readiness ratio fell to {ratio_pct}% from {prior_ratio_pct}% last quarter, against a 100% requirement. The liquidity coverage ratio was {lcr_pct}%."
+P3,B,P3-p3,"Five-day readiness ratio: {ratio_pct}%, down from {prior_ratio_pct}% the previous quarter; the requirement is 100%. Liquidity coverage ratio: {lcr_pct}%."
+P3,B,P3-p4,"Liquidity coverage ratio: {lcr_pct}%. Five-day readiness ratio: {ratio_pct}%, lower than last quarter's {prior_ratio_pct}% (requirement: 100%)."
+P4,C,P4-p1,"Liquidity coverage ratio: {lcr_pct}%, of which {credit_pp} percentage points come from recognized discount window capacity (capped at {cap_pct}% of net cash outflows)."
+P4,C,P4-p2,"The liquidity coverage ratio was {lcr_pct}%, including {credit_pp} percentage points of recognized discount window capacity; the cap is {cap_pct}% of net cash outflows."
+P4,C,P4-p3,"Liquidity coverage ratio of {lcr_pct}%, with {credit_pp} percentage points attributable to recognized discount window capacity (cap: {cap_pct}% of net cash outflows)."
+P4,C,P4-p4,Recognized discount window capacity contributes {credit_pp} percentage points to a liquidity coverage ratio of {lcr_pct}% (cap: {cap_pct}% of net cash outflows).
+P5,C,P5-p1,The liquidity coverage ratio dropped to {lcr_pct}% from {prior_lcr_pct}% as recognized discount window capacity fell along with lower recent borrowing.
+P5,C,P5-p2,"Liquidity coverage ratio: {lcr_pct}%, down from {prior_lcr_pct}%, because lower recent borrowing reduced recognized discount window capacity."
+P5,C,P5-p3,"With less recent borrowing, recognized discount window capacity declined, and the liquidity coverage ratio fell to {lcr_pct}% from {prior_lcr_pct}%."
+P5,C,P5-p4,The liquidity coverage ratio fell from {prior_lcr_pct}% to {lcr_pct}% as lower recent borrowing reduced recognized discount window capacity.
