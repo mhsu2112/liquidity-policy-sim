@@ -1,0 +1,31 @@
+{
+ "schema_version": "1.1",
+ "mock": false,
+ "generated_at": "2026-10-09T00:42:14",
+ "stamp": {
+  "git_commit": "b2d4d7f059c2-dirty",
+  "config_hash": "3835bc0add36d4c2",
+  "params_fingerprint": "05f9e763efc16772",
+  "jev_estimate_version": "v0.1-signals (frozen at e14cd74; markers provisional)",
+  "jev_model": "jev-1.13.0"
+ },
+ "release": {
+  "name": "v0.1",
+  "banner": "v0.1 proof of concept. Jev reference not validated against human readers. Not a v1 result."
+ },
+ "jev_marker": {
+  "available": true,
+  "stigma": 0.78,
+  "label": "provisional Jev reference (v0.1, not validated against human readers)"
+ },
+ "scorecard_scope": "contract defaults; all 35 stigma x supervision cells pooled; the 10 banks of each type x 200 paired runs (Clarification 31 B4)",
+ "runs_per_cell": 200,
+ "run": {
+  "batches": 3256,
+  "runs_per_cell": 200,
+  "episodes": 25832000,
+  "wall_seconds": 447.5,
+  "cpu_seconds": 3574.8,
+  "workers": 8
+ }
+}

@@ -1,0 +1,193 @@
+policy,scenario,bank_type,band,failures,share
+A,S1,svb_like,pure timing,69500,1
+A,S1,svb_like,partly covered,0,0
+A,S1,svb_like,not covered,0,0
+A,S1,svb_like,equity below zero,0,0
+A,S1,diversified_regional,pure timing,2257,1
+A,S1,diversified_regional,partly covered,0,0
+A,S1,diversified_regional,not covered,0,0
+A,S1,diversified_regional,equity below zero,0,0
+A,S1,regional_cat3,pure timing,3416,1
+A,S1,regional_cat3,partly covered,0,0
+A,S1,regional_cat3,not covered,0,0
+A,S1,regional_cat3,equity below zero,0,0
+A,S1,gsib,pure timing,182,1
+A,S1,gsib,partly covered,0,0
+A,S1,gsib,not covered,0,0
+A,S1,gsib,equity below zero,0,0
+A,S2,svb_like,pure timing,68965,1
+A,S2,svb_like,partly covered,0,0
+A,S2,svb_like,not covered,0,0
+A,S2,svb_like,equity below zero,0,0
+A,S2,diversified_regional,pure timing,53,1
+A,S2,diversified_regional,partly covered,0,0
+A,S2,diversified_regional,not covered,0,0
+A,S2,diversified_regional,equity below zero,0,0
+A,S2,regional_cat3,pure timing,68,1
+A,S2,regional_cat3,partly covered,0,0
+A,S2,regional_cat3,not covered,0,0
+A,S2,regional_cat3,equity below zero,0,0
+A,S2,gsib,pure timing,0,
+A,S2,gsib,partly covered,0,
+A,S2,gsib,not covered,0,
+A,S2,gsib,equity below zero,0,
+B,S1,svb_like,pure timing,18195,0.916394
+B,S1,svb_like,partly covered,1660,0.0836061
+B,S1,svb_like,not covered,0,0
+B,S1,svb_like,equity below zero,0,0
+B,S1,diversified_regional,pure timing,0,
+B,S1,diversified_regional,partly covered,0,
+B,S1,diversified_regional,not covered,0,
+B,S1,diversified_regional,equity below zero,0,
+B,S1,regional_cat3,pure timing,0,
+B,S1,regional_cat3,partly covered,0,
+B,S1,regional_cat3,not covered,0,
+B,S1,regional_cat3,equity below zero,0,
+B,S1,gsib,pure timing,0,
+B,S1,gsib,partly covered,0,
+B,S1,gsib,not covered,0,
+B,S1,gsib,equity below zero,0,
+B,S2,svb_like,pure timing,10801,0.823184
+B,S2,svb_like,partly covered,2320,0.176816
+B,S2,svb_like,not covered,0,0
+B,S2,svb_like,equity below zero,0,0
+B,S2,diversified_regional,pure timing,0,
+B,S2,diversified_regional,partly covered,0,
+B,S2,diversified_regional,not covered,0,
+B,S2,diversified_regional,equity below zero,0,
+B,S2,regional_cat3,pure timing,0,
+B,S2,regional_cat3,partly covered,0,
+B,S2,regional_cat3,not covered,0,
+B,S2,regional_cat3,equity below zero,0,
+B,S2,gsib,pure timing,0,
+B,S2,gsib,partly covered,0,
+B,S2,gsib,not covered,0,
+B,S2,gsib,equity below zero,0,
+B_prime,S1,svb_like,pure timing,3077,1
+B_prime,S1,svb_like,partly covered,0,0
+B_prime,S1,svb_like,not covered,0,0
+B_prime,S1,svb_like,equity below zero,0,0
+B_prime,S1,diversified_regional,pure timing,0,
+B_prime,S1,diversified_regional,partly covered,0,
+B_prime,S1,diversified_regional,not covered,0,
+B_prime,S1,diversified_regional,equity below zero,0,
+B_prime,S1,regional_cat3,pure timing,0,
+B_prime,S1,regional_cat3,partly covered,0,
+B_prime,S1,regional_cat3,not covered,0,
+B_prime,S1,regional_cat3,equity below zero,0,
+B_prime,S1,gsib,pure timing,0,
+B_prime,S1,gsib,partly covered,0,
+B_prime,S1,gsib,not covered,0,
+B_prime,S1,gsib,equity below zero,0,
+B_prime,S2,svb_like,pure timing,5554,1
+B_prime,S2,svb_like,partly covered,0,0
+B_prime,S2,svb_like,not covered,0,0
+B_prime,S2,svb_like,equity below zero,0,0
+B_prime,S2,diversified_regional,pure timing,0,
+B_prime,S2,diversified_regional,partly covered,0,
+B_prime,S2,diversified_regional,not covered,0,
+B_prime,S2,diversified_regional,equity below zero,0,
+B_prime,S2,regional_cat3,pure timing,0,
+B_prime,S2,regional_cat3,partly covered,0,
+B_prime,S2,regional_cat3,not covered,0,
+B_prime,S2,regional_cat3,equity below zero,0,
+B_prime,S2,gsib,pure timing,0,
+B_prime,S2,gsib,partly covered,0,
+B_prime,S2,gsib,not covered,0,
+B_prime,S2,gsib,equity below zero,0,
+C,S1,svb_like,pure timing,69700,1
+C,S1,svb_like,partly covered,0,0
+C,S1,svb_like,not covered,0,0
+C,S1,svb_like,equity below zero,0,0
+C,S1,diversified_regional,pure timing,1726,1
+C,S1,diversified_regional,partly covered,0,0
+C,S1,diversified_regional,not covered,0,0
+C,S1,diversified_regional,equity below zero,0,0
+C,S1,regional_cat3,pure timing,1475,1
+C,S1,regional_cat3,partly covered,0,0
+C,S1,regional_cat3,not covered,0,0
+C,S1,regional_cat3,equity below zero,0,0
+C,S1,gsib,pure timing,140,1
+C,S1,gsib,partly covered,0,0
+C,S1,gsib,not covered,0,0
+C,S1,gsib,equity below zero,0,0
+C,S2,svb_like,pure timing,68765,1
+C,S2,svb_like,partly covered,0,0
+C,S2,svb_like,not covered,0,0
+C,S2,svb_like,equity below zero,0,0
+C,S2,diversified_regional,pure timing,35,1
+C,S2,diversified_regional,partly covered,0,0
+C,S2,diversified_regional,not covered,0,0
+C,S2,diversified_regional,equity below zero,0,0
+C,S2,regional_cat3,pure timing,35,1
+C,S2,regional_cat3,partly covered,0,0
+C,S2,regional_cat3,not covered,0,0
+C,S2,regional_cat3,equity below zero,0,0
+C,S2,gsib,pure timing,0,
+C,S2,gsib,partly covered,0,
+C,S2,gsib,not covered,0,
+C,S2,gsib,equity below zero,0,
+C_prime,S1,svb_like,pure timing,69815,1
+C_prime,S1,svb_like,partly covered,0,0
+C_prime,S1,svb_like,not covered,0,0
+C_prime,S1,svb_like,equity below zero,0,0
+C_prime,S1,diversified_regional,pure timing,2257,1
+C_prime,S1,diversified_regional,partly covered,0,0
+C_prime,S1,diversified_regional,not covered,0,0
+C_prime,S1,diversified_regional,equity below zero,0,0
+C_prime,S1,regional_cat3,pure timing,21242,1
+C_prime,S1,regional_cat3,partly covered,0,0
+C_prime,S1,regional_cat3,not covered,0,0
+C_prime,S1,regional_cat3,equity below zero,0,0
+C_prime,S1,gsib,pure timing,4650,1
+C_prime,S1,gsib,partly covered,0,0
+C_prime,S1,gsib,not covered,0,0
+C_prime,S1,gsib,equity below zero,0,0
+C_prime,S2,svb_like,pure timing,69625,1
+C_prime,S2,svb_like,partly covered,0,0
+C_prime,S2,svb_like,not covered,0,0
+C_prime,S2,svb_like,equity below zero,0,0
+C_prime,S2,diversified_regional,pure timing,53,1
+C_prime,S2,diversified_regional,partly covered,0,0
+C_prime,S2,diversified_regional,not covered,0,0
+C_prime,S2,diversified_regional,equity below zero,0,0
+C_prime,S2,regional_cat3,pure timing,2804,1
+C_prime,S2,regional_cat3,partly covered,0,0
+C_prime,S2,regional_cat3,not covered,0,0
+C_prime,S2,regional_cat3,equity below zero,0,0
+C_prime,S2,gsib,pure timing,155,1
+C_prime,S2,gsib,partly covered,0,0
+C_prime,S2,gsib,not covered,0,0
+C_prime,S2,gsib,equity below zero,0,0
+E,S1,svb_like,pure timing,18195,0.916394
+E,S1,svb_like,partly covered,1660,0.0836061
+E,S1,svb_like,not covered,0,0
+E,S1,svb_like,equity below zero,0,0
+E,S1,diversified_regional,pure timing,0,
+E,S1,diversified_regional,partly covered,0,
+E,S1,diversified_regional,not covered,0,
+E,S1,diversified_regional,equity below zero,0,
+E,S1,regional_cat3,pure timing,0,
+E,S1,regional_cat3,partly covered,0,
+E,S1,regional_cat3,not covered,0,
+E,S1,regional_cat3,equity below zero,0,
+E,S1,gsib,pure timing,0,
+E,S1,gsib,partly covered,0,
+E,S1,gsib,not covered,0,
+E,S1,gsib,equity below zero,0,
+E,S2,svb_like,pure timing,10801,0.823184
+E,S2,svb_like,partly covered,2320,0.176816
+E,S2,svb_like,not covered,0,0
+E,S2,svb_like,equity below zero,0,0
+E,S2,diversified_regional,pure timing,0,
+E,S2,diversified_regional,partly covered,0,
+E,S2,diversified_regional,not covered,0,
+E,S2,diversified_regional,equity below zero,0,
+E,S2,regional_cat3,pure timing,0,
+E,S2,regional_cat3,partly covered,0,
+E,S2,regional_cat3,not covered,0,
+E,S2,regional_cat3,equity below zero,0,
+E,S2,gsib,pure timing,0,
+E,S2,gsib,partly covered,0,
+E,S2,gsib,not covered,0,
+E,S2,gsib,equity below zero,0,

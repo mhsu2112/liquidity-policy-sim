@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Option C panel · Liquidity Policy Simulator</title><style>
+:root { --ink:#1a1a1a; --muted:#555; --rule:#ccc; --bg:#fff; --panel:#f6f6f4; --mock:#C00000; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 Georgia, 'Times New Roman', serif; }
+main { max-width:1180px; margin:0 auto; padding:16px 16px 48px; position:relative; z-index:1; }
+h1 { font-size:1.7em; margin:.6em 0 .2em; } h2 { font-size:1.25em; margin-top:1.6em; } h3 { font-size:1.05em; }
+a { color:#0b4f8a; }
+nav { font:13px/1.8 Helvetica, Arial, sans-serif; border-bottom:1px solid var(--rule); padding:6px 0; }
+nav a { margin-right:12px; white-space:nowrap; } nav a.here { font-weight:bold; color:var(--ink); text-decoration:none; }
+.banner { position:sticky; top:0; z-index:10; background:var(--mock); color:#fff; text-align:center;
+  font:bold 16px/1.2 Helvetica, Arial, sans-serif; letter-spacing:.05em; padding:9px 8px; }
+.watermark { position:fixed; inset:0; z-index:0; pointer-events:none; display:flex; align-items:center;
+  justify-content:center; overflow:hidden; }
+.watermark span { transform:rotate(-28deg); font:bold 64px/1.1 Helvetica, Arial, sans-serif; color:var(--mock);
+  opacity:.09; white-space:nowrap; }
+.disclosure { background:var(--panel); border-left:4px solid #666; padding:10px 14px; margin:14px 0; font-size:.92em; }
+.stamp { font:12px/1.6 Menlo, Consolas, monospace; color:var(--muted); border-top:1px solid var(--rule);
+  margin-top:36px; padding-top:8px; overflow-wrap:anywhere; }
+.scroll { overflow-x:auto; margin:8px 0 18px; }
+table { border-collapse:collapse; font:13px/1.35 Helvetica, Arial, sans-serif; background:rgba(255,255,255,.85); }
+th, td { border:1px solid var(--rule); padding:4px 7px; vertical-align:top; text-align:right; }
+th { background:var(--panel); text-align:center; } td.l, th.l { text-align:left; }
+td .ci { display:block; color:var(--muted); font-size:11px; white-space:nowrap; }
+td.na { color:#999; text-align:center; } th.grace, td.grace { background:#fafafa; font-style:italic; }
+.slot { display:inline-block; border:1px dashed #888; padding:1px 8px; font:12px Helvetica, Arial, sans-serif; color:var(--muted); }
+.note { color:var(--muted); font-size:.92em; }
+img.chart { max-width:100%; height:auto; border:1px solid var(--rule); }
+.toc { columns:2; font:13px/1.7 Helvetica, Arial, sans-serif; } .toc a { display:block; }
+@media (max-width:700px) { .toc { columns:1; } .watermark span { font-size:32px; } }
+</style></head>
+<body><div class="banner" style="background:#8A6100">v0.1 proof of concept. Jev reference not validated against human readers. Not a v1 result.</div><main>
+<nav><a href="index.html">Front page</a><a href="scorecard.html">Scorecard</a><a href="tradeoff.html">Trade-off chart</a><a href="frontier.html">Cost frontier</a><a href="option_c.html" class=here>Option C panel</a><a href="reversal.html">Reversal distances</a><a href="sensitivity.html">Sensitivities</a><a href="attribution.html">Feature attribution</a><a href="replay.html">Episode replay</a><a href="hypotheses.html">Hypotheses</a><a href="limits.html">Limits</a></nav>
+<h1>Option C panel</h1>
+<div class="disclosure"><strong>Disclosure.</strong> This project&#x27;s sponsor, Mike Hsu, publicly advocated a version of Option B (a standalone discount window readiness requirement) while serving as Acting Comptroller of the Currency. The comparison rules and hypotheses are published before any results are produced, Option C&#x27;s specification is reviewed by an outside supporter of LCR recognition, and results are reported whether or not they match the hypotheses.</div>
+<p class="note">C and C′ across voluntary uptake and the share of HQLA released. Defaults: uptake 75%, released 100% (contract 2d). Cells off the cross are not run (Clarification 14: one setting at a time around uptake 75%, released 100%). Each run cell shows survival against A (paired, 90% interval) on the 9 mid-range cells, the grid every point of the cross was run on. Under current LCR scope, the Category IV diversified regional bank gets no LCR credit under C or C′ (contract 1c), but C's routine-borrowing rate (r = uptake × 2.5) applies to every bank (contract 3a), so it still lowers that bank's effective stigma (corrected 2026-10-09, Amendment 8). C's cost saving and its buffer gap are the same money: see the scorecard, where they sit side by side.</p>
+<h2>S1 fast run</h2><img class="chart" src="img/option_c_S1.png" alt="Option C panel S1">
+<h2>S2 false alarm</h2><img class="chart" src="img/option_c_S2.png" alt="Option C panel S2">
+<p class="stamp">git commit b2d4d7f059c2-dirty · config hash 3835bc0add36d4c2 · params fingerprint 05f9e763efc16772 · Jev estimate v0.1-signals (frozen at e14cd74; markers provisional) · Jev model jev-1.13.0 · results written 2026-10-09T00:42:14 · schema 1.1</p>
+
+<div class="banner" style="position:static;background:#8A6100">v0.1 proof of concept. Jev reference not validated against human readers. Not a v1 result.</div>
+</main></body></html>

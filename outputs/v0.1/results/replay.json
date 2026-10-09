@@ -1,0 +1,2657 @@
+[
+ {
+  "scenario": "S1",
+  "policy": "A",
+  "bank_id": "DIV-04",
+  "run": 46,
+  "selection": "median run under A at the tuning cell (stigma 0.35, neutral), by end day then peak uncovered",
+  "placeholder": false,
+  "days": [
+   {
+    "day": 1,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.44 (1 = calm); fast uninsured depositors withdrew $1.22bn, slow uninsured depositors $0.00bn and insured depositors $0.17bn.",
+      "log_line": 1,
+      "support_check": "supported",
+      "p_supported": 0.79
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.24bn of funding and repo lenders $0.00bn.",
+      "log_line": 2,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.63bn.",
+      "log_line": 3,
+      "support_check": "supported",
+      "p_supported": 0.91
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.39 (1 = calm); fast uninsured depositors withdrew $1.44bn, slow uninsured depositors $0.00bn and insured depositors $0.22bn.",
+      "log_line": 4,
+      "support_check": "supported",
+      "p_supported": 0.73
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.66bn.",
+      "log_line": 5,
+      "support_check": "supported",
+      "p_supported": 0.89
+     }
+    ]
+   },
+   {
+    "day": 2,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.34bn, slow uninsured depositors $1.83bn and insured depositors $0.05bn.",
+      "log_line": 6,
+      "support_check": "supported",
+      "p_supported": 0.7
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.18bn of funding and repo lenders $0.00bn.",
+      "log_line": 7,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $2.41bn.",
+      "log_line": 8,
+      "support_check": "supported",
+      "p_supported": 0.89
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.32bn, slow uninsured depositors $2.17bn and insured depositors $0.05bn.",
+      "log_line": 9,
+      "support_check": "supported",
+      "p_supported": 0.71
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.44bn, repo $1.10bn.",
+      "log_line": 10,
+      "support_check": "supported",
+      "p_supported": 0.95
+     }
+    ]
+   },
+   {
+    "day": 3,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.34bn, slow uninsured depositors $0.52bn and insured depositors $0.06bn.",
+      "log_line": 11,
+      "support_check": "supported",
+      "p_supported": 0.73
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.18bn of funding and repo lenders $0.84bn.",
+      "log_line": 12,
+      "support_check": "supported",
+      "p_supported": 0.94
+     },
+     {
+      "half": "morning",
+      "actor": "Bank treasurer",
+      "kind": "why",
+      "route": "",
+      "text": "The treasurer put the chance of failing without the window at 1%, against an expected stigma cost of 0.069 plus a supervisory cost of 0.049, so the bank did not borrow.",
+      "log_line": 13,
+      "support_check": "supported",
+      "p_supported": 0.89
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $1.24bn, Home Loan Bank $0.71bn.",
+      "log_line": 14,
+      "support_check": "supported",
+      "p_supported": 0.97
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.62 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.48bn and insured depositors $0.00bn.",
+      "log_line": 15,
+      "support_check": "supported",
+      "p_supported": 0.88
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $0.48bn.",
+      "log_line": 16,
+      "support_check": "supported",
+      "p_supported": 0.96
+     }
+    ]
+   },
+   {
+    "day": 4,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.73 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.52bn and insured depositors $0.00bn.",
+      "log_line": 17,
+      "support_check": "supported",
+      "p_supported": 0.88
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $0.52bn.",
+      "log_line": 18,
+      "support_check": "supported",
+      "p_supported": 0.94
+     }
+    ]
+   },
+   {
+    "day": 7,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Outcome",
+      "kind": "did",
+      "route": "",
+      "text": "The run calmed and the episode ended with the bank stabilized.",
+      "log_line": 19,
+      "support_check": "flagged",
+      "p_supported": 0.35
+     }
+    ]
+   }
+  ],
+  "log": [
+   {
+    "line": 1,
+    "text": "day 1 morning | depositor confidence=0.44; withdrawals fast=1.22 slow=0.00 insured=0.17 $bn"
+   },
+   {
+    "line": 2,
+    "text": "day 1 morning | refused to roll: wholesale=0.24 repo=0.00 $bn"
+   },
+   {
+    "line": 3,
+    "text": "day 1 morning | sources: reserves=1.63 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 4,
+    "text": "day 1 afternoon | depositor confidence=0.39; withdrawals fast=1.44 slow=0.00 insured=0.22 $bn"
+   },
+   {
+    "line": 5,
+    "text": "day 1 afternoon | sources: reserves=1.66 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 6,
+    "text": "day 2 morning | depositor confidence=0.55; withdrawals fast=0.34 slow=1.83 insured=0.05 $bn"
+   },
+   {
+    "line": 7,
+    "text": "day 2 morning | refused to roll: wholesale=0.18 repo=0.00 $bn"
+   },
+   {
+    "line": 8,
+    "text": "day 2 morning | sources: reserves=2.41 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 9,
+    "text": "day 2 afternoon | depositor confidence=0.55; withdrawals fast=0.32 slow=2.17 insured=0.05 $bn"
+   },
+   {
+    "line": 10,
+    "text": "day 2 afternoon | sources: reserves=1.44 repo=1.10 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 11,
+    "text": "day 3 morning | depositor confidence=0.55; withdrawals fast=0.34 slow=0.52 insured=0.06 $bn"
+   },
+   {
+    "line": 12,
+    "text": "day 3 morning | refused to roll: wholesale=0.18 repo=0.84 $bn"
+   },
+   {
+    "line": 13,
+    "text": "day 3 morning | decision: p_fail=0.01 stigma_cost=0.069 supervisory_cost=0.049 borrow=no"
+   },
+   {
+    "line": 14,
+    "text": "day 3 morning | sources: reserves=0.00 repo=1.24 Home_Loan_Bank=0.71 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 15,
+    "text": "day 3 afternoon | depositor confidence=0.62; withdrawals fast=0.00 slow=0.48 insured=0.00 $bn"
+   },
+   {
+    "line": 16,
+    "text": "day 3 afternoon | sources: reserves=0.00 repo=0.48 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 17,
+    "text": "day 4 morning | depositor confidence=0.73; withdrawals fast=0.00 slow=0.52 insured=0.00 $bn"
+   },
+   {
+    "line": 18,
+    "text": "day 4 morning | sources: reserves=0.00 repo=0.52 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 19,
+    "text": "day 7 morning | episode ended: stabilized"
+   }
+  ]
+ },
+ {
+  "scenario": "S1",
+  "policy": "B",
+  "bank_id": "DIV-04",
+  "run": 46,
+  "selection": "median run under A at the tuning cell (stigma 0.35, neutral), by end day then peak uncovered",
+  "placeholder": false,
+  "days": [
+   {
+    "day": 1,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.44 (1 = calm); fast uninsured depositors withdrew $1.22bn, slow uninsured depositors $0.00bn and insured depositors $0.17bn.",
+      "log_line": 1,
+      "support_check": "supported",
+      "p_supported": 0.79
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.24bn of funding and repo lenders $0.00bn.",
+      "log_line": 2,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.63bn.",
+      "log_line": 3,
+      "support_check": "supported",
+      "p_supported": 0.91
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.39 (1 = calm); fast uninsured depositors withdrew $1.44bn, slow uninsured depositors $0.00bn and insured depositors $0.22bn.",
+      "log_line": 4,
+      "support_check": "supported",
+      "p_supported": 0.73
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.66bn.",
+      "log_line": 5,
+      "support_check": "supported",
+      "p_supported": 0.89
+     }
+    ]
+   },
+   {
+    "day": 2,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.34bn, slow uninsured depositors $1.83bn and insured depositors $0.05bn.",
+      "log_line": 6,
+      "support_check": "supported",
+      "p_supported": 0.7
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.18bn of funding and repo lenders $0.00bn.",
+      "log_line": 7,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $2.41bn.",
+      "log_line": 8,
+      "support_check": "supported",
+      "p_supported": 0.89
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.32bn, slow uninsured depositors $2.17bn and insured depositors $0.05bn.",
+      "log_line": 9,
+      "support_check": "supported",
+      "p_supported": 0.71
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.44bn, repo $1.10bn.",
+      "log_line": 10,
+      "support_check": "supported",
+      "p_supported": 0.95
+     }
+    ]
+   },
+   {
+    "day": 3,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.34bn, slow uninsured depositors $0.52bn and insured depositors $0.06bn.",
+      "log_line": 11,
+      "support_check": "supported",
+      "p_supported": 0.75
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.18bn of funding and repo lenders $0.84bn.",
+      "log_line": 12,
+      "support_check": "supported",
+      "p_supported": 0.94
+     },
+     {
+      "half": "morning",
+      "actor": "Bank treasurer",
+      "kind": "why",
+      "route": "",
+      "text": "The treasurer put the chance of failing without the window at 1%, against an expected stigma cost of 0.026 plus a supervisory cost of 0.037, so the bank did not borrow.",
+      "log_line": 13,
+      "support_check": "supported",
+      "p_supported": 0.89
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $1.24bn, Home Loan Bank $0.71bn.",
+      "log_line": 14,
+      "support_check": "supported",
+      "p_supported": 0.97
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.62 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.48bn and insured depositors $0.00bn.",
+      "log_line": 15,
+      "support_check": "supported",
+      "p_supported": 0.88
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $0.48bn.",
+      "log_line": 16,
+      "support_check": "supported",
+      "p_supported": 0.96
+     }
+    ]
+   },
+   {
+    "day": 4,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.73 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.52bn and insured depositors $0.00bn.",
+      "log_line": 17,
+      "support_check": "supported",
+      "p_supported": 0.88
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $0.52bn.",
+      "log_line": 18,
+      "support_check": "supported",
+      "p_supported": 0.94
+     }
+    ]
+   },
+   {
+    "day": 7,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Outcome",
+      "kind": "did",
+      "route": "",
+      "text": "The run calmed and the episode ended with the bank stabilized.",
+      "log_line": 19,
+      "support_check": "flagged",
+      "p_supported": 0.35
+     }
+    ]
+   }
+  ],
+  "log": [
+   {
+    "line": 1,
+    "text": "day 1 morning | depositor confidence=0.44; withdrawals fast=1.22 slow=0.00 insured=0.17 $bn"
+   },
+   {
+    "line": 2,
+    "text": "day 1 morning | refused to roll: wholesale=0.24 repo=0.00 $bn"
+   },
+   {
+    "line": 3,
+    "text": "day 1 morning | sources: reserves=1.63 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 4,
+    "text": "day 1 afternoon | depositor confidence=0.39; withdrawals fast=1.44 slow=0.00 insured=0.22 $bn"
+   },
+   {
+    "line": 5,
+    "text": "day 1 afternoon | sources: reserves=1.66 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 6,
+    "text": "day 2 morning | depositor confidence=0.55; withdrawals fast=0.34 slow=1.83 insured=0.05 $bn"
+   },
+   {
+    "line": 7,
+    "text": "day 2 morning | refused to roll: wholesale=0.18 repo=0.00 $bn"
+   },
+   {
+    "line": 8,
+    "text": "day 2 morning | sources: reserves=2.41 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 9,
+    "text": "day 2 afternoon | depositor confidence=0.55; withdrawals fast=0.32 slow=2.17 insured=0.05 $bn"
+   },
+   {
+    "line": 10,
+    "text": "day 2 afternoon | sources: reserves=1.44 repo=1.10 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 11,
+    "text": "day 3 morning | depositor confidence=0.55; withdrawals fast=0.34 slow=0.52 insured=0.06 $bn"
+   },
+   {
+    "line": 12,
+    "text": "day 3 morning | refused to roll: wholesale=0.18 repo=0.84 $bn"
+   },
+   {
+    "line": 13,
+    "text": "day 3 morning | decision: p_fail=0.01 stigma_cost=0.026 supervisory_cost=0.037 borrow=no"
+   },
+   {
+    "line": 14,
+    "text": "day 3 morning | sources: reserves=0.00 repo=1.24 Home_Loan_Bank=0.71 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 15,
+    "text": "day 3 afternoon | depositor confidence=0.62; withdrawals fast=0.00 slow=0.48 insured=0.00 $bn"
+   },
+   {
+    "line": 16,
+    "text": "day 3 afternoon | sources: reserves=0.00 repo=0.48 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 17,
+    "text": "day 4 morning | depositor confidence=0.73; withdrawals fast=0.00 slow=0.52 insured=0.00 $bn"
+   },
+   {
+    "line": 18,
+    "text": "day 4 morning | sources: reserves=0.00 repo=0.52 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 19,
+    "text": "day 7 morning | episode ended: stabilized"
+   }
+  ]
+ },
+ {
+  "scenario": "S1",
+  "policy": "C",
+  "bank_id": "DIV-04",
+  "run": 46,
+  "selection": "median run under A at the tuning cell (stigma 0.35, neutral), by end day then peak uncovered",
+  "placeholder": false,
+  "days": [
+   {
+    "day": 1,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.44 (1 = calm); fast uninsured depositors withdrew $1.22bn, slow uninsured depositors $0.00bn and insured depositors $0.17bn.",
+      "log_line": 1,
+      "support_check": "supported",
+      "p_supported": 0.79
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.24bn of funding and repo lenders $0.00bn.",
+      "log_line": 2,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.63bn.",
+      "log_line": 3,
+      "support_check": "supported",
+      "p_supported": 0.91
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.39 (1 = calm); fast uninsured depositors withdrew $1.44bn, slow uninsured depositors $0.00bn and insured depositors $0.22bn.",
+      "log_line": 4,
+      "support_check": "supported",
+      "p_supported": 0.73
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.66bn.",
+      "log_line": 5,
+      "support_check": "supported",
+      "p_supported": 0.89
+     }
+    ]
+   },
+   {
+    "day": 2,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.34bn, slow uninsured depositors $1.83bn and insured depositors $0.05bn.",
+      "log_line": 6,
+      "support_check": "supported",
+      "p_supported": 0.7
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.18bn of funding and repo lenders $0.00bn.",
+      "log_line": 7,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $2.41bn.",
+      "log_line": 8,
+      "support_check": "supported",
+      "p_supported": 0.89
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.32bn, slow uninsured depositors $2.17bn and insured depositors $0.05bn.",
+      "log_line": 9,
+      "support_check": "supported",
+      "p_supported": 0.71
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.44bn, repo $1.10bn.",
+      "log_line": 10,
+      "support_check": "supported",
+      "p_supported": 0.95
+     }
+    ]
+   },
+   {
+    "day": 3,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.34bn, slow uninsured depositors $0.52bn and insured depositors $0.06bn.",
+      "log_line": 11,
+      "support_check": "supported",
+      "p_supported": 0.64
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.18bn of funding and repo lenders $0.84bn.",
+      "log_line": 12,
+      "support_check": "supported",
+      "p_supported": 0.93
+     },
+     {
+      "half": "morning",
+      "actor": "Bank treasurer",
+      "kind": "why",
+      "route": "",
+      "text": "The treasurer put the chance of failing without the window at 1%, against an expected stigma cost of 0.016 plus a supervisory cost of 0.028, so the bank did not borrow.",
+      "log_line": 13,
+      "support_check": "supported",
+      "p_supported": 0.91
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $1.24bn, Home Loan Bank $0.71bn.",
+      "log_line": 14,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.62 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.48bn and insured depositors $0.00bn.",
+      "log_line": 15,
+      "support_check": "supported",
+      "p_supported": 0.88
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $0.48bn.",
+      "log_line": 16,
+      "support_check": "supported",
+      "p_supported": 0.96
+     }
+    ]
+   },
+   {
+    "day": 4,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.73 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.52bn and insured depositors $0.00bn.",
+      "log_line": 17,
+      "support_check": "supported",
+      "p_supported": 0.88
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $0.52bn.",
+      "log_line": 18,
+      "support_check": "supported",
+      "p_supported": 0.94
+     }
+    ]
+   },
+   {
+    "day": 7,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Outcome",
+      "kind": "did",
+      "route": "",
+      "text": "The run calmed and the episode ended with the bank stabilized.",
+      "log_line": 19,
+      "support_check": "flagged",
+      "p_supported": 0.35
+     }
+    ]
+   }
+  ],
+  "log": [
+   {
+    "line": 1,
+    "text": "day 1 morning | depositor confidence=0.44; withdrawals fast=1.22 slow=0.00 insured=0.17 $bn"
+   },
+   {
+    "line": 2,
+    "text": "day 1 morning | refused to roll: wholesale=0.24 repo=0.00 $bn"
+   },
+   {
+    "line": 3,
+    "text": "day 1 morning | sources: reserves=1.63 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 4,
+    "text": "day 1 afternoon | depositor confidence=0.39; withdrawals fast=1.44 slow=0.00 insured=0.22 $bn"
+   },
+   {
+    "line": 5,
+    "text": "day 1 afternoon | sources: reserves=1.66 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 6,
+    "text": "day 2 morning | depositor confidence=0.55; withdrawals fast=0.34 slow=1.83 insured=0.05 $bn"
+   },
+   {
+    "line": 7,
+    "text": "day 2 morning | refused to roll: wholesale=0.18 repo=0.00 $bn"
+   },
+   {
+    "line": 8,
+    "text": "day 2 morning | sources: reserves=2.41 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 9,
+    "text": "day 2 afternoon | depositor confidence=0.55; withdrawals fast=0.32 slow=2.17 insured=0.05 $bn"
+   },
+   {
+    "line": 10,
+    "text": "day 2 afternoon | sources: reserves=1.44 repo=1.10 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 11,
+    "text": "day 3 morning | depositor confidence=0.55; withdrawals fast=0.34 slow=0.52 insured=0.06 $bn"
+   },
+   {
+    "line": 12,
+    "text": "day 3 morning | refused to roll: wholesale=0.18 repo=0.84 $bn"
+   },
+   {
+    "line": 13,
+    "text": "day 3 morning | decision: p_fail=0.01 stigma_cost=0.016 supervisory_cost=0.028 borrow=no"
+   },
+   {
+    "line": 14,
+    "text": "day 3 morning | sources: reserves=0.00 repo=1.24 Home_Loan_Bank=0.71 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 15,
+    "text": "day 3 afternoon | depositor confidence=0.62; withdrawals fast=0.00 slow=0.48 insured=0.00 $bn"
+   },
+   {
+    "line": 16,
+    "text": "day 3 afternoon | sources: reserves=0.00 repo=0.48 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 17,
+    "text": "day 4 morning | depositor confidence=0.73; withdrawals fast=0.00 slow=0.52 insured=0.00 $bn"
+   },
+   {
+    "line": 18,
+    "text": "day 4 morning | sources: reserves=0.00 repo=0.52 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 19,
+    "text": "day 7 morning | episode ended: stabilized"
+   }
+  ]
+ },
+ {
+  "scenario": "S1",
+  "policy": "C_prime",
+  "bank_id": "DIV-04",
+  "run": 46,
+  "selection": "median run under A at the tuning cell (stigma 0.35, neutral), by end day then peak uncovered",
+  "placeholder": false,
+  "days": [
+   {
+    "day": 1,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.44 (1 = calm); fast uninsured depositors withdrew $1.22bn, slow uninsured depositors $0.00bn and insured depositors $0.17bn.",
+      "log_line": 1,
+      "support_check": "supported",
+      "p_supported": 0.79
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.24bn of funding and repo lenders $0.00bn.",
+      "log_line": 2,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.63bn.",
+      "log_line": 3,
+      "support_check": "supported",
+      "p_supported": 0.91
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.39 (1 = calm); fast uninsured depositors withdrew $1.44bn, slow uninsured depositors $0.00bn and insured depositors $0.22bn.",
+      "log_line": 4,
+      "support_check": "supported",
+      "p_supported": 0.73
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.66bn.",
+      "log_line": 5,
+      "support_check": "supported",
+      "p_supported": 0.89
+     }
+    ]
+   },
+   {
+    "day": 2,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.34bn, slow uninsured depositors $1.83bn and insured depositors $0.05bn.",
+      "log_line": 6,
+      "support_check": "supported",
+      "p_supported": 0.7
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.18bn of funding and repo lenders $0.00bn.",
+      "log_line": 7,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $2.41bn.",
+      "log_line": 8,
+      "support_check": "supported",
+      "p_supported": 0.89
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.32bn, slow uninsured depositors $2.17bn and insured depositors $0.05bn.",
+      "log_line": 9,
+      "support_check": "supported",
+      "p_supported": 0.71
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.44bn, repo $1.10bn.",
+      "log_line": 10,
+      "support_check": "supported",
+      "p_supported": 0.95
+     }
+    ]
+   },
+   {
+    "day": 3,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.34bn, slow uninsured depositors $0.52bn and insured depositors $0.06bn.",
+      "log_line": 11,
+      "support_check": "supported",
+      "p_supported": 0.73
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.18bn of funding and repo lenders $0.84bn.",
+      "log_line": 12,
+      "support_check": "supported",
+      "p_supported": 0.94
+     },
+     {
+      "half": "morning",
+      "actor": "Bank treasurer",
+      "kind": "why",
+      "route": "",
+      "text": "The treasurer put the chance of failing without the window at 1%, against an expected stigma cost of 0.069 plus a supervisory cost of 0.049, so the bank did not borrow.",
+      "log_line": 13,
+      "support_check": "supported",
+      "p_supported": 0.89
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $1.24bn, Home Loan Bank $0.71bn.",
+      "log_line": 14,
+      "support_check": "supported",
+      "p_supported": 0.97
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.62 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.48bn and insured depositors $0.00bn.",
+      "log_line": 15,
+      "support_check": "supported",
+      "p_supported": 0.88
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $0.48bn.",
+      "log_line": 16,
+      "support_check": "supported",
+      "p_supported": 0.96
+     }
+    ]
+   },
+   {
+    "day": 4,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.73 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.52bn and insured depositors $0.00bn.",
+      "log_line": 17,
+      "support_check": "supported",
+      "p_supported": 0.88
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $0.52bn.",
+      "log_line": 18,
+      "support_check": "supported",
+      "p_supported": 0.94
+     }
+    ]
+   },
+   {
+    "day": 7,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Outcome",
+      "kind": "did",
+      "route": "",
+      "text": "The run calmed and the episode ended with the bank stabilized.",
+      "log_line": 19,
+      "support_check": "flagged",
+      "p_supported": 0.35
+     }
+    ]
+   }
+  ],
+  "log": [
+   {
+    "line": 1,
+    "text": "day 1 morning | depositor confidence=0.44; withdrawals fast=1.22 slow=0.00 insured=0.17 $bn"
+   },
+   {
+    "line": 2,
+    "text": "day 1 morning | refused to roll: wholesale=0.24 repo=0.00 $bn"
+   },
+   {
+    "line": 3,
+    "text": "day 1 morning | sources: reserves=1.63 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 4,
+    "text": "day 1 afternoon | depositor confidence=0.39; withdrawals fast=1.44 slow=0.00 insured=0.22 $bn"
+   },
+   {
+    "line": 5,
+    "text": "day 1 afternoon | sources: reserves=1.66 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 6,
+    "text": "day 2 morning | depositor confidence=0.55; withdrawals fast=0.34 slow=1.83 insured=0.05 $bn"
+   },
+   {
+    "line": 7,
+    "text": "day 2 morning | refused to roll: wholesale=0.18 repo=0.00 $bn"
+   },
+   {
+    "line": 8,
+    "text": "day 2 morning | sources: reserves=2.41 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 9,
+    "text": "day 2 afternoon | depositor confidence=0.55; withdrawals fast=0.32 slow=2.17 insured=0.05 $bn"
+   },
+   {
+    "line": 10,
+    "text": "day 2 afternoon | sources: reserves=1.44 repo=1.10 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 11,
+    "text": "day 3 morning | depositor confidence=0.55; withdrawals fast=0.34 slow=0.52 insured=0.06 $bn"
+   },
+   {
+    "line": 12,
+    "text": "day 3 morning | refused to roll: wholesale=0.18 repo=0.84 $bn"
+   },
+   {
+    "line": 13,
+    "text": "day 3 morning | decision: p_fail=0.01 stigma_cost=0.069 supervisory_cost=0.049 borrow=no"
+   },
+   {
+    "line": 14,
+    "text": "day 3 morning | sources: reserves=0.00 repo=1.24 Home_Loan_Bank=0.71 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 15,
+    "text": "day 3 afternoon | depositor confidence=0.62; withdrawals fast=0.00 slow=0.48 insured=0.00 $bn"
+   },
+   {
+    "line": 16,
+    "text": "day 3 afternoon | sources: reserves=0.00 repo=0.48 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 17,
+    "text": "day 4 morning | depositor confidence=0.73; withdrawals fast=0.00 slow=0.52 insured=0.00 $bn"
+   },
+   {
+    "line": 18,
+    "text": "day 4 morning | sources: reserves=0.00 repo=0.52 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 19,
+    "text": "day 7 morning | episode ended: stabilized"
+   }
+  ]
+ },
+ {
+  "scenario": "S1",
+  "policy": "E",
+  "bank_id": "DIV-04",
+  "run": 46,
+  "selection": "median run under A at the tuning cell (stigma 0.35, neutral), by end day then peak uncovered",
+  "placeholder": false,
+  "days": [
+   {
+    "day": 1,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.44 (1 = calm); fast uninsured depositors withdrew $1.22bn, slow uninsured depositors $0.00bn and insured depositors $0.17bn.",
+      "log_line": 1,
+      "support_check": "supported",
+      "p_supported": 0.79
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.24bn of funding and repo lenders $0.00bn.",
+      "log_line": 2,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.63bn.",
+      "log_line": 3,
+      "support_check": "supported",
+      "p_supported": 0.91
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.39 (1 = calm); fast uninsured depositors withdrew $1.44bn, slow uninsured depositors $0.00bn and insured depositors $0.22bn.",
+      "log_line": 4,
+      "support_check": "supported",
+      "p_supported": 0.73
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.66bn.",
+      "log_line": 5,
+      "support_check": "supported",
+      "p_supported": 0.89
+     }
+    ]
+   },
+   {
+    "day": 2,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.34bn, slow uninsured depositors $1.83bn and insured depositors $0.05bn.",
+      "log_line": 6,
+      "support_check": "supported",
+      "p_supported": 0.7
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.18bn of funding and repo lenders $0.00bn.",
+      "log_line": 7,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $2.41bn.",
+      "log_line": 8,
+      "support_check": "supported",
+      "p_supported": 0.89
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.32bn, slow uninsured depositors $2.17bn and insured depositors $0.05bn.",
+      "log_line": 9,
+      "support_check": "supported",
+      "p_supported": 0.71
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $1.44bn, repo $1.10bn.",
+      "log_line": 10,
+      "support_check": "supported",
+      "p_supported": 0.95
+     }
+    ]
+   },
+   {
+    "day": 3,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.55 (1 = calm); fast uninsured depositors withdrew $0.34bn, slow uninsured depositors $0.52bn and insured depositors $0.06bn.",
+      "log_line": 11,
+      "support_check": "supported",
+      "p_supported": 0.75
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.18bn of funding and repo lenders $0.84bn.",
+      "log_line": 12,
+      "support_check": "supported",
+      "p_supported": 0.94
+     },
+     {
+      "half": "morning",
+      "actor": "Bank treasurer",
+      "kind": "why",
+      "route": "",
+      "text": "The treasurer put the chance of failing without the window at 1%, against an expected stigma cost of 0.026 plus a supervisory cost of 0.037, so the bank did not borrow.",
+      "log_line": 13,
+      "support_check": "supported",
+      "p_supported": 0.89
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $1.24bn, Home Loan Bank $0.71bn.",
+      "log_line": 14,
+      "support_check": "supported",
+      "p_supported": 0.97
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.62 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.48bn and insured depositors $0.00bn.",
+      "log_line": 15,
+      "support_check": "supported",
+      "p_supported": 0.88
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $0.48bn.",
+      "log_line": 16,
+      "support_check": "supported",
+      "p_supported": 0.96
+     }
+    ]
+   },
+   {
+    "day": 4,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.73 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.52bn and insured depositors $0.00bn.",
+      "log_line": 17,
+      "support_check": "supported",
+      "p_supported": 0.88
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from repo $0.52bn.",
+      "log_line": 18,
+      "support_check": "supported",
+      "p_supported": 0.94
+     }
+    ]
+   },
+   {
+    "day": 7,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Outcome",
+      "kind": "did",
+      "route": "",
+      "text": "The run calmed and the episode ended with the bank stabilized.",
+      "log_line": 19,
+      "support_check": "flagged",
+      "p_supported": 0.35
+     }
+    ]
+   }
+  ],
+  "log": [
+   {
+    "line": 1,
+    "text": "day 1 morning | depositor confidence=0.44; withdrawals fast=1.22 slow=0.00 insured=0.17 $bn"
+   },
+   {
+    "line": 2,
+    "text": "day 1 morning | refused to roll: wholesale=0.24 repo=0.00 $bn"
+   },
+   {
+    "line": 3,
+    "text": "day 1 morning | sources: reserves=1.63 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 4,
+    "text": "day 1 afternoon | depositor confidence=0.39; withdrawals fast=1.44 slow=0.00 insured=0.22 $bn"
+   },
+   {
+    "line": 5,
+    "text": "day 1 afternoon | sources: reserves=1.66 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 6,
+    "text": "day 2 morning | depositor confidence=0.55; withdrawals fast=0.34 slow=1.83 insured=0.05 $bn"
+   },
+   {
+    "line": 7,
+    "text": "day 2 morning | refused to roll: wholesale=0.18 repo=0.00 $bn"
+   },
+   {
+    "line": 8,
+    "text": "day 2 morning | sources: reserves=2.41 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 9,
+    "text": "day 2 afternoon | depositor confidence=0.55; withdrawals fast=0.32 slow=2.17 insured=0.05 $bn"
+   },
+   {
+    "line": 10,
+    "text": "day 2 afternoon | sources: reserves=1.44 repo=1.10 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 11,
+    "text": "day 3 morning | depositor confidence=0.55; withdrawals fast=0.34 slow=0.52 insured=0.06 $bn"
+   },
+   {
+    "line": 12,
+    "text": "day 3 morning | refused to roll: wholesale=0.18 repo=0.84 $bn"
+   },
+   {
+    "line": 13,
+    "text": "day 3 morning | decision: p_fail=0.01 stigma_cost=0.026 supervisory_cost=0.037 borrow=no"
+   },
+   {
+    "line": 14,
+    "text": "day 3 morning | sources: reserves=0.00 repo=1.24 Home_Loan_Bank=0.71 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 15,
+    "text": "day 3 afternoon | depositor confidence=0.62; withdrawals fast=0.00 slow=0.48 insured=0.00 $bn"
+   },
+   {
+    "line": 16,
+    "text": "day 3 afternoon | sources: reserves=0.00 repo=0.48 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 17,
+    "text": "day 4 morning | depositor confidence=0.73; withdrawals fast=0.00 slow=0.52 insured=0.00 $bn"
+   },
+   {
+    "line": 18,
+    "text": "day 4 morning | sources: reserves=0.00 repo=0.52 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 19,
+    "text": "day 7 morning | episode ended: stabilized"
+   }
+  ]
+ },
+ {
+  "scenario": "S2",
+  "policy": "A",
+  "bank_id": "REG-02",
+  "run": 179,
+  "selection": "median run under A at the tuning cell (stigma 0.35, neutral), by end day then peak uncovered",
+  "placeholder": false,
+  "days": [
+   {
+    "day": 1,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.51 (1 = calm); fast uninsured depositors withdrew $1.53bn, slow uninsured depositors $0.00bn and insured depositors $0.21bn.",
+      "log_line": 1,
+      "support_check": "supported",
+      "p_supported": 0.77
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.82bn of funding and repo lenders $0.00bn.",
+      "log_line": 2,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $2.57bn.",
+      "log_line": 3,
+      "support_check": "supported",
+      "p_supported": 0.85
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.56 (1 = calm); fast uninsured depositors withdrew $0.58bn, slow uninsured depositors $0.00bn and insured depositors $0.08bn.",
+      "log_line": 4,
+      "support_check": "supported",
+      "p_supported": 0.76
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.66bn.",
+      "log_line": 5,
+      "support_check": "supported",
+      "p_supported": 0.9
+     }
+    ]
+   },
+   {
+    "day": 2,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.57 (1 = calm); fast uninsured depositors withdrew $0.44bn, slow uninsured depositors $2.30bn and insured depositors $0.06bn.",
+      "log_line": 6,
+      "support_check": "supported",
+      "p_supported": 0.7
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.54bn of funding and repo lenders $0.00bn.",
+      "log_line": 7,
+      "support_check": "supported",
+      "p_supported": 0.97
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $3.34bn.",
+      "log_line": 8,
+      "support_check": "supported",
+      "p_supported": 0.84
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.62 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.87bn and insured depositors $0.00bn.",
+      "log_line": 9,
+      "support_check": "supported",
+      "p_supported": 0.87
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.87bn.",
+      "log_line": 10,
+      "support_check": "supported",
+      "p_supported": 0.91
+     }
+    ]
+   },
+   {
+    "day": 3,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.69 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.65bn and insured depositors $0.00bn.",
+      "log_line": 11,
+      "support_check": "supported",
+      "p_supported": 0.9
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.05bn of funding and repo lenders $0.00bn.",
+      "log_line": 12,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.71bn.",
+      "log_line": 13,
+      "support_check": "supported",
+      "p_supported": 0.91
+     }
+    ]
+   },
+   {
+    "day": 6,
+    "entries": [
+     {
+      "half": "afternoon",
+      "actor": "Outcome",
+      "kind": "did",
+      "route": "",
+      "text": "The run calmed and the episode ended with the bank stabilized.",
+      "log_line": 14,
+      "support_check": "flagged",
+      "p_supported": 0.34
+     }
+    ]
+   }
+  ],
+  "log": [
+   {
+    "line": 1,
+    "text": "day 1 morning | depositor confidence=0.51; withdrawals fast=1.53 slow=0.00 insured=0.21 $bn"
+   },
+   {
+    "line": 2,
+    "text": "day 1 morning | refused to roll: wholesale=0.82 repo=0.00 $bn"
+   },
+   {
+    "line": 3,
+    "text": "day 1 morning | sources: reserves=2.57 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 4,
+    "text": "day 1 afternoon | depositor confidence=0.56; withdrawals fast=0.58 slow=0.00 insured=0.08 $bn"
+   },
+   {
+    "line": 5,
+    "text": "day 1 afternoon | sources: reserves=0.66 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 6,
+    "text": "day 2 morning | depositor confidence=0.57; withdrawals fast=0.44 slow=2.30 insured=0.06 $bn"
+   },
+   {
+    "line": 7,
+    "text": "day 2 morning | refused to roll: wholesale=0.54 repo=0.00 $bn"
+   },
+   {
+    "line": 8,
+    "text": "day 2 morning | sources: reserves=3.34 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 9,
+    "text": "day 2 afternoon | depositor confidence=0.62; withdrawals fast=0.00 slow=0.87 insured=0.00 $bn"
+   },
+   {
+    "line": 10,
+    "text": "day 2 afternoon | sources: reserves=0.87 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 11,
+    "text": "day 3 morning | depositor confidence=0.69; withdrawals fast=0.00 slow=0.65 insured=0.00 $bn"
+   },
+   {
+    "line": 12,
+    "text": "day 3 morning | refused to roll: wholesale=0.05 repo=0.00 $bn"
+   },
+   {
+    "line": 13,
+    "text": "day 3 morning | sources: reserves=0.71 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 14,
+    "text": "day 6 afternoon | episode ended: stabilized"
+   }
+  ]
+ },
+ {
+  "scenario": "S2",
+  "policy": "B",
+  "bank_id": "REG-02",
+  "run": 179,
+  "selection": "median run under A at the tuning cell (stigma 0.35, neutral), by end day then peak uncovered",
+  "placeholder": false,
+  "days": [
+   {
+    "day": 1,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.51 (1 = calm); fast uninsured depositors withdrew $1.53bn, slow uninsured depositors $0.00bn and insured depositors $0.21bn.",
+      "log_line": 1,
+      "support_check": "supported",
+      "p_supported": 0.77
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.82bn of funding and repo lenders $0.00bn.",
+      "log_line": 2,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $2.57bn.",
+      "log_line": 3,
+      "support_check": "supported",
+      "p_supported": 0.85
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.56 (1 = calm); fast uninsured depositors withdrew $0.58bn, slow uninsured depositors $0.00bn and insured depositors $0.08bn.",
+      "log_line": 4,
+      "support_check": "supported",
+      "p_supported": 0.76
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.66bn.",
+      "log_line": 5,
+      "support_check": "supported",
+      "p_supported": 0.9
+     }
+    ]
+   },
+   {
+    "day": 2,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.57 (1 = calm); fast uninsured depositors withdrew $0.44bn, slow uninsured depositors $2.30bn and insured depositors $0.06bn.",
+      "log_line": 6,
+      "support_check": "supported",
+      "p_supported": 0.7
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.54bn of funding and repo lenders $0.00bn.",
+      "log_line": 7,
+      "support_check": "supported",
+      "p_supported": 0.97
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $3.34bn.",
+      "log_line": 8,
+      "support_check": "supported",
+      "p_supported": 0.84
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.62 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.87bn and insured depositors $0.00bn.",
+      "log_line": 9,
+      "support_check": "supported",
+      "p_supported": 0.87
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.87bn.",
+      "log_line": 10,
+      "support_check": "supported",
+      "p_supported": 0.91
+     }
+    ]
+   },
+   {
+    "day": 3,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.69 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.65bn and insured depositors $0.00bn.",
+      "log_line": 11,
+      "support_check": "supported",
+      "p_supported": 0.9
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.05bn of funding and repo lenders $0.00bn.",
+      "log_line": 12,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.71bn.",
+      "log_line": 13,
+      "support_check": "supported",
+      "p_supported": 0.91
+     }
+    ]
+   },
+   {
+    "day": 6,
+    "entries": [
+     {
+      "half": "afternoon",
+      "actor": "Outcome",
+      "kind": "did",
+      "route": "",
+      "text": "The run calmed and the episode ended with the bank stabilized.",
+      "log_line": 14,
+      "support_check": "flagged",
+      "p_supported": 0.34
+     }
+    ]
+   }
+  ],
+  "log": [
+   {
+    "line": 1,
+    "text": "day 1 morning | depositor confidence=0.51; withdrawals fast=1.53 slow=0.00 insured=0.21 $bn"
+   },
+   {
+    "line": 2,
+    "text": "day 1 morning | refused to roll: wholesale=0.82 repo=0.00 $bn"
+   },
+   {
+    "line": 3,
+    "text": "day 1 morning | sources: reserves=2.57 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 4,
+    "text": "day 1 afternoon | depositor confidence=0.56; withdrawals fast=0.58 slow=0.00 insured=0.08 $bn"
+   },
+   {
+    "line": 5,
+    "text": "day 1 afternoon | sources: reserves=0.66 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 6,
+    "text": "day 2 morning | depositor confidence=0.57; withdrawals fast=0.44 slow=2.30 insured=0.06 $bn"
+   },
+   {
+    "line": 7,
+    "text": "day 2 morning | refused to roll: wholesale=0.54 repo=0.00 $bn"
+   },
+   {
+    "line": 8,
+    "text": "day 2 morning | sources: reserves=3.34 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 9,
+    "text": "day 2 afternoon | depositor confidence=0.62; withdrawals fast=0.00 slow=0.87 insured=0.00 $bn"
+   },
+   {
+    "line": 10,
+    "text": "day 2 afternoon | sources: reserves=0.87 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 11,
+    "text": "day 3 morning | depositor confidence=0.69; withdrawals fast=0.00 slow=0.65 insured=0.00 $bn"
+   },
+   {
+    "line": 12,
+    "text": "day 3 morning | refused to roll: wholesale=0.05 repo=0.00 $bn"
+   },
+   {
+    "line": 13,
+    "text": "day 3 morning | sources: reserves=0.71 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 14,
+    "text": "day 6 afternoon | episode ended: stabilized"
+   }
+  ]
+ },
+ {
+  "scenario": "S2",
+  "policy": "C",
+  "bank_id": "REG-02",
+  "run": 179,
+  "selection": "median run under A at the tuning cell (stigma 0.35, neutral), by end day then peak uncovered",
+  "placeholder": false,
+  "days": [
+   {
+    "day": 1,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.51 (1 = calm); fast uninsured depositors withdrew $1.53bn, slow uninsured depositors $0.00bn and insured depositors $0.21bn.",
+      "log_line": 1,
+      "support_check": "supported",
+      "p_supported": 0.77
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.82bn of funding and repo lenders $0.00bn.",
+      "log_line": 2,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $2.57bn.",
+      "log_line": 3,
+      "support_check": "supported",
+      "p_supported": 0.85
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.56 (1 = calm); fast uninsured depositors withdrew $0.58bn, slow uninsured depositors $0.00bn and insured depositors $0.08bn.",
+      "log_line": 4,
+      "support_check": "supported",
+      "p_supported": 0.76
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.66bn.",
+      "log_line": 5,
+      "support_check": "supported",
+      "p_supported": 0.9
+     }
+    ]
+   },
+   {
+    "day": 2,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.57 (1 = calm); fast uninsured depositors withdrew $0.44bn, slow uninsured depositors $2.30bn and insured depositors $0.06bn.",
+      "log_line": 6,
+      "support_check": "supported",
+      "p_supported": 0.7
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.54bn of funding and repo lenders $0.00bn.",
+      "log_line": 7,
+      "support_check": "supported",
+      "p_supported": 0.97
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $3.34bn.",
+      "log_line": 8,
+      "support_check": "supported",
+      "p_supported": 0.84
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.62 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.87bn and insured depositors $0.00bn.",
+      "log_line": 9,
+      "support_check": "supported",
+      "p_supported": 0.87
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.87bn.",
+      "log_line": 10,
+      "support_check": "supported",
+      "p_supported": 0.91
+     }
+    ]
+   },
+   {
+    "day": 3,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.69 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.65bn and insured depositors $0.00bn.",
+      "log_line": 11,
+      "support_check": "supported",
+      "p_supported": 0.9
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.05bn of funding and repo lenders $0.00bn.",
+      "log_line": 12,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.71bn.",
+      "log_line": 13,
+      "support_check": "supported",
+      "p_supported": 0.91
+     }
+    ]
+   },
+   {
+    "day": 6,
+    "entries": [
+     {
+      "half": "afternoon",
+      "actor": "Outcome",
+      "kind": "did",
+      "route": "",
+      "text": "The run calmed and the episode ended with the bank stabilized.",
+      "log_line": 14,
+      "support_check": "flagged",
+      "p_supported": 0.34
+     }
+    ]
+   }
+  ],
+  "log": [
+   {
+    "line": 1,
+    "text": "day 1 morning | depositor confidence=0.51; withdrawals fast=1.53 slow=0.00 insured=0.21 $bn"
+   },
+   {
+    "line": 2,
+    "text": "day 1 morning | refused to roll: wholesale=0.82 repo=0.00 $bn"
+   },
+   {
+    "line": 3,
+    "text": "day 1 morning | sources: reserves=2.57 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 4,
+    "text": "day 1 afternoon | depositor confidence=0.56; withdrawals fast=0.58 slow=0.00 insured=0.08 $bn"
+   },
+   {
+    "line": 5,
+    "text": "day 1 afternoon | sources: reserves=0.66 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 6,
+    "text": "day 2 morning | depositor confidence=0.57; withdrawals fast=0.44 slow=2.30 insured=0.06 $bn"
+   },
+   {
+    "line": 7,
+    "text": "day 2 morning | refused to roll: wholesale=0.54 repo=0.00 $bn"
+   },
+   {
+    "line": 8,
+    "text": "day 2 morning | sources: reserves=3.34 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 9,
+    "text": "day 2 afternoon | depositor confidence=0.62; withdrawals fast=0.00 slow=0.87 insured=0.00 $bn"
+   },
+   {
+    "line": 10,
+    "text": "day 2 afternoon | sources: reserves=0.87 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 11,
+    "text": "day 3 morning | depositor confidence=0.69; withdrawals fast=0.00 slow=0.65 insured=0.00 $bn"
+   },
+   {
+    "line": 12,
+    "text": "day 3 morning | refused to roll: wholesale=0.05 repo=0.00 $bn"
+   },
+   {
+    "line": 13,
+    "text": "day 3 morning | sources: reserves=0.71 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 14,
+    "text": "day 6 afternoon | episode ended: stabilized"
+   }
+  ]
+ },
+ {
+  "scenario": "S2",
+  "policy": "C_prime",
+  "bank_id": "REG-02",
+  "run": 179,
+  "selection": "median run under A at the tuning cell (stigma 0.35, neutral), by end day then peak uncovered",
+  "placeholder": false,
+  "days": [
+   {
+    "day": 1,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.51 (1 = calm); fast uninsured depositors withdrew $1.53bn, slow uninsured depositors $0.00bn and insured depositors $0.21bn.",
+      "log_line": 1,
+      "support_check": "supported",
+      "p_supported": 0.77
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.82bn of funding and repo lenders $0.00bn.",
+      "log_line": 2,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $2.57bn.",
+      "log_line": 3,
+      "support_check": "supported",
+      "p_supported": 0.85
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.56 (1 = calm); fast uninsured depositors withdrew $0.58bn, slow uninsured depositors $0.00bn and insured depositors $0.08bn.",
+      "log_line": 4,
+      "support_check": "supported",
+      "p_supported": 0.76
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.66bn.",
+      "log_line": 5,
+      "support_check": "supported",
+      "p_supported": 0.9
+     }
+    ]
+   },
+   {
+    "day": 2,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.57 (1 = calm); fast uninsured depositors withdrew $0.44bn, slow uninsured depositors $2.30bn and insured depositors $0.06bn.",
+      "log_line": 6,
+      "support_check": "supported",
+      "p_supported": 0.7
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.54bn of funding and repo lenders $0.00bn.",
+      "log_line": 7,
+      "support_check": "supported",
+      "p_supported": 0.97
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $3.34bn.",
+      "log_line": 8,
+      "support_check": "supported",
+      "p_supported": 0.84
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.62 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.87bn and insured depositors $0.00bn.",
+      "log_line": 9,
+      "support_check": "supported",
+      "p_supported": 0.87
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.87bn.",
+      "log_line": 10,
+      "support_check": "supported",
+      "p_supported": 0.91
+     }
+    ]
+   },
+   {
+    "day": 3,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.69 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.65bn and insured depositors $0.00bn.",
+      "log_line": 11,
+      "support_check": "supported",
+      "p_supported": 0.9
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.05bn of funding and repo lenders $0.00bn.",
+      "log_line": 12,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.71bn.",
+      "log_line": 13,
+      "support_check": "supported",
+      "p_supported": 0.91
+     }
+    ]
+   },
+   {
+    "day": 6,
+    "entries": [
+     {
+      "half": "afternoon",
+      "actor": "Outcome",
+      "kind": "did",
+      "route": "",
+      "text": "The run calmed and the episode ended with the bank stabilized.",
+      "log_line": 14,
+      "support_check": "flagged",
+      "p_supported": 0.34
+     }
+    ]
+   }
+  ],
+  "log": [
+   {
+    "line": 1,
+    "text": "day 1 morning | depositor confidence=0.51; withdrawals fast=1.53 slow=0.00 insured=0.21 $bn"
+   },
+   {
+    "line": 2,
+    "text": "day 1 morning | refused to roll: wholesale=0.82 repo=0.00 $bn"
+   },
+   {
+    "line": 3,
+    "text": "day 1 morning | sources: reserves=2.57 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 4,
+    "text": "day 1 afternoon | depositor confidence=0.56; withdrawals fast=0.58 slow=0.00 insured=0.08 $bn"
+   },
+   {
+    "line": 5,
+    "text": "day 1 afternoon | sources: reserves=0.66 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 6,
+    "text": "day 2 morning | depositor confidence=0.57; withdrawals fast=0.44 slow=2.30 insured=0.06 $bn"
+   },
+   {
+    "line": 7,
+    "text": "day 2 morning | refused to roll: wholesale=0.54 repo=0.00 $bn"
+   },
+   {
+    "line": 8,
+    "text": "day 2 morning | sources: reserves=3.34 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 9,
+    "text": "day 2 afternoon | depositor confidence=0.62; withdrawals fast=0.00 slow=0.87 insured=0.00 $bn"
+   },
+   {
+    "line": 10,
+    "text": "day 2 afternoon | sources: reserves=0.87 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 11,
+    "text": "day 3 morning | depositor confidence=0.69; withdrawals fast=0.00 slow=0.65 insured=0.00 $bn"
+   },
+   {
+    "line": 12,
+    "text": "day 3 morning | refused to roll: wholesale=0.05 repo=0.00 $bn"
+   },
+   {
+    "line": 13,
+    "text": "day 3 morning | sources: reserves=0.71 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 14,
+    "text": "day 6 afternoon | episode ended: stabilized"
+   }
+  ]
+ },
+ {
+  "scenario": "S2",
+  "policy": "E",
+  "bank_id": "REG-02",
+  "run": 179,
+  "selection": "median run under A at the tuning cell (stigma 0.35, neutral), by end day then peak uncovered",
+  "placeholder": false,
+  "days": [
+   {
+    "day": 1,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.51 (1 = calm); fast uninsured depositors withdrew $1.53bn, slow uninsured depositors $0.00bn and insured depositors $0.21bn.",
+      "log_line": 1,
+      "support_check": "supported",
+      "p_supported": 0.77
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.82bn of funding and repo lenders $0.00bn.",
+      "log_line": 2,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $2.57bn.",
+      "log_line": 3,
+      "support_check": "supported",
+      "p_supported": 0.85
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.56 (1 = calm); fast uninsured depositors withdrew $0.58bn, slow uninsured depositors $0.00bn and insured depositors $0.08bn.",
+      "log_line": 4,
+      "support_check": "supported",
+      "p_supported": 0.76
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.66bn.",
+      "log_line": 5,
+      "support_check": "supported",
+      "p_supported": 0.9
+     }
+    ]
+   },
+   {
+    "day": 2,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.57 (1 = calm); fast uninsured depositors withdrew $0.44bn, slow uninsured depositors $2.30bn and insured depositors $0.06bn.",
+      "log_line": 6,
+      "support_check": "supported",
+      "p_supported": 0.7
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.54bn of funding and repo lenders $0.00bn.",
+      "log_line": 7,
+      "support_check": "supported",
+      "p_supported": 0.97
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $3.34bn.",
+      "log_line": 8,
+      "support_check": "supported",
+      "p_supported": 0.84
+     },
+     {
+      "half": "afternoon",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.62 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.87bn and insured depositors $0.00bn.",
+      "log_line": 9,
+      "support_check": "supported",
+      "p_supported": 0.87
+     },
+     {
+      "half": "afternoon",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.87bn.",
+      "log_line": 10,
+      "support_check": "supported",
+      "p_supported": 0.91
+     }
+    ]
+   },
+   {
+    "day": 3,
+    "entries": [
+     {
+      "half": "morning",
+      "actor": "Depositors",
+      "kind": "did",
+      "route": "",
+      "text": "Depositor confidence stood at 0.69 (1 = calm); fast uninsured depositors withdrew $0.00bn, slow uninsured depositors $0.65bn and insured depositors $0.00bn.",
+      "log_line": 11,
+      "support_check": "supported",
+      "p_supported": 0.9
+     },
+     {
+      "half": "morning",
+      "actor": "Wholesale lenders",
+      "kind": "did",
+      "route": "",
+      "text": "Wholesale lenders refused to roll $0.05bn of funding and repo lenders $0.00bn.",
+      "log_line": 12,
+      "support_check": "supported",
+      "p_supported": 0.96
+     },
+     {
+      "half": "morning",
+      "actor": "Bank",
+      "kind": "did",
+      "route": "",
+      "text": "The bank raised cash from reserves $0.71bn.",
+      "log_line": 13,
+      "support_check": "supported",
+      "p_supported": 0.91
+     }
+    ]
+   },
+   {
+    "day": 6,
+    "entries": [
+     {
+      "half": "afternoon",
+      "actor": "Outcome",
+      "kind": "did",
+      "route": "",
+      "text": "The run calmed and the episode ended with the bank stabilized.",
+      "log_line": 14,
+      "support_check": "flagged",
+      "p_supported": 0.34
+     }
+    ]
+   }
+  ],
+  "log": [
+   {
+    "line": 1,
+    "text": "day 1 morning | depositor confidence=0.51; withdrawals fast=1.53 slow=0.00 insured=0.21 $bn"
+   },
+   {
+    "line": 2,
+    "text": "day 1 morning | refused to roll: wholesale=0.82 repo=0.00 $bn"
+   },
+   {
+    "line": 3,
+    "text": "day 1 morning | sources: reserves=2.57 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 4,
+    "text": "day 1 afternoon | depositor confidence=0.56; withdrawals fast=0.58 slow=0.00 insured=0.08 $bn"
+   },
+   {
+    "line": 5,
+    "text": "day 1 afternoon | sources: reserves=0.66 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 6,
+    "text": "day 2 morning | depositor confidence=0.57; withdrawals fast=0.44 slow=2.30 insured=0.06 $bn"
+   },
+   {
+    "line": 7,
+    "text": "day 2 morning | refused to roll: wholesale=0.54 repo=0.00 $bn"
+   },
+   {
+    "line": 8,
+    "text": "day 2 morning | sources: reserves=3.34 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 9,
+    "text": "day 2 afternoon | depositor confidence=0.62; withdrawals fast=0.00 slow=0.87 insured=0.00 $bn"
+   },
+   {
+    "line": 10,
+    "text": "day 2 afternoon | sources: reserves=0.87 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 11,
+    "text": "day 3 morning | depositor confidence=0.69; withdrawals fast=0.00 slow=0.65 insured=0.00 $bn"
+   },
+   {
+    "line": 12,
+    "text": "day 3 morning | refused to roll: wholesale=0.05 repo=0.00 $bn"
+   },
+   {
+    "line": 13,
+    "text": "day 3 morning | sources: reserves=0.71 repo=0.00 Home_Loan_Bank=0.00 securities_sales=0.00 discount_window=0.00 $bn"
+   },
+   {
+    "line": 14,
+    "text": "day 6 afternoon | episode ended: stabilized"
+   }
+  ]
+ }
+]

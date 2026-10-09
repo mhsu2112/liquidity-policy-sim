@@ -1,0 +1,7 @@
+policy,marker,spread_low,spread_high,r,implied_s,note
+A,0.7787,0.49,0.905,0.1,,reference (A)
+B,0.6515,0.21,0.905,1,0.198165,exploratory
+B_prime,0.6515,0.21,0.905,1,0.198165,exploratory
+C,0.7745,0.49,0.905,1.875,0.00304687,exploratory
+C_prime,0.7787,0.49,0.905,0.1,,undefined: same r as A
+E,0.6515,0.21,0.905,1,0.198165,exploratory
