@@ -1137,3 +1137,71 @@ Format for each entry:
   stalled protocol.
 - **Seen results before the change?** No Jev reading of any gold-set passage exists. The only Jev calls so far are two checks
   on a made-up sentence. No policy comparison under stress has been run. The AI labels exist and the owner has seen them.
+
+## 2026-10-08 — Clarification 30: Jev configuration for the v0.1 model-to-model check (M2.4), and the M2.5 market-stigma marker rule (before any Jev call on a gold passage or template)
+Release v0.1 (Amendment 7). Jev is pinned to `jev-1.13.0` (Clarification 27). The AI labels are locked
+(`labels_AI.csv`, SHA-256 `92e99d7ebfc1dd6f1da62b69fece8fcfdc32ec5fbde9b67801541ecb10351ccb`).
+
+**Part A. M2.4 as a model-to-model check.**
+1. **The question.**
+   - **Instructions**, the labeling guide's question, word for word: "How does this passage present a bank's borrowing
+     from a central bank: as reassuring, as routine, or as a sign of trouble?"
+   - **Levels**, the guide's "Meaning" text for each answer, word for word. Source: `signals/gold_set/labeling-guide.md`
+     at commit `a0f08dbd2f1a55b861874ad6d855b08166cee4ee`.
+     1. "The borrowing is presented as prudent, a sign of strength, or a responsible use of the facility."
+     2. "The borrowing is reported as a fact or as ordinary business. There's no suggestion of strength or weakness."
+     3. "The passage suggests the borrowing may point to strain, or that others may read it that way. It stops short
+        of saying the bank is in trouble."
+     4. "The borrowing is presented as evidence that the bank is in trouble: losing deposits, cut off from other funding,
+        or close to failing."
+   - **State:** the passage text alone.
+   - **No guide v1.0.** There is no v1.0 of the guide, because the practice comparison never happened (the second
+     labeler is unavailable). Guide v0.9 at that commit is used.
+2. **Labels.**
+   - Jev's label is its most likely level, 1–4. Its expected score, 1 + the probability-weighted level, is also recorded.
+   - Passages the comparison labeler marked Not Applicable are excluded.
+3. **One run.**
+   - The 278 main passages and the 15 practice passages are run once.
+   - Nothing is reworded, re-run or tuned. An interrupted run continues without re-asking any passage already answered.
+4. **Measures.**
+   - α(Jev, AI): Krippendorff's alpha, ordinal, levels 1–4, with a 90% bootstrap interval (seed 20260923, 2,000 resamples
+     over passages);
+   - exact agreement, and the 4×4 table;
+   - the same on the passages the AI did not mark Unsure (Clarification 25, adapted);
+   - the same by source type and by period;
+   - Jev against the owner's human practice labels (n = 15), reported as "illustrative only, n=15";
+   - for reference only, whether α(Jev, AI) clears 0.60.
+
+   There is no pass/fail gate in v0.1. The wording is "model-to-model agreement", never "validation".
+
+**Part B. M2.5 market-stigma marker (fixed before any M2.5 call).** The contract defines market stigma as "the chance a
+known draw is read as distress" (section 5).
+1. **Texts.**
+   - The 13 templates that reveal a draw feed the marker: W1–W4, AN1, AN3, AN5, AN6 and L1–L5. Each is read in its
+     original wording and in each paraphrase in `signals/templates/paraphrases.csv`, once the owner has checked them.
+   - AN2, AN4 and P1–P5 reveal no draw. They are read the same way but reported beside the marker as context, not
+     averaged in.
+   - Placeholders are filled in code from `config/templates_fill.yaml`, fixed with this clarification.
+2. **Vantage points:**
+   - "an uninsured depositor of the bank";
+   - "a wholesale lender to the bank";
+   - "a bank equity analyst".
+3. **Questions.** For each text and vantage point, two Noul questions, with the text as state:
+   - "Reading only this text, would {vantage point} most likely take it as a sign that the bank or banks borrowing are
+     in financial distress?"
+   - "Reading only this text, would {vantage point} most likely take it as a sign that the bank or banks borrowing are
+     financially sound?"
+4. **Reading.**
+   - The reading is the mean of P(distress) and 1 − P(sound).
+   - A pair is flagged when the two disagree by more than 0.25, i.e. |P(distress) − (1 − P(sound))| > 0.25.
+5. **Marker per policy.**
+   - The marker is the equal-weight mean, over the policy's draw-revealing templates, of each template's mean over
+     wordings and vantage points.
+   - The spread is the range (minimum to maximum) of the individual readings averaged.
+   - Membership follows each template's `policies` field. B′ uses B's templates. C′ uses C's templates without L3 and
+     P5, which describe usage-conditioned credit that C′ does not have.
+   - The marker is shown on the stigma sweep labelled "provisional" (Amendment 7).
+- **Why:** the PRD named vantage points and a question ("pull back this week?") that asks about behavior Jev cannot
+  predict. This clarification ties the marker to the contract's definition before any reading exists.
+- **Seen results before the change?** No. No Jev reading of any gold-set passage or template exists. The AI labels exist and
+  are locked.

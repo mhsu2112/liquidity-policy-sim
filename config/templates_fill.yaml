@@ -1,0 +1,24 @@
+# Illustrative values for the {placeholders} in signals/templates/disclosure_templates.yaml and
+# paraphrases.csv (template rule 3: filled in code, never by Jev). Clarification 30, Part B.
+# Moderate, neutral values chosen once, before any M2.5 call; the same values for every policy, so
+# templates differ only in what the policy changes. Not tuned.
+
+bank: "Example Bank"
+district: "Kansas City"
+date: "June 4"
+period: "last spring"
+total_bn: 12          # weekly primary credit outstanding ($bn)
+prior_bn: 4
+delta_bn: 3
+capacity_bn: 8
+dw_bn: 3              # a single bank's discount window draw ($bn)
+fhlb_bn: 2
+liquidity_bn: 20
+credit_bn: 2
+reserves_bn: 5
+lcr_pct: 125
+prior_lcr_pct: 132
+ratio_pct: 110
+prior_ratio_pct: 120
+credit_pp: 6
+cap_pct: 10
