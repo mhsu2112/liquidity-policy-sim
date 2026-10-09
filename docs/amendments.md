@@ -1420,3 +1420,19 @@ Implementation of Part A:
   seen. No scored number, label or hypothesis verdict changes.
 - **Session v0.1-E also explained the grace gap, read-only:** why SVB-like S1 survival on the grace count is lower under
   B/E than under A. That explanation is reported in the session readout; no file in the repository holds its numbers.
+- **Note, 2026-10-09 (session v0.1-F): housekeeping. No result, parameter, label or verdict changes.**
+  1. **Cause analysis committed** so others can rerun it: `analysis/m3/grace_causes.py` (`make grace-causes`).
+     - It reruns only the paired rows, with the engine unchanged, and stops unless each one matches the saved run.
+     - It writes `outputs/v0.1/diagnostics/5_grace_causes.csv` and prints the worked example.
+     - From `outputs/raw` it reproduces the counts reported in session v0.1-E: 5,268 pairs; known draw 2,073; Home Loan
+       Bank collateral moved 0; other 3,195.
+     - Test: `tests/test_m3_diagnostics.py::test_grace_causes_add_up_and_match_saved_runs`.
+  2. **Limits entry (a) reworded.** It now says the grace count overstates A, because A's runs stop at a day-1 failure
+     and never face the later outflows that B's runs meet. It no longer says B's advantage "disappears" or "reverses".
+  3. **README Status** updated for v0.1, with links to the report, the limits page and the hypotheses memo. The
+     disclosure paragraph is unchanged.
+  4. **Clean stamp.** The v0.1 results and report carried the stamp `b2d4d7f059c2-dirty`. While `make results` ran, I
+     had written its log into the repository root, an untracked file that marked the tree "dirty". The results and
+     report are rebuilt from the saved runs at the clean commit that records these changes. Logs now go outside the
+     repository. Every results file is byte-identical to the published one, except the stamp and time in `meta.json`
+     and the memo's stamp line (checked before replacing).

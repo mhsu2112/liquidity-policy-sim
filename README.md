@@ -25,7 +25,18 @@ readiness policies, and what each policy costs:
 
 ## Status
 
-Setup. No results yet. See `docs/implementation-plan.md` for the build sequence.
+**v0.1 proof of concept. Jev reference not validated against human readers. Not a v1 result.**
+
+Release v0.1 (Amendment 7) is out: the full comparison run of A, B, B′, C, C′ and E over both scenarios, 40 banks and
+the 35 stigma × supervision cells (25.8 million paired episodes), tagged `v0.1`; the display fix and diagnostics are
+tagged `v0.1.1`. The pre-registered v1 protocol is paused, not withdrawn.
+
+- Report: [`outputs/v0.1/report/index.html`](outputs/v0.1/report/index.html) (open the file in a browser)
+- Limits: [`outputs/v0.1/report/limits.html`](outputs/v0.1/report/limits.html) — read these before the results
+- Hypotheses memo (H1–H8 as pre-registered, with verdicts): [`outputs/v0.1/results/hypotheses_memo.md`](outputs/v0.1/results/hypotheses_memo.md)
+- Rebuild everything from scratch with `make results` (about 8 minutes); diagnostics with `make diagnostics` and `make grace-causes`.
+
+See `docs/implementation-plan.md` for the build sequence and `docs/amendments.md` for every rule and change.
 
 ## Key documents
 

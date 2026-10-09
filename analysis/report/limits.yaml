@@ -33,7 +33,7 @@ limits:
     text: "Window loans are not repaid within a 30-day episode, so the peak window balance equals the total lent. Both columns are shown; they carry the same information."
     source: "Clarification 10 item 8; Clarification 31"
   - title: "The results depend on the strict failure rule"
-    text: "A bank fails the moment it cannot pay on time, even if cash it has already arranged arrives the next morning. Counting those timing-only failures as survivals (an upper bound), B's advantage over A disappears, and for SVB-like banks it reverses. Part of that reversal is an artefact: a run that fails for timing alone stops there, so the later outflows it would have faced are never seen."
+    text: "A bank fails the moment it cannot pay on time, even if cash it has already arranged arrives the next morning. Counting those timing-only failures as survivals (the grace count) overstates A, because A's runs stop at a day-1 failure and never face the later outflows that B's runs meet (make grace-causes)."
     source: "Amendment 6; Amendment 9 (session v0.1-D diagnostics)"
   - title: "Model banks never hesitate to borrow"
     text: "In every policy, bank type and scenario, no run borrowed a day or more after its own projection first showed a shortfall. The channel by which stigma makes banks wait too long is therefore not tested. Stigma acts here only through how the market reads a draw once it is known."

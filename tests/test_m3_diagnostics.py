@@ -70,3 +70,12 @@ def test_report_shows_diagnostics_as_sensitivities_and_new_limits(tmp_path):
     for title in ("The results depend on the strict failure rule", "Model banks never hesitate to borrow",
                   "rest on the routine-borrowing assumption"):
         assert title in limits
+
+
+def test_grace_causes_add_up_and_match_saved_runs(tiny):
+    """The cause analysis checks every re-run pair against the saved run (it stops otherwise); categories add up."""
+    from analysis.m3 import grace_causes
+    ps = grace_causes.pairs(tiny / "raw")
+    rows = dict(grace_causes.counts(ps))
+    assert rows["1 non-timing failure (all, by construction)"] == len(ps)
+    assert sum(v for k, v in rows.items() if not k.startswith("1 ")) == len(ps)
