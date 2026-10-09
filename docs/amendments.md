@@ -1436,3 +1436,11 @@ Implementation of Part A:
      report are rebuilt from the saved runs at the clean commit that records these changes. Logs now go outside the
      repository. Every results file is byte-identical to the published one, except the stamp and time in `meta.json`
      and the memo's stamp line (checked before replacing).
+  5. **Addendum to item 4.**
+     - The owner's methodology note, `outputs/v0.1/report/Liquidity Policy Simulator Methodology (v0.1).docx`, was
+       untracked in the report folder, which also kept the tree "dirty". At the owner's request it was read, checked
+       for anything unpublishable (none found) and committed as written (f2bcb09).
+     - The v0.1 results, report and diagnostics were then rebuilt at that clean commit and published in 5f5d3c5. Their
+       stamp now reads `f2bcb09c5073`.
+     - The pages differ only in stamp, time and the reworded limits entry (a). `make diagnostics` reproduced every saved
+       field exactly again.
