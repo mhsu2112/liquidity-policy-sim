@@ -1444,3 +1444,15 @@ Implementation of Part A:
        stamp now reads `f2bcb09c5073`.
      - The pages differ only in stamp, time and the reworded limits entry (a). `make diagnostics` reproduced every saved
        field exactly again.
+- **Note, 2026-10-09 (session v0.1-G): the methodology moves to `docs/methodology.md`. No result changes.**
+  - The current state was tagged `v0.1.2` on b3243fa ("limits wording, clean stamp, cause-analysis script"); `v0.1` and
+    `v0.1.1` are unchanged.
+  - The owner's methodology note was converted from `outputs/v0.1/report/Liquidity Policy Simulator Methodology
+    (v0.1).docx` to `docs/methodology.md` (pandoc, GitHub Markdown). Its two figures went to `docs/methodology/media/`.
+  - The text is unedited. The only fix is a conversion artefact: the effective-stigma formula, restored as a math
+    block.
+  - The .docx is removed from the report folder, and the README links the new file.
+  - Three statements in the note don't match the repository. They are left for the owner to correct:
+    - official support is scored on the window only (Clarification 31), not "window and Home Loan Bank";
+    - `make results` writes to `outputs/results/` and `outputs/report/`, not to `outputs/v0.1/report/`;
+    - the reproduction steps name tag `v0.1.1`; the current published state is `v0.1.2`.
