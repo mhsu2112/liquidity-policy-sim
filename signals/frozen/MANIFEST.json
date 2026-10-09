@@ -1,0 +1,32 @@
+{
+ "banner": "v0.1 proof of concept. Jev reference not validated against human readers. Not a v1 result.",
+ "release": "v0.1",
+ "amendments": [
+  "Amendment 7",
+  "Clarification 27",
+  "Clarification 30"
+ ],
+ "model_version": "jev-1.13.0",
+ "frozen_on": "2026-10-09",
+ "git_commit_at_freeze": "e14cd749604477dc16593f6ccf7e65d7ce45d53c",
+ "markers_status": "provisional",
+ "gold_check_label": "model-to-model agreement",
+ "guide_commit": "a0f08dbd2f1a55b861874ad6d855b08166cee4ee",
+ "files": {
+  "corpus_scores.csv": "b053fc4dc8bc8b731328b497201493728d38d8b9085737f72fa4d807853afd14",
+  "gold_check.json": "40d945d2d3cd3e0dc7d01c78be11617b50d015fe237828ad75409f9db7b7ec68",
+  "gold_set_answers.csv": "66968c86ef3ece76dc1d2145a82a5ef61912d2988a9e5b6380863d4298384807",
+  "historical_range.csv": "16abc590b7b5fd6bac479c9e4bbe8b4d99a233c2df67d196a2649cc4791d9dc4",
+  "markers.csv": "a575a783f8332fd4069732c0bf393beacc74d48a049e04283c4a2b8ddf0818cf",
+  "markers_readings.csv": "2f985eed307405662ef10bfaa3af4482e76729c63b7411016f3913f5ef3c6f5b",
+  "method_note.md": "3cccafab9c5ec5ecbf70df0702f68571b14309ec75ffc58cb1ab63f9296e9f1c"
+ },
+ "inputs": {
+  "config/jev.yaml": "57fb23bc4d0d14f74bf1595ebb162da61ff71d43dbfd30265349bf9feb6d5c85",
+  "config/markers.yaml": "2dbaa5a1d5f264d524e93715c8d0d5ac2713900e9835afd358e76f7b7213a6e1",
+  "config/templates_fill.yaml": "b44d163bd1895f83546cd28237fd254d4402cf09a2f3216425502b4b7e73d926",
+  "config/release.yaml": "6ab8e14dbf12af55ae03721fd29240798753705640df59a16b2af39b93215c70",
+  "signals/templates/paraphrases.csv": "fef481587418464f18eb617bc8fdec4737fb9f150ba7bc1423e58845bcec7d2f",
+  "signals/gold_set/labels_AI.csv": "92e99d7ebfc1dd6f1da62b69fece8fcfdc32ec5fbde9b67801541ecb10351ccb"
+ }
+}
