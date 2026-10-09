@@ -4,7 +4,7 @@
 
 **Disclosure.** This project's sponsor, Mike Hsu, publicly advocated a version of Option B (a standalone discount window readiness requirement) while serving as Acting Comptroller of the Currency. The comparison rules and hypotheses are published before any results are produced, Option C's specification is reviewed by an outside supporter of LCR recognition, and results are reported whether or not they match the hypotheses.
 
-Stamp: commit `b2d4d7f059c2-dirty` · config `3835bc0add36d4c2` · frozen settings `05f9e763efc16772` · Jev `v0.1-signals (frozen at e14cd74; markers provisional)` (jev-1.13.0) · 200 paired runs per bank per cell.
+Stamp: commit `f2bcb09c5073` · config `3835bc0add36d4c2` · frozen settings `05f9e763efc16772` · Jev `v0.1-signals (frozen at e14cd74; markers provisional)` (jev-1.13.0) · 200 paired runs per bank per cell.
 
 The hypothesis text below is quoted unedited from `docs/hypotheses.md` (frozen at `pre-registration-v1`). Where it leaves room, Clarification 31 B7 (recorded before any stress run of B, B′, C, C′ or E) fixes how it is scored; H8 follows Clarifications 17–18. Verdicts: supported, not supported, untestable, or reported (H2, which makes no prediction).
 

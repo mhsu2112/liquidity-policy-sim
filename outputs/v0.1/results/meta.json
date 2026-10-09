@@ -1,9 +1,9 @@
 {
  "schema_version": "1.1",
  "mock": false,
- "generated_at": "2026-10-09T00:42:14",
+ "generated_at": "2026-10-09T01:19:04",
  "stamp": {
-  "git_commit": "b2d4d7f059c2-dirty",
+  "git_commit": "f2bcb09c5073",
   "config_hash": "3835bc0add36d4c2",
   "params_fingerprint": "05f9e763efc16772",
   "jev_estimate_version": "v0.1-signals (frozen at e14cd74; markers provisional)",
