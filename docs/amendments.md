@@ -1205,3 +1205,18 @@ known draw is read as distress" (section 5).
   predict. This clarification ties the marker to the contract's definition before any reading exists.
 - **Seen results before the change?** No. No Jev reading of any gold-set passage or template exists. The AI labels exist and
   are locked.
+- **Note, 2026-10-08: owner review of the paraphrases, and two corrections, before any M2.5 call.**
+  1. **Paraphrases.** The owner reviewed all 80 and made three changes; all others are kept, including P5-p2 and P5-p4.
+     - AN4-p3 is dropped. AN4 keeps three paraphrases.
+     - W2-p2: "reached ${total_bn} billion" becomes "rose to ${total_bn} billion".
+     - W4-p2: "The district has only a handful" becomes "The district has a handful".
+
+     79 paraphrases remain.
+  2. **`cap_pct` correction.** In `config/templates_fill.yaml`, `cap_pct` goes from 10 to 20, because Option C's ceiling is
+     20% of net cash outflows. The value appears only in template P4, which is context and not in any marker.
+  3. **YAML workaround.** The frozen `signals/templates/disclosure_templates.yaml` has one YAML defect: P2's `realism` note
+     contains a second colon ("Decision 3-1: B's ratio ..."), which a strict reader rejects. `signals/templates/load.py`
+     quotes the `realism` notes in memory before parsing. The template texts are read exactly as written, and the frozen
+     file is unchanged.
+
+  No M2.5 call had been made when this note was written.

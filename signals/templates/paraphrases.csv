@@ -4,7 +4,7 @@ W1,A C,W1-p2,"According to the Fed's weekly balance sheet, primary credit outsta
 W1,A C,W1-p3,"The weekly Federal Reserve balance sheet put primary credit outstanding at ${total_bn} billion, up from ${prior_bn} billion and the largest weekly gain since {period}. The borrowers are not identified."
 W1,A C,W1-p4,"Primary credit outstanding increased to ${total_bn} billion from ${prior_bn} billion, the Federal Reserve's weekly balance sheet showed, the largest weekly increase since {period}. The Fed does not name borrowers."
 W2,B E,W2-p1,"In the week ended {date}, primary credit outstanding increased to ${total_bn} billion, consistent with the quarter-end pattern seen since large banks started required test borrowing."
-W2,B E,W2-p2,"Primary credit outstanding reached ${total_bn} billion in the week ended {date}, matching the quarter-end pattern since large banks began their required test borrowing."
+W2,B E,W2-p2,"Primary credit outstanding rose to ${total_bn} billion in the week ended {date}, matching the quarter-end pattern since large banks began their required test borrowing."
 W2,B E,W2-p3,The rise in primary credit outstanding to ${total_bn} billion in the week ended {date} follows the quarter-end pattern that has held since large banks began required test borrowing.
 W2,B E,W2-p4,"Primary credit outstanding climbed to ${total_bn} billion for the week ended {date}, in keeping with the quarter-end pattern since required test borrowing by large banks began."
 W3,A B C E,W3-p1,"Several banks tapped the discount window this week amid market turmoil, pushing borrowing up sharply to ${total_bn} billion."
@@ -12,7 +12,7 @@ W3,A B C E,W3-p2,"Amid market turmoil, discount window borrowing jumped to ${tot
 W3,A B C E,W3-p3,"Borrowing at the discount window leapt to ${total_bn} billion this week, with several banks using the facility during market turmoil."
 W3,A B C E,W3-p4,"This week, as markets were in turmoil, several banks turned to the discount window, and borrowing there jumped to ${total_bn} billion."
 W4,A C,W4-p1,"This week, discount window loans at the Federal Reserve Bank of {district} increased by ${delta_bn} billion. {bank} is among the few large banks in that district."
-W4,A C,W4-p2,"The Federal Reserve Bank of {district} reported a ${delta_bn} billion rise in discount window loans this week. The district has only a handful of large banks, {bank} among them."
+W4,A C,W4-p2,"The Federal Reserve Bank of {district} reported a ${delta_bn} billion rise in discount window loans this week. The district has a handful of large banks, {bank} among them."
 W4,A C,W4-p3,Discount window lending by the Federal Reserve Bank of {district} went up ${delta_bn} billion this week. {bank} is one of the district's few large banks.
 W4,A C,W4-p4,Loans from the discount window at the Federal Reserve Bank of {district} grew by ${delta_bn} billion this week; {bank} is one of a small number of large banks in the district.
 AN1,B E,AN1-p1,"The Bank completed its quarterly test borrowing of $50 million, as the Federal Reserve's discount window readiness rule requires, and repaid it the next day. Its collateral prepositioned at the Federal Reserve supports ${capacity_bn} billion of borrowing capacity."
@@ -29,7 +29,6 @@ AN3,A B C E,AN3-p3,The Bank has strengthened its liquidity position by borrowing
 AN3,A B C E,AN3-p4,"Total available liquidity is now ${liquidity_bn} billion after the Bank, to strengthen its liquidity position, borrowed ${dw_bn} billion from the Federal Reserve discount window and ${fhlb_bn} billion from the Federal Home Loan Bank."
 AN4,A B C E,AN4-p1,"The Bank has ${liquidity_bn} billion of available liquidity, discount window capacity included, and has not had to draw on it. Deposit flows remain within normal ranges."
 AN4,A B C E,AN4-p2,"Available liquidity at the Bank is ${liquidity_bn} billion, including discount window capacity, and the Bank has not needed to draw on it. Deposit flows are within normal ranges."
-AN4,A B C E,AN4-p3,"With ${liquidity_bn} billion of available liquidity, including discount window capacity, the Bank has not needed to draw on it, and deposit flows are within normal ranges."
 AN4,A B C E,AN4-p4,"The Bank has not needed to draw on its ${liquidity_bn} billion of available liquidity, which includes discount window capacity. Its deposit flows are within normal ranges."
 AN5,A B C E,AN5-p1,"The Bank borrowed ${dw_bn} billion from the Federal Reserve Bank of {district} on {date}, secured by loans and securities, and expects to repay it as conditions normalize."
 AN5,A B C E,AN5-p2,"On {date}, the Bank took a ${dw_bn} billion loan from the Federal Reserve Bank of {district}, secured by loans and securities. It expects to repay the loan as conditions return to normal."

@@ -21,4 +21,4 @@ prior_lcr_pct: 132
 ratio_pct: 110
 prior_ratio_pct: 120
 credit_pp: 6
-cap_pct: 10
+cap_pct: 20          # Option C's ceiling is 20% of net cash outflows (owner correction, Clarification 30 note)
