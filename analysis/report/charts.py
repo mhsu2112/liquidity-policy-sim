@@ -58,7 +58,7 @@ def tradeoff_figure(rows, vocab, layout, marker, title, path, banner):
     stig, sup = vocab["stigma"], vocab["supervision"]
     comps = t["comparisons"]
     fig, axes = plt.subplots(4, 2, figsize=(15, 19))
-    fig.subplots_adjust(top=0.93, bottom=0.03, left=0.11, right=0.98, hspace=0.45, wspace=0.34)
+    fig.subplots_adjust(top=0.91 if marker else 0.93, bottom=0.03, left=0.11, right=0.98, hspace=0.5, wspace=0.34)
     fig.suptitle(title, fontsize=14, y=0.965)
     by_key = {(r["comparison"], float(r["stigma"]), r["supervision"]): r for r in rows}
     for ax, comp in zip(axes.flat, comps):
@@ -81,11 +81,16 @@ def tradeoff_figure(rows, vocab, layout, marker, title, path, banner):
         ax.set_xticks(np.arange(len(stig)) + 0.5, [f"{s:g}" for s in stig])
         ax.set_yticks(np.arange(len(sup)) + 0.5, [t["supervision_labels"][u] for u in sup])
         ax.set_xlabel("Market stigma: chance a known draw is read as distress")
-        ax.set_title(f"{x} vs {y}   (cost difference = {x} minus {y}, $m per bank per year)", fontsize=10, pad=18)
+        ax.set_title(f"{x} vs {y}   (cost difference = {x} minus {y}, $m per bank per year)", fontsize=10,
+                     pad=30 if marker else 18)
         if marker:
             mx = _marker_x(stig, marker["stigma"]) + 0.5
             ax.axvline(mx, color=t["marker_colour"], linestyle="--", linewidth=2, zorder=3)
-            ax.text(mx, 1.005, f"{marker['label']} ({marker['stigma']:g}) ▼", ha="center", va="bottom",
+            # Two lines, ending at the marker line, so a long label stays inside the panel (display only;
+            # amendments note of 2026-10-09 under Amendment 8).
+            first, _, rest = marker["label"].partition(" (")
+            text = f"{first}\n({rest} ({marker['stigma']:g}) ▼" if rest else f"{first} ({marker['stigma']:g}) ▼"
+            ax.text(mx, 1.005, text, ha="right", va="bottom", multialignment="right",
                     fontsize=8, weight="bold", transform=ax.get_xaxis_transform())
     legend = axes.flat[-1]
     legend.axis("off")

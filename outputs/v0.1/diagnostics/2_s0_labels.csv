@@ -1,0 +1,17 @@
+comparison,scenario,bank_type,s=0.3 default: X leads,s=0.3 default: Y leads,s=0.3 default: tie,s=0.3 default: trade-off,s=0: X leads,s=0: Y leads,s=0: tie,s=0: trade-off
+C_vs_A,S1,svb_like,0,6,3,0,0,9,0,0
+B_vs_C,S1,svb_like,9,0,0,0,9,0,0,0
+C_vs_A,S1,diversified_regional,8,0,1,0,0,0,9,0
+B_vs_C,S1,diversified_regional,9,0,0,0,9,0,0,0
+C_vs_A,S1,regional_cat3,9,0,0,0,9,0,0,0
+B_vs_C,S1,regional_cat3,9,0,0,0,9,0,0,0
+C_vs_A,S1,gsib,0,0,9,0,0,0,9,0
+B_vs_C,S1,gsib,6,0,3,0,9,0,0,0
+C_vs_A,S2,svb_like,0,0,9,0,0,0,9,0
+B_vs_C,S2,svb_like,9,0,0,0,9,0,0,0
+C_vs_A,S2,diversified_regional,0,0,9,0,0,0,9,0
+B_vs_C,S2,diversified_regional,0,0,9,0,0,0,9,0
+C_vs_A,S2,regional_cat3,0,0,9,0,0,0,9,0
+B_vs_C,S2,regional_cat3,0,0,9,0,0,0,9,0
+C_vs_A,S2,gsib,0,0,9,0,0,0,9,0
+B_vs_C,S2,gsib,0,0,9,0,0,0,9,0

@@ -1375,3 +1375,20 @@ Implementation of Part A:
 - **Seen results before the change?** Yes. This entry exists because of them. Only the wording changes. The
   pre-registered `docs/hypotheses.md` has the same sentence under "Not hypothesized"; it stays unedited, and the
   memo notes the point.
+- **Note, 2026-10-09 (session v0.1-D): two approved housekeeping items and the diagnostics. No result, parameter or
+  label changes.**
+  1. **Test edit approved by the owner.** `tests/test_report_shells.py` no longer rejects "untestable" for H1, because
+     Clarification 31 B7 allows "untestable" for any hypothesis. It now rejects "reported" for H1, which only H2 may
+     use, so it still checks that the validator refuses a verdict a hypothesis may not take.
+  2. **Clipped marker label (display only).**
+     - In `analysis/report/charts.py::tradeoff_figure`, the provisional-reference label now sits on two lines and ends
+       at the marker line. The panels moved down slightly to make room.
+     - Rebuilt from the unchanged `outputs/v0.1/results`: only the 12 `tradeoff_*.png` images differ. Every HTML page,
+       CSV and other image is byte-identical, and no results file changed.
+     - `layout.yaml` is unchanged (layout fingerprint `bbf29f46a63e0587`).
+  3. **Diagnostics** (`analysis/m3/diagnostics.py`, `make diagnostics`, `outputs/v0.1/diagnostics/`). They are read
+     from the saved runs and labelled "diagnostic, not scored".
+     - "Largest amount still owed" was never saved, so the S1 main grid was re-run with the run's own batch function,
+       unchanged. Every saved field came out identical (checked before writing), and `peak_owed_bn` was added.
+     - "Late" borrowing means 2 or more half-days after the bank first saw a shortfall (owner's choice).
+     - The s = 0 comparison covers the 9 mid-range cells, the grid that sensitivity was run on.

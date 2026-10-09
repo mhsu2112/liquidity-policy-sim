@@ -8,7 +8,7 @@ PYTHON_FOR_SETUP ?= python3.13
 VENV := .venv
 PY := $(VENV)/bin/python
 
-.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels jev-hello mock-report report m3-dry results ai-labels gold-check markers corpus-scores freeze
+.PHONY: setup test banks lcr demo-waterfall demo-run demo-info demo-episode policy-table costs benchmark tune validate timing-gap corpus corpus-build corpus-sample corpus-check-sheet gold-draw gold-sheets lock-labels compare-practice publish-labels jev-hello mock-report report m3-dry results diagnostics ai-labels gold-check markers corpus-scores freeze
 
 # Build the environment only when it is missing or requirements.txt changed.
 $(VENV)/.installed: requirements.txt
@@ -129,6 +129,10 @@ mock-report: $(VENV)/.installed
 ## make report: the same pages from real M3 results in outputs/results/ (same schema, same layout; M3 calls this)
 report: $(VENV)/.installed
 	$(PY) -m analysis.report.build outputs/results outputs/report
+
+## make diagnostics: v0.1 diagnostics from the saved runs (needs make results first); writes outputs/v0.1/diagnostics/
+diagnostics: $(VENV)/.installed
+	$(PY) -m analysis.m3.diagnostics
 
 ## make m3-dry: the 1% dry run of the whole M3 grid; prints a time estimate (session v0.1-C)
 m3-dry: $(VENV)/.installed
