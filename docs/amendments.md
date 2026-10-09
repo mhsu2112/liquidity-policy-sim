@@ -1361,3 +1361,17 @@ Implementation of Part A:
        lines as the state.
      - Jev's answers are cached in `signals/replay_checks.csv`, so `make results` reproduces them without new calls.
   6. **`make results`** deletes `outputs/raw`, `outputs/results` and `outputs/report`, then rebuilds them all.
+
+## 2026-10-09 — Amendment 8: correct a false statement of mechanics on the Option C page (after results; no number changes)
+- **What changed:** the Option C page's fixed note (written in M3.0 on mock data) said C and C′ have "no effect on the
+  Category IV diversified regional bank by construction (contract 1c)". That is false. Those banks get no LCR credit,
+  but C's routine-borrowing rate r = uptake × 2.5 is a policy-wide rate (contract 3a, Clarification 9). It lowers every
+  bank's effective stigma: at the tuning cell, diversified regionals have effective stigma 0.199 under C against 0.34
+  under A. The note now states this channel. No number, label, chart or parameter changes.
+- **Why:** a mechanical error in fixed report text, shown by the first results. In S1, C leads A for diversified
+  regionals in 26 of 35 cells. That cannot happen if C had no effect on them.
+- **Evidence:** `tests/test_m3.py::test_diversified_regional_gets_no_credit_but_cs_routine_rate` (credit and buffer
+  gap are zero; r = 1.875; the page states the channel).
+- **Seen results before the change?** Yes. This entry exists because of them. Only the wording changes. The
+  pre-registered `docs/hypotheses.md` has the same sentence under "Not hypothesized"; it stays unedited, and the
+  memo notes the point.

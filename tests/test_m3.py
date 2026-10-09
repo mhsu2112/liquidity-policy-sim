@@ -256,3 +256,18 @@ def load_release_banner():
     import yaml
     from analysis.m3.run import ROOT
     return yaml.safe_load((ROOT / "config" / "release.yaml").read_text())["banner"]
+
+
+def test_diversified_regional_gets_no_credit_but_cs_routine_rate():
+    """Amendment 8: the Option C page once said C has "no effect" on diversified regionals by construction. Their
+    credit is zero (no LCR), but C's routine-borrowing rate applies to every bank (contract 3a), so effective stigma
+    still moves. The page must state the channel, not deny it."""
+    from engine.banks import generate_banks
+    from engine.policies import draw_policy_randoms, policy_setup
+    banks = generate_banks()
+    div = banks["archetype"] == "diversified_regional"
+    s = policy_setup(banks, "C", randoms=draw_policy_randoms(load_policies()["seed"], len(banks["bank_id"])))
+    assert np.all(s["credit_bn"][div] == 0) and np.all(s["buffer_gap"][div] == 0)
+    assert np.allclose(s["routine_rate"][div], 0.75 * 2.5)
+    src = (report.HERE / "build.py").read_text()
+    assert "no '\n             'effect on the Category IV" not in src and "lowers that bank" in src

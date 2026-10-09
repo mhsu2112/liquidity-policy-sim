@@ -46,6 +46,11 @@ def write(folder=OUT):
             lines.append(f"| {p['part']} | {p['result'].replace('|', '/')} | **{p['verdict']}** |")
             tally[p["verdict"]] = tally.get(p["verdict"], 0) + 1
         lines.append("")
+    lines += ["## Note recorded after results (Amendment 8)", "",
+              "`docs/hypotheses.md` says, under \"Not hypothesized\", that C has no effect on the diversified regional "
+              "archetype by construction. The text above is left unedited. In the model, those banks get no LCR credit, but "
+              "C's policy-wide routine-borrowing rate (contract 3a) lowers their effective stigma, so C can and does differ "
+              "from A for them.", ""]
     lines += ["## Tally", "", ", ".join(f"{k}: {v}" for k, v in sorted(tally.items())) + " (counting each scored part).", ""]
     (folder / "hypotheses_memo.md").write_text("\n".join(lines))
     return folder / "hypotheses_memo.md"

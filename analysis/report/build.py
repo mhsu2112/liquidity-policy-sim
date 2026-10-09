@@ -219,8 +219,10 @@ def option_c_page(d, vocab, layout, out):
     parts = [f'<p class="note">C and C′ across voluntary uptake and the share of HQLA released. Defaults: uptake '
              f'{OPTION_C_DEFAULTS["uptake"]:.0%}, released {OPTION_C_DEFAULTS["hqla_released"]:.0%} (contract 2d). '
              f'Cells off the cross are {e(layout["option_c"]["not_run_note"])}. Each run cell shows survival against A (paired, '
-             f'90% interval) on the 9 mid-range cells, the grid every point of the cross was run on. Under current LCR scope, C and C′ have no '
-             'effect on the Category IV diversified regional bank by construction (contract 1c). C\'s cost saving and '
+             f'90% interval) on the 9 mid-range cells, the grid every point of the cross was run on. Under current LCR scope, the Category IV '
+             'diversified regional bank gets no LCR credit under C or C′ (contract 1c), but C\'s routine-borrowing rate '
+             '(r = uptake × 2.5) applies to every bank (contract 3a), so it still lowers that bank\'s effective stigma '
+             '(corrected 2026-10-09, Amendment 8). C\'s cost saving and '
              'its buffer gap are the same money: see the scorecard, where they sit side by side.</p>']
     for s in vocab["scenarios"]:
         path = out / "img" / f"option_c_{s}.png"
